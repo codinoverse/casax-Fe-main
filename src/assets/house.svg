@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 440" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8D8E8"/>
+      <stop offset="60%" stop-color="#D8E4EE"/>
+      <stop offset="100%" stop-color="#E8EEF4"/>
+    </linearGradient>
+    <linearGradient id="wall1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E8E0D4"/>
+      <stop offset="100%" stop-color="#DED4C6"/>
+    </linearGradient>
+    <linearGradient id="wall2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F0EAE0"/>
+      <stop offset="100%" stop-color="#E8E0D4"/>
+    </linearGradient>
+    <linearGradient id="darkwall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3A3530"/>
+      <stop offset="100%" stop-color="#2E2A26"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#88C8E8"/>
+      <stop offset="30%" stop-color="#A8D8F0"/>
+      <stop offset="60%" stop-color="#78B8D8"/>
+      <stop offset="100%" stop-color="#5AA0C4"/>
+    </linearGradient>
+    <linearGradient id="glassWarm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8E8C8"/>
+      <stop offset="50%" stop-color="#F0D8A8"/>
+      <stop offset="100%" stop-color="#E8C890"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7CB342"/>
+      <stop offset="100%" stop-color="#558B2F"/>
+    </linearGradient>
+    <linearGradient id="roofFlat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5A5048"/>
+      <stop offset="100%" stop-color="#4A4038"/>
+    </linearGradient>
+    <linearGradient id="sunset" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#F8D8A0" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#F8D8A0" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="700" height="440" fill="url(#sky)" rx="16"/>
+
+  <!-- Sunset glow -->
+  <rect x="0" y="200" width="700" height="240" fill="url(#sunset)" rx="0"/>
+
+  <!-- Clouds -->
+  <g opacity="0.5">
+    <ellipse cx="150" cy="50" rx="60" ry="20" fill="white"/>
+    <ellipse cx="110" cy="45" rx="40" ry="18" fill="white"/>
+    <ellipse cx="190" cy="46" rx="45" ry="16" fill="white"/>
+  </g>
+  <g opacity="0.35">
+    <ellipse cx="500" cy="35" rx="55" ry="17" fill="white"/>
+    <ellipse cx="460" cy="32" rx="35" ry="14" fill="white"/>
+    <ellipse cx="540" cy="33" rx="40" ry="14" fill="white"/>
+  </g>
+
+  <!-- Background trees -->
+  <g opacity="0.35">
+    <ellipse cx="60" cy="240" rx="35" ry="55" fill="#4A7A2E"/>
+    <ellipse cx="640" cy="235" rx="40" ry="60" fill="#4A7A2E"/>
+    <ellipse cx="680" cy="245" rx="30" ry="45" fill="#3D6B25"/>
+  </g>
+
+  <!-- Ground / Grass -->
+  <rect x="0" y="340" width="700" height="100" fill="url(#grass)" rx="0"/>
+  <rect x="0" y="338" width="700" height="6" fill="#8BC34A" opacity="0.4"/>
+
+  <!-- Driveway -->
+  <path d="M280 440 L310 340 L390 340 L420 440 Z" fill="#C8BEB0"/>
+  <path d="M295 440 L318 350 L382 350 L405 440 Z" fill="#D4CAB8" opacity="0.6"/>
+
+  <!-- ====== LEFT WING ====== -->
+  <!-- Main left block -->
+  <rect x="80" y="160" width="180" height="180" fill="url(#wall2)"/>
+  <!-- Flat roof -->
+  <rect x="75" y="152" width="190" height="12" fill="url(#roofFlat)" rx="2"/>
+
+  <!-- Left wing large windows -->
+  <rect x="95" y="178" width="65" height="85" rx="2" fill="url(#glass)"/>
+  <line x1="127" y1="178" x2="127" y2="263" stroke="#B8C8D4" strokeWidth="1.5"/>
+  <line x1="95" y1="220" x2="160" y2="220" stroke="#B8C8D4" strokeWidth="1.5"/>
+
+  <rect x="175" y="178" width="65" height="85" rx="2" fill="url(#glassWarm)"/>
+  <line x1="207" y1="178" x2="207" y2="263" stroke="#D8C8A8" strokeWidth="1.5"/>
+  <line x1="175" y1="220" x2="240" y2="220" stroke="#D8C8A8" strokeWidth="1.5"/>
+
+  <!-- Left wing bottom windows -->
+  <rect x="95" y="278" width="65" height="55" rx="2" fill="url(#glassWarm)"/>
+  <line x1="127" y1="278" x2="127" y2="333" stroke="#D8C8A8" strokeWidth="1.5"/>
+
+  <rect x="175" y="278" width="65" height="55" rx="2" fill="url(#glass)"/>
+  <line x1="207" y1="278" x2="207" y2="333" stroke="#B8C8D4" strokeWidth="1.5"/>
+
+  <!-- ====== CENTER MAIN BLOCK ====== -->
+  <rect x="260" y="120" width="200" height="220" fill="url(#wall1)"/>
+  <!-- Flat roof center -->
+  <rect x="255" y="112" width="210" height="12" fill="url(#roofFlat)" rx="2"/>
+
+  <!-- Center large glass facade -->
+  <rect x="278" y="138" width="80" height="100" rx="2" fill="url(#glass)"/>
+  <line x1="318" y1="138" x2="318" y2="238" stroke="#B8C8D4" strokeWidth="1.5"/>
+  <line x1="278" y1="188" x2="358" y2="188" stroke="#B8C8D4" strokeWidth="1.5"/>
+
+  <rect x="368" y="138" width="75" height="100" rx="2" fill="url(#glassWarm)"/>
+  <line x1="405" y1="138" x2="405" y2="238" stroke="#D8C8A8" strokeWidth="1.5"/>
+  <line x1="368" y1="188" x2="443" y2="188" stroke="#D8C8A8" strokeWidth="1.5"/>
+
+  <!-- Main door -->
+  <rect x="320" y="260" width="55" height="80" rx="3" fill="#4A3A2E"/>
+  <rect x="324" y="264" width="47" height="72" rx="2" fill="#5A4A3A"/>
+  <circle cx="362" cy="302" r="3" fill="#C8A868"/>
+
+  <!-- Side windows near door -->
+  <rect x="278" y="270" width="35" height="60" rx="2" fill="url(#glass)"/>
+  <rect x="385" y="270" width="50" height="60" rx="2" fill="url(#glassWarm)"/>
+  <line x1="410" y1="270" x2="410" y2="330" stroke="#D8C8A8" strokeWidth="1.5"/>
+
+  <!-- ====== RIGHT WING ====== -->
+  <rect x="460" y="170" width="160" height="170" fill="url(#darkwall)"/>
+  <!-- Right flat roof -->
+  <rect x="455" y="163" width="170" height="10" fill="#3A3530" rx="2"/>
+
+  <!-- Right wing - large glass -->
+  <rect x="475" y="185" width="55" height="70" rx="2" fill="url(#glassWarm)"/>
+  <line x1="502" y1="185" x2="502" y2="255" stroke="#D8C8A8" strokeWidth="1.5"/>
+
+  <rect x="540" y="185" width="60" height="70" rx="2" fill="url(#glass)"/>
+  <line x1="570" y1="185" x2="570" y2="255" stroke="#B8C8D4" strokeWidth="1.5"/>
+
+  <!-- Right wing bottom -->
+  <rect x="475" y="268" width="120" height="65" rx="2" fill="url(#glassWarm)"/>
+  <line x1="515" y1="268" x2="515" y2="333" stroke="#D8C8A8" strokeWidth="1.5"/>
+  <line x1="555" y1="268" x2="555" y2="333" stroke="#D8C8A8" strokeWidth="1.5"/>
+  <line x1="475" y1="300" x2="595" y2="300" stroke="#D8C8A8" strokeWidth="1.5"/>
+
+  <!-- ====== UPPER FLOOR / TOWER ====== -->
+  <rect x="300" y="60" width="120" height="60" fill="url(#darkwall)"/>
+  <rect x="295" y="55" width="130" height="8" fill="#3A3530" rx="2"/>
+  <!-- Tower windows -->
+  <rect x="310" y="70" width="40" height="40" rx="2" fill="url(#glass)"/>
+  <line x1="330" y1="70" x2="330" y2="110" stroke="#B8C8D4" strokeWidth="1.5"/>
+  <rect x="360" y="70" width="50" height="40" rx="2" fill="url(#glassWarm)"/>
+  <line x1="385" y1="70" x2="385" y2="110" stroke="#D8C8A8" strokeWidth="1.5"/>
+
+  <!-- Front steps -->
+  <rect x="305" y="338" width="90" height="6" rx="1" fill="#C4B8A8"/>
+  <rect x="312" y="335" width="76" height="5" rx="1" fill="#D4C8B8"/>
+
+  <!-- Landscaping bushes -->
+  <ellipse cx="120" cy="336" rx="30" ry="10" fill="#43A047"/>
+  <ellipse cx="140" cy="334" rx="22" ry="9" fill="#4CAF50"/>
+  <ellipse cx="500" cy="336" rx="28" ry="9" fill="#43A047"/>
+  <ellipse cx="520" cy="334" rx="20" ry="8" fill="#4CAF50"/>
+  <ellipse cx="275" cy="337" rx="18" ry="7" fill="#388E3C"/>
+  <ellipse cx="430" cy="337" rx="20" ry="8" fill="#388E3C"/>
+
+  <!-- Trees left -->
+  <rect x="38" y="245" width="10" height="95" fill="#5D4037"/>
+  <ellipse cx="43" cy="220" rx="35" ry="45" fill="#2E7D32"/>
+  <ellipse cx="33" cy="235" rx="25" ry="30" fill="#388E3C"/>
+
+  <!-- Trees right -->
+  <rect x="645" y="250" width="8" height="90" fill="#5D4037"/>
+  <ellipse cx="649" cy="228" rx="30" ry="40" fill="#2E7D32"/>
+  <ellipse cx="658" cy="240" rx="22" ry="28" fill="#388E3C"/>
+
+  <!-- Decorative planters near entrance -->
+  <rect x="300" y="322" width="10" height="14" rx="2" fill="#8D6E63"/>
+  <ellipse cx="305" cy="318" rx="8" ry="8" fill="#43A047"/>
+  <rect x="390" y="322" width="10" height="14" rx="2" fill="#8D6E63"/>
+  <ellipse cx="395" cy="318" rx="8" ry="8" fill="#43A047"/>
+
+  <!-- Warm interior glow effect -->
+  <rect x="175" y="178" width="65" height="85" rx="2" fill="#FFF3E0" opacity="0.15"/>
+  <rect x="368" y="138" width="75" height="100" rx="2" fill="#FFF3E0" opacity="0.15"/>
+  <rect x="475" y="185" width="55" height="70" rx="2" fill="#FFF3E0" opacity="0.2"/>
+  <rect x="475" y="268" width="120" height="65" rx="2" fill="#FFF3E0" opacity="0.15"/>
+</svg>
