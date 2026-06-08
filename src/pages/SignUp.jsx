@@ -5,7 +5,8 @@ import houseImg from '../assets/house.png'
 import './Auth.css'
 
 function SignUp() {
-  const [fullName, setFullName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [mobile, setMobile] = useState('')
   const [password, setPassword] = useState('')
@@ -83,15 +84,12 @@ function SignUp() {
         {/* Right Panel */}
         <div className="auth-right">
           <div className="auth-right-content">
-            <h2 className="auth-heading">Create your account</h2>
-            <p className="auth-subheading">
-              Already have an account? <Link to="/login" className="link-orange">Login</Link>
-            </p>
+            <h2 className="auth-heading">Sign Up</h2>
 
             <form onSubmit={handleSubmit} className="auth-form">
               <div className="form-row">
                 <div className="input-group">
-                  <label className="input-label">Full Name</label>
+                  <label className="input-label">First Name</label>
                   <div className="input-wrapper">
                     <span className="input-icon">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -99,19 +97,19 @@ function SignUp() {
                         <circle cx="12" cy="7" r="4" />
                       </svg>
                     </span>
-                    <input type="text" placeholder="Enter your full name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+                    <input type="text" placeholder="First name" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
                   </div>
                 </div>
                 <div className="input-group">
-                  <label className="input-label">Email Address</label>
+                  <label className="input-label">Last Name</label>
                   <div className="input-wrapper">
                     <span className="input-icon">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="4" width="20" height="16" rx="2" />
-                        <path d="M22 4L12 13L2 4" />
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
                       </svg>
                     </span>
-                    <input type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <input type="text" placeholder="Last name" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
                   </div>
                 </div>
               </div>
@@ -137,6 +135,19 @@ function SignUp() {
                     </svg>
                   </div>
                   <input type="tel" placeholder="Enter your mobile number" value={mobile} onChange={(e) => setMobile(e.target.value)} required />
+                </div>
+              </div>
+
+              <div className="input-group">
+                <label className="input-label">Email Address</label>
+                <div className="input-wrapper">
+                  <span className="input-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2" />
+                      <path d="M22 4L12 13L2 4" />
+                    </svg>
+                  </span>
+                  <input type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </div>
               </div>
 
@@ -212,6 +223,10 @@ function SignUp() {
             <p className="auth-secure-note">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
               Your data is safe and secure with us.
+            </p>
+
+            <p className="auth-subheading">
+              Already have an account? <Link to="/login" className="link-orange">Login</Link>
             </p>
           </div>
         </div>
