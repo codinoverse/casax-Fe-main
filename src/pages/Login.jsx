@@ -30,51 +30,12 @@ function Login() {
           <div className="auth-left-image">
             <img src={houseImg} alt="Modern luxury house" />
           </div>
-          {/* Badges Card */}
-          <div className="auth-badges-card">
-            <div className="auth-badges">
-              <div className="auth-badge">
-                <div className="badge-icon-circle">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <polyline points="22 4 12 14.01 9 11.01" />
-                  </svg>
-                </div>
-                <span className="badge-title">Verified Listings</span>
-                <span className="badge-desc">100% Trusted</span>
-              </div>
-              <div className="auth-badge">
-                <div className="badge-icon-circle">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
-                </div>
-                <span className="badge-title">Verified Agents</span>
-                <span className="badge-desc">Experienced</span>
-              </div>
-              <div className="auth-badge">
-                <div className="badge-icon-circle">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                  </svg>
-                </div>
-                <span className="badge-title">Fast Deals</span>
-                <span className="badge-desc">Quick & Easy</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Right Panel */}
         <div className="auth-right">
           <div className="auth-right-content auth-right-login">
             <h2 className="auth-heading">Login to your account</h2>
-            <p className="auth-subheading">
-              Don't have an account? <Link to="/signup" className="link-orange">Sign Up</Link>
-            </p>
 
             <form onSubmit={handleSubmit} className="auth-form">
               <div className="input-group">
@@ -119,6 +80,50 @@ function Login() {
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
               Your data is safe and secure with us.
             </p>
+
+            <p className="auth-subheading">
+              Don't have an account? <Link to="/signup" className="link-orange">Sign Up</Link>
+            </p>
+
+            <div className="auth-badges-inline">
+              <div className="auth-badge-inline">
+                <div className="badge-icon-circle-sm">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                </div>
+                <div>
+                  <span className="badge-inline-title">Verified Listings</span>
+                  <span className="badge-inline-desc">100% Trusted</span>
+                </div>
+              </div>
+              <div className="auth-badge-inline">
+                <div className="badge-icon-circle-sm">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div>
+                  <span className="badge-inline-title">Verified Agents</span>
+                  <span className="badge-inline-desc">Experienced</span>
+                </div>
+              </div>
+              <div className="auth-badge-inline">
+                <div className="badge-icon-circle-sm">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>
+                </div>
+                <div>
+                  <span className="badge-inline-title">Fast Deals</span>
+                  <span className="badge-inline-desc">Quick & Easy</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
