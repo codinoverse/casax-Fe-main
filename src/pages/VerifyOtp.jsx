@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import logo from '../assets/logo.png'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import logo from '../assets/Logo.png'
 import houseImg from '../assets/house.png'
 import './Auth.css'
 
@@ -8,6 +8,9 @@ function VerifyOtp() {
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
   const [timer, setTimer] = useState(30)
   const inputRefs = useRef([])
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const fromForgotPassword = searchParams.get('from') === 'forgot-password'
 
   useEffect(() => {
     if (timer > 0) {
@@ -48,6 +51,9 @@ function VerifyOtp() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    if (fromForgotPassword) {
+      navigate('/reset-password')
+    }
   }
 
   const isComplete = otp.every((d) => d !== '')
@@ -56,6 +62,13 @@ function VerifyOtp() {
   return (
     <div className="auth-page">
       <div className="auth-modal">
+        <button className="auth-back-btn" onClick={() => navigate(fromForgotPassword ? '/forgot-password' : '/signup')}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+          Back
+        </button>
         {/* Left Panel */}
         <div className="auth-left">
           <div className="auth-left-top">
@@ -166,12 +179,12 @@ function VerifyOtp() {
               )}
             </p>
 
-            <Link to="/signup" className="otp-back">
+            <Link to={fromForgotPassword ? '/forgot-password' : '/signup'} className="otp-back">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12" />
                 <polyline points="12 19 5 12 12 5" />
               </svg>
-              Back to Sign Up
+              {fromForgotPassword ? 'Back to Forgot Password' : 'Back to Sign Up'}
             </Link>
 
             <p className="auth-secure-note">
