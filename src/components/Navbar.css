@@ -1,0 +1,235 @@
+/* ========== SHARED NAVBAR ========== */
+.navbar {
+  background: #fff;
+  border-bottom: 1px solid #f1f5f9;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.navbar-logo {
+  height: 50px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #f26522;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Logged-out buttons */
+.nav-saved-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.nav-saved-btn:hover {
+  color: #f26522;
+}
+
+.nav-login-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.nav-login-link:hover {
+  color: #f26522;
+}
+
+/* Logged-in icon buttons */
+.nav-icon-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: none;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: color 0.2s, background 0.2s;
+  position: relative;
+  border-radius: 8px;
+}
+
+.nav-icon-btn:hover {
+  color: #f26522;
+  background: #fef5f0;
+}
+
+.nav-icon-label {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Bell button */
+.nav-bell-btn {
+  padding: 8px;
+}
+
+.nav-alert-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  line-height: 1;
+  border: 2px solid #fff;
+  box-sizing: border-box;
+}
+
+/* Account dropdown */
+.nav-account-wrap {
+  position: relative;
+}
+
+.nav-account-btn {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: #fff;
+}
+
+.nav-account-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e2e8f0;
+  min-width: 180px;
+  padding: 6px 0;
+  z-index: 200;
+}
+
+.nav-account-item {
+  display: block;
+  width: 100%;
+  padding: 10px 18px;
+  font-size: 14px;
+  color: #334155;
+  text-decoration: none;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.nav-account-item:hover {
+  background: #f8fafc;
+  color: #f26522;
+}
+
+.nav-account-logout {
+  color: #ef4444;
+  border-top: 1px solid #f1f5f9;
+  margin-top: 4px;
+  padding-top: 12px;
+}
+
+/* Post Property button */
+.nav-post-btn {
+  background: #f26522;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+
+.nav-post-btn:hover {
+  background: #d9551a;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 900px) {
+  .navbar-inner {
+    padding: 0 18px;
+  }
+  .nav-links {
+    display: none;
+  }
+  .nav-post-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar-inner {
+    height: 56px;
+  }
+  .navbar-logo {
+    height: 100px;
+  }
+  .nav-icon-label {
+    display: none;
+  }
+}
