@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { loginUser } from '../services/authService'
 import logo from '../assets/Logo.png'
 import houseImg from '../assets/house.png'
 import './Auth.css'
@@ -8,13 +9,27 @@ function Login({ onLogin }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (email && password) {
+    setError('')
+    setLoading(true)
+    try {
+      const data = await loginUser({ email, password })
+      if (data.token) {
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('user', JSON.stringify(data.user))
+        localStorage.setItem('role', data.role)
+      }
       if (onLogin) onLogin()
       navigate('/')
+    } catch (err) {
+      setError(err.message || 'Login failed. Please try again.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -33,7 +48,7 @@ function Login({ onLogin }) {
           <div className="auth-left-top">
             <img src={logo} alt="CasaX" className="auth-left-logo" />
             <h1 className="auth-left-title">
-              Welcome{'\n'}<span className="text-orange">Back!</span>
+              Welcome <span className="text-orange">Back!</span>
             </h1>
             <p className="auth-left-subtitle">
               Login to manage your properties, connect with buyers and more.
@@ -51,7 +66,7 @@ function Login({ onLogin }) {
 
             <form onSubmit={handleSubmit} className="auth-form">
               <div className="input-group">
-                <label className="input-label">Email Address</label>
+                <label className="input-label">Mobile Number / Email Address </label>
                 <div className="input-wrapper">
                   <span className="input-icon">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -59,7 +74,7 @@ function Login({ onLogin }) {
                       <path d="M22 4L12 13L2 4" />
                     </svg>
                   </span>
-                  <input type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                  <input type="email" placeholder="Enter your Mobile Number / Email Address " value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </div>
               </div>
 
@@ -85,7 +100,11 @@ function Login({ onLogin }) {
                 <Link to="/forgot-password" className="link-orange">Forgot Password?</Link>
               </div>
 
-              <button type="submit" className="auth-btn">Login</button>
+              {error && <div className="auth-error-msg">{error}</div>}
+
+              <button type="submit" className="auth-btn" disabled={loading}>
+                {loading ? 'Logging in...' : 'Login'}
+              </button>
             </form>
 
             <p className="auth-secure-note">

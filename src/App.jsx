@@ -7,6 +7,7 @@ import VerifyOtp from './pages/VerifyOtp'
 import ResetPassword from './pages/ResetPassword'
 import ForgotPassword from './pages/ForgotPassword'
 import SearchProperties from './pages/SearchProperties'
+import PostProperty from './pages/PostProperty'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -24,6 +25,7 @@ function App() {
         <Route path="/verify-otp" element={<VerifyOtp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/buy" element={<SearchProperties isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
+        <Route path="/post-property" element={<PostProperty isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
       </Routes>
     </Router>
   )

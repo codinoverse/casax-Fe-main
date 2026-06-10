@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 import './Home.css'
-import logo from '../assets/Logo.png'
 import logoFooter from '../assets/logoOriginal.png'
 import heroHouse from '../assets/house.png'
 
@@ -89,75 +89,34 @@ const propertyTypes = [
 
 function Home({ isLoggedIn, onLogout }) {
   const [searchTab, setSearchTab] = useState('buy')
-  const [showAccountMenu, setShowAccountMenu] = useState(false)
+  const [showPropertyDropdown, setShowPropertyDropdown] = useState(false)
+  const [selectedProperty, setSelectedProperty] = useState('')
+  const [showBudgetDropdown, setShowBudgetDropdown] = useState(false)
+  const [selectedBudget, setSelectedBudget] = useState('')
+
+  const propertyOptions = ['Apartment', 'Villa', 'Commercial', 'Plot']
+  const budgetOptions = ['₹10L - ₹30L', '₹30L - ₹50L', '₹50L - ₹1Cr', '₹1Cr+']
+  const searchRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setShowPropertyDropdown(false)
+        setShowBudgetDropdown(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   return (
     <div className="home-page">
-      {/* Navbar */}
-      <nav className="navbar">
-        <div className="navbar-inner">
-          <div className="navbar-left">
-            <img src={logo} alt="CASAX" className="navbar-logo" />
-            <div className="nav-links">
-              <Link to="/" className="nav-link active">Home</Link>
-              <Link to="/buy" className="nav-link">Buy</Link>
-              <a href="#" className="nav-link">Rent</a>
-              <a href="#" className="nav-link">Sell</a>
-              <a href="#" className="nav-link">Agents</a>
-              <a href="#" className="nav-link">About Us</a>
-              <a href="#" className="nav-link">Contact</a>
-            </div>
-          </div>
-          <div className="navbar-right">
-            {isLoggedIn ? (
-              <>
-                <button className="nav-icon-btn-home" title="Saved">
-                  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-                  <span className="nav-icon-label-home">Saved</span>
-                </button>
-                <button className="nav-icon-btn-home" title="Alerts">
-                  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-                  <span className="nav-icon-label-home">Alerts</span>
-                  <span className="nav-alert-badge-home">3</span>
-                </button>
-                <div className="nav-account-wrap-home">
-                  <button
-                    className="nav-icon-btn-home nav-account-btn-home"
-                    title="My Account"
-                    onClick={() => setShowAccountMenu(!showAccountMenu)}
-                  >
-                    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    <span className="nav-icon-label-home">My Account</span>
-                    <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-                  </button>
-                  {showAccountMenu && (
-                    <div className="nav-account-dropdown-home">
-                      <a href="#" className="nav-account-item-home">My Profile</a>
-                      <a href="#" className="nav-account-item-home">My Properties</a>
-                      <a href="#" className="nav-account-item-home">Settings</a>
-                      <button className="nav-account-item-home nav-account-logout-home" onClick={onLogout}>Logout</button>
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <button className="nav-saved-btn" title="Saved">
-                  <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-                </button>
-                <Link to="/login" className="nav-login-link">Login</Link>
-              </>
-            )}
-            <button className="nav-post-btn">Post Property</button>
-          </div>
-        </div>
-      </nav>
+      <Navbar isLoggedIn={isLoggedIn} onLogout={onLogout} />
 
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-inner">
           <div className="hero-content">
-            <span className="hero-tagline">BUY. SELL. RENT.</span>
             <h1 className="hero-title">
               Find Your Perfect<br /><span className="hero-highlight">Property</span>
             </h1>
@@ -169,8 +128,8 @@ function Home({ isLoggedIn, onLogout }) {
               <button className="hero-btn-secondary">Rent Property</button>
             </div>
           </div>
-          <div className="hero-image">
-            <img src={heroHouse} alt="Dream Home" />
+          <div className="hero-image-wrap">
+            <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=900&h=700&fit=crop" alt="Modern Villa" className="hero-house-img" />
           </div>
         </div>
       </section>
@@ -183,32 +142,48 @@ function Home({ isLoggedIn, onLogout }) {
             <button className={`search-tab ${searchTab === 'rent' ? 'active' : ''}`} onClick={() => setSearchTab('rent')}>Rent</button>
             <button className={`search-tab ${searchTab === 'commercial' ? 'active' : ''}`} onClick={() => setSearchTab('commercial')}>Commercial</button>
           </div>
-          <div className="search-fields">
+          <div className="search-fields" ref={searchRef}>
             <div className="search-field">
               <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
               <input type="text" placeholder="Enter location" />
             </div>
             <div className="search-divider"></div>
-            <div className="search-field">
+            <div className="search-field search-field-dropdown" onClick={() => { setShowPropertyDropdown(!showPropertyDropdown); setShowBudgetDropdown(false) }}>
               <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              <select>
-                <option>Property Type</option>
-                <option>Apartment</option>
-                <option>Villa</option>
-                <option>Commercial</option>
-                <option>Plot</option>
-              </select>
+              <span className={`search-dropdown-label ${selectedProperty ? 'selected' : ''}`}>{selectedProperty || 'Property Type'}</span>
+              <svg className="search-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              {showPropertyDropdown && (
+                <div className="search-custom-dropdown">
+                  {propertyOptions.map((opt) => (
+                    <div
+                      key={opt}
+                      className={`search-dropdown-option ${selectedProperty === opt ? 'active' : ''}`}
+                      onClick={(e) => { e.stopPropagation(); setSelectedProperty(opt); setShowPropertyDropdown(false) }}
+                    >
+                      {opt}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="search-divider"></div>
-            <div className="search-field">
+            <div className="search-field search-field-dropdown" onClick={() => { setShowBudgetDropdown(!showBudgetDropdown); setShowPropertyDropdown(false) }}>
               <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M6 3h12M6 8h12M6 3v5M14 8c0 3.5-2.5 5.5-5.5 5.5H6l8 8.5"/></svg>
-              <select>
-                <option>Budget</option>
-                <option>₹10L - ₹30L</option>
-                <option>₹30L - ₹50L</option>
-                <option>₹50L - ₹1Cr</option>
-                <option>₹1Cr+</option>
-              </select>
+              <span className={`search-dropdown-label ${selectedBudget ? 'selected' : ''}`}>{selectedBudget || 'Budget'}</span>
+              <svg className="search-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              {showBudgetDropdown && (
+                <div className="search-custom-dropdown">
+                  {budgetOptions.map((opt) => (
+                    <div
+                      key={opt}
+                      className={`search-dropdown-option ${selectedBudget === opt ? 'active' : ''}`}
+                      onClick={(e) => { e.stopPropagation(); setSelectedBudget(opt); setShowBudgetDropdown(false) }}
+                    >
+                      {opt}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <button className="search-btn">
               <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -326,7 +301,7 @@ function Home({ isLoggedIn, onLogout }) {
             <img src={heroHouse} alt="Property" />
           </div>
           <div className="cta-right">
-            <button className="cta-btn">Post Property Now &rarr;</button>
+            <Link to="/post-property" className="cta-btn">Post Property Now &rarr;</Link>
             <span className="cta-note">It's quick, easy and free!</span>
           </div>
           </div>
@@ -434,15 +409,15 @@ function Home({ isLoggedIn, onLogout }) {
               <h4 className="footer-col-title">Contact Us</h4>
               <p className="footer-contact-item">
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-                +1 (555) 123-4567
+                +91 7997 805 805
               </p>
               <p className="footer-contact-item">
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                info@casax.com
+                casaxsupport@gmail.com
               </p>
               <p className="footer-contact-item">
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                123 Real Estate Ave, NY
+                Plot 176, Street 4, Road No. 2, Maruthi Nagar, Raghavendra Colony, Beeramguda, Hyderabad, Telangana 502032
               </p>
             </div>
           </div>

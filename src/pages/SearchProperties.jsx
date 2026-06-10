@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 import './SearchProperties.css'
-import logo from '../assets/Logo.png'
 
 const sampleProperties = [
   {
@@ -113,7 +113,6 @@ function SearchProperties({ isLoggedIn, onLogout }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [wishlist, setWishlist] = useState([])
   const [viewMode, setViewMode] = useState('grid')
-  const [showAccountMenu, setShowAccountMenu] = useState(false)
 
   // Sidebar filter states
   const [selectedType, setSelectedType] = useState('All Types')
@@ -121,6 +120,59 @@ function SearchProperties({ isLoggedIn, onLogout }) {
   const [budgetMax, setBudgetMax] = useState(50000000)
   const [selectedBeds, setSelectedBeds] = useState('Any')
   const [selectedBaths, setSelectedBaths] = useState('Any')
+  const [showPropDD, setShowPropDD] = useState(false)
+  const [showBudgetDD, setShowBudgetDD] = useState(false)
+  const [showBedsDD, setShowBedsDD] = useState(false)
+  const [showSortDD, setShowSortDD] = useState(false)
+  const searchBarRef = useRef(null)
+  const sortRef = useRef(null)
+
+  const spPropertyOptions = [
+    { value: '', label: 'All Types' },
+    { value: 'apartment', label: 'Apartment' },
+    { value: 'villa', label: 'Villa' },
+    { value: 'commercial', label: 'Commercial' },
+    { value: 'plot', label: 'Plot' },
+  ]
+  const spBudgetOptions = [
+    { value: '', label: 'Min - Max' },
+    { value: '10-30', label: '₹10L - ₹30L' },
+    { value: '30-50', label: '₹30L - ₹50L' },
+    { value: '50-100', label: '₹50L - ₹1Cr' },
+    { value: '100+', label: '₹1Cr+' },
+  ]
+  const spBedsOptions = [
+    { value: '', label: 'Any' },
+    { value: '1', label: '1+' },
+    { value: '2', label: '2+' },
+    { value: '3', label: '3+' },
+    { value: '4', label: '4+' },
+    { value: '5', label: '5+' },
+  ]
+  const sortOptions = [
+    { value: 'newest', label: 'Newest First' },
+    { value: 'relevance', label: 'Relevance' },
+    { value: 'price-low', label: 'Price: Low to High' },
+    { value: 'price-high', label: 'Price: High to Low' },
+  ]
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchBarRef.current && !searchBarRef.current.contains(e.target)) {
+        setShowPropDD(false)
+        setShowBudgetDD(false)
+        setShowBedsDD(false)
+      }
+      if (sortRef.current && !sortRef.current.contains(e.target)) {
+        setShowSortDD(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const closeAllSearchDD = () => { setShowPropDD(false); setShowBudgetDD(false); setShowBedsDD(false) }
+
   const [expandedFilters, setExpandedFilters] = useState({
     propertyType: true,
     budget: true,
@@ -166,66 +218,7 @@ function SearchProperties({ isLoggedIn, onLogout }) {
   return (
     <div className="sp-page">
       {/* Navbar */}
-      <nav className="sp-navbar">
-        <div className="sp-navbar-inner">
-          <div className="sp-navbar-left">
-            <Link to="/">
-              <img src={logo} alt="CASAX" className="sp-navbar-logo" />
-            </Link>
-            <div className="sp-nav-links">
-              <Link to="/" className="sp-nav-link">Home</Link>
-              <Link to="/buy" className="sp-nav-link active">Buy</Link>
-              <a href="#" className="sp-nav-link">Rent</a>
-              <a href="#" className="sp-nav-link">Sell</a>
-              <a href="#" className="sp-nav-link">Agents</a>
-              <a href="#" className="sp-nav-link">About Us</a>
-              <a href="#" className="sp-nav-link">Contact</a>
-            </div>
-          </div>
-          <div className="sp-navbar-right">
-            {isLoggedIn ? (
-              <>
-                <button className="sp-nav-icon-btn" title="Saved">
-                  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-                  <span className="sp-nav-icon-label">Saved</span>
-                </button>
-                <button className="sp-nav-icon-btn" title="Alerts">
-                  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-                  <span className="sp-nav-icon-label">Alerts</span>
-                  <span className="sp-nav-badge">3</span>
-                </button>
-                <div className="sp-nav-account-wrap">
-                  <button
-                    className="sp-nav-icon-btn sp-nav-account-btn"
-                    title="My Account"
-                    onClick={() => setShowAccountMenu(!showAccountMenu)}
-                  >
-                    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    <span className="sp-nav-icon-label">My Account</span>
-                    <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-                  </button>
-                  {showAccountMenu && (
-                    <div className="sp-account-dropdown">
-                      <a href="#" className="sp-account-item">My Profile</a>
-                      <a href="#" className="sp-account-item">My Properties</a>
-                      <a href="#" className="sp-account-item">Settings</a>
-                      <button className="sp-account-item sp-account-logout" onClick={onLogout}>Logout</button>
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <button className="sp-nav-saved-btn" title="Saved">
-                  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-                </button>
-                <Link to="/login" className="sp-nav-login-link">Login</Link>
-              </>
-            )}
-            <button className="sp-nav-post-btn">Post Property</button>
-          </div>
-        </div>
-      </nav>
+      <Navbar isLoggedIn={isLoggedIn} onLogout={onLogout} />
 
       {/* Breadcrumb Header */}
       <div className="sp-breadcrumb-section">
@@ -244,7 +237,7 @@ function SearchProperties({ isLoggedIn, onLogout }) {
       {/* Search Bar */}
       <div className="sp-search-wrap">
         <div className="sp-search-inner">
-          <div className="sp-search-bar">
+          <div className="sp-search-bar" ref={searchBarRef}>
             <div className="sp-search-field">
               <svg width="16" height="16" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
               <input
@@ -260,38 +253,43 @@ function SearchProperties({ isLoggedIn, onLogout }) {
               )}
             </div>
             <div className="sp-search-divider"></div>
-            <div className="sp-search-field">
+            <div className="sp-search-field sp-field-dropdown" onClick={() => { closeAllSearchDD(); setShowPropDD(!showPropDD) }}>
               <svg width="16" height="16" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22V12h6v10"/><path d="M8 6h.01M16 6h.01M12 6h.01M8 10h.01M16 10h.01M12 10h.01"/></svg>
-              <select value={propertyType} onChange={(e) => setPropertyType(e.target.value)}>
-                <option value="">All Types</option>
-                <option value="apartment">Apartment</option>
-                <option value="villa">Villa</option>
-                <option value="commercial">Commercial</option>
-                <option value="plot">Plot</option>
-              </select>
+              <span className={`sp-dd-label ${propertyType ? 'selected' : ''}`}>{spPropertyOptions.find(o => o.value === propertyType)?.label || 'All Types'}</span>
+              <svg className="sp-dd-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              {showPropDD && (
+                <div className="sp-custom-dropdown">
+                  {spPropertyOptions.map((opt) => (
+                    <div key={opt.value} className={`sp-dd-option ${propertyType === opt.value ? 'active' : ''}`} onClick={(e) => { e.stopPropagation(); setPropertyType(opt.value); setShowPropDD(false) }}>{opt.label}</div>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="sp-search-divider"></div>
-            <div className="sp-search-field">
+            <div className="sp-search-field sp-field-dropdown" onClick={() => { closeAllSearchDD(); setShowBudgetDD(!showBudgetDD) }}>
               <svg width="16" height="16" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M6 3h12M6 8h12M6 3v5M14 8c0 3.5-2.5 5.5-5.5 5.5H6l8 8.5"/></svg>
-              <select value={budget} onChange={(e) => setBudget(e.target.value)}>
-                <option value="">Min - Max</option>
-                <option value="10-30">₹10L - ₹30L</option>
-                <option value="30-50">₹30L - ₹50L</option>
-                <option value="50-100">₹50L - ₹1Cr</option>
-                <option value="100+">₹1Cr+</option>
-              </select>
+              <span className={`sp-dd-label ${budget ? 'selected' : ''}`}>{spBudgetOptions.find(o => o.value === budget)?.label || 'Min - Max'}</span>
+              <svg className="sp-dd-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              {showBudgetDD && (
+                <div className="sp-custom-dropdown">
+                  {spBudgetOptions.map((opt) => (
+                    <div key={opt.value} className={`sp-dd-option ${budget === opt.value ? 'active' : ''}`} onClick={(e) => { e.stopPropagation(); setBudget(opt.value); setShowBudgetDD(false) }}>{opt.label}</div>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="sp-search-divider"></div>
-            <div className="sp-search-field">
+            <div className="sp-search-field sp-field-dropdown" onClick={() => { closeAllSearchDD(); setShowBedsDD(!showBedsDD) }}>
               <svg width="16" height="16" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M3 7v11m0-4h18m0 4V8a1 1 0 00-1-1H8a1 1 0 00-1 1v3"/></svg>
-              <select value={bedrooms} onChange={(e) => setBedrooms(e.target.value)}>
-                <option value="">Any</option>
-                <option value="1">1+</option>
-                <option value="2">2+</option>
-                <option value="3">3+</option>
-                <option value="4">4+</option>
-                <option value="5">5+</option>
-              </select>
+              <span className={`sp-dd-label ${bedrooms ? 'selected' : ''}`}>{spBedsOptions.find(o => o.value === bedrooms)?.label || 'Any'}</span>
+              <svg className="sp-dd-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              {showBedsDD && (
+                <div className="sp-custom-dropdown">
+                  {spBedsOptions.map((opt) => (
+                    <div key={opt.value} className={`sp-dd-option ${bedrooms === opt.value ? 'active' : ''}`} onClick={(e) => { e.stopPropagation(); setBedrooms(opt.value); setShowBedsDD(false) }}>{opt.label}</div>
+                  ))}
+                </div>
+              )}
             </div>
             <button className="sp-search-btn">
               <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -465,14 +463,19 @@ function SearchProperties({ isLoggedIn, onLogout }) {
                 <span className="sp-results-number">1,248</span> Properties Found
               </h2>
               <div className="sp-content-actions">
-                <div className="sp-sort">
+                <div className="sp-sort" ref={sortRef}>
                   <span className="sp-sort-label">Sort By:</span>
-                  <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="sp-sort-select">
-                    <option value="newest">Newest First</option>
-                    <option value="relevance">Relevance</option>
-                    <option value="price-low">Price: Low to High</option>
-                    <option value="price-high">Price: High to Low</option>
-                  </select>
+                  <div className="sp-sort-dropdown-wrap" onClick={() => setShowSortDD(!showSortDD)}>
+                    <span className="sp-sort-value">{sortOptions.find(o => o.value === sortBy)?.label}</span>
+                    <svg className="sp-dd-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    {showSortDD && (
+                      <div className="sp-custom-dropdown sp-sort-dd">
+                        {sortOptions.map((opt) => (
+                          <div key={opt.value} className={`sp-dd-option ${sortBy === opt.value ? 'active' : ''}`} onClick={(e) => { e.stopPropagation(); setSortBy(opt.value); setShowSortDD(false) }}>{opt.label}</div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="sp-view-toggle">
                   <button
