@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import './Home.css'
 import logoFooter from '../assets/logoOriginal.png'
 import heroHouse from '../assets/house.png'
+import charminarImg from '../assets/charminar-the-arc-de-triomphe-of-the-east.jpg'
 
 const featuredProperties = [
   {
@@ -93,9 +94,12 @@ function Home({ isLoggedIn, onLogout }) {
   const [selectedProperty, setSelectedProperty] = useState('')
   const [showBudgetDropdown, setShowBudgetDropdown] = useState(false)
   const [selectedBudget, setSelectedBudget] = useState('')
+  const [showBedroomDropdown, setShowBedroomDropdown] = useState(false)
+  const [selectedBedroom, setSelectedBedroom] = useState('')
 
   const propertyOptions = ['Apartment', 'Villa', 'Commercial', 'Plot']
   const budgetOptions = ['₹10L - ₹30L', '₹30L - ₹50L', '₹50L - ₹1Cr', '₹1Cr+']
+  const bedroomOptions = ['1 BHK', '2 BHK', '3 BHK', '4+ BHK']
   const searchRef = useRef(null)
 
   useEffect(() => {
@@ -103,6 +107,7 @@ function Home({ isLoggedIn, onLogout }) {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
         setShowPropertyDropdown(false)
         setShowBudgetDropdown(false)
+        setShowBedroomDropdown(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -115,81 +120,129 @@ function Home({ isLoggedIn, onLogout }) {
 
       {/* Hero Section */}
       <section className="hero">
+        <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1400&h=700&fit=crop" alt="Modern Villa" className="hero-bg-img" />
+        <div className="hero-overlay"></div>
         <div className="hero-inner">
           <div className="hero-content">
             <h1 className="hero-title">
-              Find Your Perfect<br /><span className="hero-highlight">Property</span>
+              Find Your Perfect <span className="hero-highlight">Property</span>
             </h1>
             <p className="hero-subtitle">
               Buy, Sell or Rent verified properties with ease and confidence.
             </p>
-            <div className="hero-buttons">
-              <button className="hero-btn-primary">Buy Property</button>
-              <button className="hero-btn-secondary">Rent Property</button>
-            </div>
           </div>
-          <div className="hero-image-wrap">
-            <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=900&h=700&fit=crop" alt="Modern Villa" className="hero-house-img" />
+
+          {/* Search Bar inside hero */}
+          <div className="search-card">
+            <div className="search-tabs">
+              <button className={`search-tab ${searchTab === 'buy' ? 'active' : ''}`} onClick={() => setSearchTab('buy')}>Buy</button>
+              <button className={`search-tab ${searchTab === 'rent' ? 'active' : ''}`} onClick={() => setSearchTab('rent')}>Rent</button>
+              <button className={`search-tab ${searchTab === 'commercial' ? 'active' : ''}`} onClick={() => setSearchTab('commercial')}>Commercial</button>
+            </div>
+            <div className="search-fields" ref={searchRef}>
+              <div className="search-field">
+                <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <input type="text" placeholder="Enter location" />
+              </div>
+              <div className="search-divider"></div>
+              <div className="search-field search-field-dropdown" onClick={() => { setShowPropertyDropdown(!showPropertyDropdown); setShowBudgetDropdown(false); setShowBedroomDropdown(false) }}>
+                <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <span className={`search-dropdown-label ${selectedProperty ? 'selected' : ''}`}>{selectedProperty || 'Property Type'}</span>
+                <svg className="search-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                {showPropertyDropdown && (
+                  <div className="search-custom-dropdown">
+                    {propertyOptions.map((opt) => (
+                      <div
+                        key={opt}
+                        className={`search-dropdown-option ${selectedProperty === opt ? 'active' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); setSelectedProperty(opt); setShowPropertyDropdown(false) }}
+                      >
+                        {opt}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="search-divider"></div>
+              <div className="search-field search-field-dropdown" onClick={() => { setShowBudgetDropdown(!showBudgetDropdown); setShowPropertyDropdown(false); setShowBedroomDropdown(false) }}>
+                <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M6 3h12M6 8h12M6 3v5M14 8c0 3.5-2.5 5.5-5.5 5.5H6l8 8.5"/></svg>
+                <span className={`search-dropdown-label ${selectedBudget ? 'selected' : ''}`}>{selectedBudget || 'Budget'}</span>
+                <svg className="search-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                {showBudgetDropdown && (
+                  <div className="search-custom-dropdown">
+                    {budgetOptions.map((opt) => (
+                      <div
+                        key={opt}
+                        className={`search-dropdown-option ${selectedBudget === opt ? 'active' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); setSelectedBudget(opt); setShowBudgetDropdown(false) }}
+                      >
+                        {opt}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="search-divider"></div>
+              <div className="search-field search-field-dropdown" onClick={() => { setShowBedroomDropdown(!showBedroomDropdown); setShowPropertyDropdown(false); setShowBudgetDropdown(false) }}>
+                <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M3 7v11m0-4h18m0 4V8a1 1 0 00-1-1H8a1 1 0 00-1 1v3"/></svg>
+                <span className={`search-dropdown-label ${selectedBedroom ? 'selected' : ''}`}>{selectedBedroom || 'Bedrooms'}</span>
+                <svg className="search-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                {showBedroomDropdown && (
+                  <div className="search-custom-dropdown">
+                    {bedroomOptions.map((opt) => (
+                      <div
+                        key={opt}
+                        className={`search-dropdown-option ${selectedBedroom === opt ? 'active' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); setSelectedBedroom(opt); setShowBedroomDropdown(false) }}
+                      >
+                        {opt}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <button className="search-btn">
+                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Search
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Search Bar */}
-      <section className="search-section">
-        <div className="search-card">
-          <div className="search-tabs">
-            <button className={`search-tab ${searchTab === 'buy' ? 'active' : ''}`} onClick={() => setSearchTab('buy')}>Buy</button>
-            <button className={`search-tab ${searchTab === 'rent' ? 'active' : ''}`} onClick={() => setSearchTab('rent')}>Rent</button>
-            <button className={`search-tab ${searchTab === 'commercial' ? 'active' : ''}`} onClick={() => setSearchTab('commercial')}>Commercial</button>
+      {/* Action Cards */}
+      <section className="action-cards-section">
+        <div className="action-cards-inner">
+          <div className="action-card">
+            <div className="action-card-icon">
+              <svg width="24" height="24" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div className="action-card-text">
+              <h3 className="action-card-title">Buy a Property</h3>
+              <p className="action-card-desc">Find your dream home from verified listings</p>
+            </div>
+            <svg className="action-card-arrow" width="20" height="20" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div className="search-fields" ref={searchRef}>
-            <div className="search-field">
-              <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <input type="text" placeholder="Enter location" />
+          <div className="action-card">
+            <div className="action-card-icon">
+              <svg width="24" height="24" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
             </div>
-            <div className="search-divider"></div>
-            <div className="search-field search-field-dropdown" onClick={() => { setShowPropertyDropdown(!showPropertyDropdown); setShowBudgetDropdown(false) }}>
-              <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              <span className={`search-dropdown-label ${selectedProperty ? 'selected' : ''}`}>{selectedProperty || 'Property Type'}</span>
-              <svg className="search-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              {showPropertyDropdown && (
-                <div className="search-custom-dropdown">
-                  {propertyOptions.map((opt) => (
-                    <div
-                      key={opt}
-                      className={`search-dropdown-option ${selectedProperty === opt ? 'active' : ''}`}
-                      onClick={(e) => { e.stopPropagation(); setSelectedProperty(opt); setShowPropertyDropdown(false) }}
-                    >
-                      {opt}
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="action-card-text">
+              <h3 className="action-card-title">Rent a Property</h3>
+              <p className="action-card-desc">Discover rental homes that suit your needs</p>
             </div>
-            <div className="search-divider"></div>
-            <div className="search-field search-field-dropdown" onClick={() => { setShowBudgetDropdown(!showBudgetDropdown); setShowPropertyDropdown(false) }}>
-              <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M6 3h12M6 8h12M6 3v5M14 8c0 3.5-2.5 5.5-5.5 5.5H6l8 8.5"/></svg>
-              <span className={`search-dropdown-label ${selectedBudget ? 'selected' : ''}`}>{selectedBudget || 'Budget'}</span>
-              <svg className="search-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              {showBudgetDropdown && (
-                <div className="search-custom-dropdown">
-                  {budgetOptions.map((opt) => (
-                    <div
-                      key={opt}
-                      className={`search-dropdown-option ${selectedBudget === opt ? 'active' : ''}`}
-                      onClick={(e) => { e.stopPropagation(); setSelectedBudget(opt); setShowBudgetDropdown(false) }}
-                    >
-                      {opt}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <button className="search-btn">
-              <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              Search Property
-            </button>
+            <svg className="action-card-arrow" width="20" height="20" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
+          <Link to="/post-property" className="action-card">
+            <div className="action-card-icon">
+              <svg width="24" height="24" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <div className="action-card-text">
+              <h3 className="action-card-title">Post Property Free</h3>
+              <p className="action-card-desc">List your property and reach thousands of buyers</p>
+            </div>
+            <svg className="action-card-arrow" width="20" height="20" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </Link>
         </div>
       </section>
 
@@ -264,6 +317,33 @@ function Home({ isLoggedIn, onLogout }) {
                   </div>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Top Cities */}
+      <section className="top-cities-section">
+        <div className="top-cities-inner">
+          <div className="section-header">
+            <h2 className="section-title">Top Cities</h2>
+            <a href="#" className="section-view-all">View All Cities &rarr;</a>
+          </div>
+          <div className="top-cities-grid">
+            {[
+              { name: 'Bangalore', count: '12,540', image: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=400&h=300&fit=crop' },
+              { name: 'Hyderabad', count: '8,760', image: charminarImg },
+              { name: 'Mumbai', count: '15,320', image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=400&h=300&fit=crop' },
+              { name: 'Delhi', count: '9,460', image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=400&h=300&fit=crop' },
+            ].map((city) => (
+              <a href="#" className="top-city-card" key={city.name}>
+                <img src={city.image} alt={city.name} className="top-city-img" />
+                <div className="top-city-text">
+                  <h3 className="top-city-name">{city.name}</h3>
+                  <p className="top-city-count">{city.count} Properties</p>
+                </div>
+                <svg className="top-city-arrow" width="20" height="20" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
             ))}
           </div>
         </div>

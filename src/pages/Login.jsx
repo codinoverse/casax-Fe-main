@@ -25,7 +25,7 @@ function Login({ onLogin }) {
         localStorage.setItem('role', data.role)
       }
       if (onLogin) onLogin()
-      navigate('/')
+      navigate(data.role === 'ADMIN' ? '/admin' : '/')
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.')
     } finally {

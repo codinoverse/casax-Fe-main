@@ -23,10 +23,10 @@ function Navbar({ isLoggedIn, onLogout }) {
   return (
     <nav className="navbar">
       <div className="navbar-inner">
+        <Link to="/" className="navbar-logo-link">
+          <img src={logo} alt="CASAX" className="navbar-logo" />
+        </Link>
         <div className="navbar-left">
-          <Link to="/">
-            <img src={logo} alt="CASAX" className="navbar-logo" />
-          </Link>
           <div className="nav-links">
             <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>Home</Link>
             <Link to="/buy" className={`nav-link ${isActive('/buy') ? 'active' : ''}`}>Buy</Link>
@@ -60,7 +60,7 @@ function Navbar({ isLoggedIn, onLogout }) {
                 </button>
                 {showAccountMenu && (
                   <div className="nav-account-dropdown">
-                    <a href="#" className="nav-account-item">My Profile</a>
+                    <Link to="/profile" className="nav-account-item" onClick={() => setShowAccountMenu(false)}>My Profile</Link>
                     <a href="#" className="nav-account-item">My Properties</a>
                     <a href="#" className="nav-account-item">Settings</a>
                     <button className="nav-account-item nav-account-logout" onClick={onLogout}>Logout</button>

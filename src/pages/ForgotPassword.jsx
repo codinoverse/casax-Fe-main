@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { post } from '../services/api'
 import logo from '../assets/Logo.png'
 import houseImg from '../assets/house.png'
 import './Auth.css'
@@ -8,18 +9,80 @@ function ForgotPassword() {
   const [method, setMethod] = useState('email')
   const [email, setEmail] = useState('')
   const [mobile, setMobile] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [toast, setToast] = useState(null)
+  const [showMobilePopup, setShowMobilePopup] = useState(false)
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 4000)
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Navigate to OTP verification page
-    navigate('/verify-otp?from=forgot-password')
+
+    if (method === 'mobile') {
+      setShowMobilePopup(true)
+      return
+    }
+
+    setLoading(true)
+    try {
+      await post('/users/forgot-password', { email })
+      showToast('A password reset link has been sent to your email', 'success')
+      setTimeout(() => navigate('/login'), 3000)
+    } catch (err) {
+      showToast(err.message || 'Failed to send reset link. Please try again.', 'error')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const isValid = method === 'email' ? email.includes('@') : mobile.length >= 10
 
   return (
     <div className="auth-page">
+      {/* Toast */}
+      {toast && (
+        <div className={`forgot-toast ${toast.type}`}>
+          <div className="forgot-toast-icon">
+            {toast.type === 'success' ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
+            )}
+          </div>
+          <span>{toast.message}</span>
+          <button className="forgot-toast-close" onClick={() => setToast(null)}>&times;</button>
+        </div>
+      )}
+
+      {/* Mobile "Working on it" Popup */}
+      {showMobilePopup && (
+        <div className="forgot-popup-overlay" onClick={() => setShowMobilePopup(false)}>
+          <div className="forgot-popup" onClick={(e) => e.stopPropagation()}>
+            <div className="forgot-popup-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f26522" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                <line x1="12" y1="18" x2="12.01" y2="18"/>
+              </svg>
+            </div>
+            <h3 className="forgot-popup-title">Coming Soon!</h3>
+            <p className="forgot-popup-desc">
+              Mobile number password reset is currently under development. Please use your email address to reset your password.
+            </p>
+            <button className="forgot-popup-btn" onClick={() => { setShowMobilePopup(false); setMethod('email') }}>
+              Use Email Instead
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="auth-modal">
         <button className="auth-back-btn" onClick={() => navigate('/login')}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -135,12 +198,14 @@ function ForgotPassword() {
                 </div>
               )}
 
-              <button type="submit" className="auth-btn" disabled={!isValid} style={{ marginTop: '8px' }}>
-                Send OTP
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '8px' }}>
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
+              <button type="submit" className="auth-btn" disabled={!isValid || loading} style={{ marginTop: '8px' }}>
+                {loading ? 'Sending...' : method === 'email' ? 'Send Reset Link' : 'Send OTP'}
+                {!loading && (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '8px' }}>
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                )}
               </button>
             </form>
 

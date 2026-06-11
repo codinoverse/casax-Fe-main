@@ -2226,3 +2226,129 @@
     font-size: 8px;
   }
 }
+
+/* ===== Forgot Password Toast ===== */
+.forgot-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 9999;
+  animation: forgotToastIn 0.3s ease-out;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  max-width: 440px;
+}
+
+@keyframes forgotToastIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.forgot-toast.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+}
+
+.forgot-toast.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.forgot-toast-icon {
+  flex-shrink: 0;
+  display: flex;
+}
+
+.forgot-toast-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.6;
+  padding: 0 0 0 8px;
+  line-height: 1;
+}
+
+.forgot-toast-close:hover {
+  opacity: 1;
+}
+
+/* ===== Forgot Password Mobile Popup ===== */
+.forgot-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: forgotPopupFade 0.2s ease;
+}
+
+@keyframes forgotPopupFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.forgot-popup {
+  background: #fff;
+  border-radius: 20px;
+  padding: 36px 32px 28px;
+  max-width: 380px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: forgotPopupSlide 0.25s ease-out;
+}
+
+@keyframes forgotPopupSlide {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.forgot-popup-icon {
+  margin-bottom: 16px;
+}
+
+.forgot-popup-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 8px;
+}
+
+.forgot-popup-desc {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.forgot-popup-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  background: #f26522;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.forgot-popup-btn:hover {
+  background: #d9551a;
+}

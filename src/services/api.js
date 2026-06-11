@@ -3,19 +3,20 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`
 
+  const { headers, ...restOptions } = options
   const config = {
+    ...restOptions,
     headers: {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...headers,
     },
-    ...options,
   }
 
   const response = await fetch(url, config)
   const data = await response.json()
 
   if (!response.ok) {
-    const error = new Error(data.message || 'Something went wrong')
+    const error = new Error(data.message || data.error || 'Something went wrong')
     error.status = response.status
     error.data = data
     throw error
