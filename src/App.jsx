@@ -8,12 +8,19 @@ import ResetPassword from './pages/ResetPassword'
 import ForgotPassword from './pages/ForgotPassword'
 import SearchProperties from './pages/SearchProperties'
 import PostProperty from './pages/PostProperty'
+import Profile from './pages/Profile'
+import Admin from './pages/Admin'
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'))
 
   const handleLogin = () => setIsLoggedIn(true)
-  const handleLogout = () => setIsLoggedIn(false)
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    localStorage.removeItem('role')
+    setIsLoggedIn(false)
+  }
 
   return (
     <Router>
@@ -26,6 +33,8 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/buy" element={<SearchProperties isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
         <Route path="/post-property" element={<PostProperty isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
+        <Route path="/profile" element={<Profile isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
+        <Route path="/admin" element={<Admin isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
       </Routes>
     </Router>
   )
