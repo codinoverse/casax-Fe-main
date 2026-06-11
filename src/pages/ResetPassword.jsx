@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { post } from '../services/api'
 import logo from '../assets/Logo.png'
 import houseImg from '../assets/house.png'
 import './Auth.css'
@@ -9,7 +10,37 @@ function ResetPassword() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [verifying, setVerifying] = useState(true)
+  const [tokenValid, setTokenValid] = useState(false)
+  const [toast, setToast] = useState(null)
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const token = searchParams.get('token')
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type })
+    setTimeout(() => setToast(null), 4000)
+  }
+
+  useEffect(() => {
+    if (!token) {
+      setVerifying(false)
+      setTokenValid(false)
+      return
+    }
+    const verifyToken = async () => {
+      try {
+        await post('/users/verify-token', { token })
+        setTokenValid(true)
+      } catch {
+        setTokenValid(false)
+      } finally {
+        setVerifying(false)
+      }
+    }
+    verifyToken()
+  }, [token])
 
   const checks = {
     length: password.length >= 8,
@@ -25,12 +56,96 @@ function ResetPassword() {
   const passwordsMatch = password && confirmPassword && password === confirmPassword
   const canSubmit = metCount === 4 && passwordsMatch
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!canSubmit) return
+    setLoading(true)
+    try {
+      await post('/users/reset-password', { token, newPassword: password })
+      showToast('Password reset successfully! Redirecting to login...', 'success')
+      setTimeout(() => navigate('/login'), 3000)
+    } catch (err) {
+      showToast(err.message || 'Failed to reset password. Please try again.', 'error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (verifying) {
+    return (
+      <div className="auth-page">
+        <div className="auth-modal" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '400px' }}>
+          <div style={{ textAlign: 'center' }}>
+            <div className="otp-icon-wrapper">
+              <div className="otp-icon-circle">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </div>
+            </div>
+            <h2 className="auth-heading otp-heading" style={{ marginTop: '16px' }}>Verifying your token...</h2>
+            <p className="otp-desc">Please wait while we validate your reset link.</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!tokenValid) {
+    return (
+      <div className="auth-page">
+        <div className="auth-modal" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '400px' }}>
+          <div style={{ textAlign: 'center' }}>
+            <div className="otp-icon-wrapper">
+              <div className="otp-icon-circle" style={{ background: '#fff0f0' }}>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="15" y1="9" x2="9" y2="15" />
+                  <line x1="9" y1="9" x2="15" y2="15" />
+                </svg>
+              </div>
+            </div>
+            <h2 className="auth-heading otp-heading" style={{ marginTop: '16px' }}>Invalid or Expired Link</h2>
+            <p className="otp-desc">This password reset link is invalid or has expired.<br />Please request a new one.</p>
+            <Link to="/forgot-password" className="auth-btn" style={{ display: 'inline-block', marginTop: '20px', textDecoration: 'none', textAlign: 'center' }}>
+              Request New Link
+            </Link>
+            <br />
+            <Link to="/login" className="otp-back" style={{ marginTop: '18px', display: 'inline-flex' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+              </svg>
+              Back to Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="auth-page">
+      {/* Toast */}
+      {toast && (
+        <div className={`forgot-toast ${toast.type}`}>
+          <div className="forgot-toast-icon">
+            {toast.type === 'success' ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
+            )}
+          </div>
+          <span>{toast.message}</span>
+          <button className="forgot-toast-close" onClick={() => setToast(null)}>&times;</button>
+        </div>
+      )}
+
       <div className="auth-modal">
         <button className="auth-back-btn" onClick={() => navigate('/login')}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -183,8 +298,8 @@ function ResetPassword() {
                 </div>
               </div>
 
-              <button type="submit" className="auth-btn" disabled={!canSubmit}>
-                Reset Password
+              <button type="submit" className="auth-btn" disabled={!canSubmit || loading}>
+                {loading ? 'Resetting...' : 'Reset Password'}
               </button>
             </form>
 

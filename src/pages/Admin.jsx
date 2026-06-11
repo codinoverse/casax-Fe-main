@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { get } from '../services/api'
 import logo from '../assets/Logo.png'
 import './Admin.css'
 
@@ -50,17 +52,64 @@ const sidebarSections = [
 
 const avatarColors = ['#3b82f6', '#16a34a', '#f26522', '#7c3aed', '#ec4899', '#0891b2', '#ca8a04', '#dc2626']
 
-const mockUsers = [
-  { id: 1, name: 'Rahul Sharma', email: 'rahul.sharma@email.com', type: 'Individual', contact: '+91 98765 43210', status: 'Active', kyc: 'Verified', joined: '15 Jan 2025', lastLogin: '10 Jun 2025' },
-  { id: 2, name: 'Priya Reddy', email: 'priya.reddy@email.com', type: 'Agent', contact: '+91 87654 32109', status: 'Active', kyc: 'Verified', joined: '22 Feb 2025', lastLogin: '09 Jun 2025' },
-  { id: 3, name: 'Amit Patel', email: 'amit.patel@email.com', type: 'Individual', contact: '+91 76543 21098', status: 'Inactive', kyc: 'Pending', joined: '05 Mar 2025', lastLogin: '01 May 2025' },
-  { id: 4, name: 'Sneha Gupta', email: 'sneha.gupta@email.com', type: 'Agent', contact: '+91 65432 10987', status: 'Active', kyc: 'Verified', joined: '18 Mar 2025', lastLogin: '10 Jun 2025' },
-  { id: 5, name: 'Vikram Singh', email: 'vikram.singh@email.com', type: 'Individual', contact: '+91 54321 09876', status: 'Suspended', kyc: 'Rejected', joined: '02 Apr 2025', lastLogin: '20 Apr 2025' },
-  { id: 6, name: 'Ananya Iyer', email: 'ananya.iyer@email.com', type: 'Individual', contact: '+91 43210 98765', status: 'Active', kyc: 'Verified', joined: '25 Apr 2025', lastLogin: '08 Jun 2025' },
-  { id: 7, name: 'Kiran Kumar', email: 'kiran.kumar@email.com', type: 'Agent', contact: '+91 32109 87654', status: 'Active', kyc: 'Pending', joined: '10 May 2025', lastLogin: '07 Jun 2025' },
-  { id: 8, name: 'Deepika Nair', email: 'deepika.nair@email.com', type: 'Individual', contact: '+91 21098 76543', status: 'Inactive', kyc: 'Verified', joined: '20 May 2025', lastLogin: '25 May 2025' },
-  { id: 9, name: 'Suresh Babu', email: 'suresh.babu@email.com', type: 'Individual', contact: '+91 10987 65432', status: 'Active', kyc: 'Verified', joined: '01 Jun 2025', lastLogin: '10 Jun 2025' },
-  { id: 10, name: 'Meera Joshi', email: 'meera.joshi@email.com', type: 'Agent', contact: '+91 09876 54321', status: 'Active', kyc: 'Pending', joined: '05 Jun 2025', lastLogin: '09 Jun 2025' },
+function formatDate(dateStr) {
+  if (!dateStr) return '-'
+  const d = new Date(dateStr)
+  return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+}
+
+function getRoleName(roleId) {
+  switch (roleId) {
+    case 2: return 'Admin'
+    default: return 'User'
+  }
+}
+
+const revenueData = [
+  { month: 'Jan', revenue: 1200000 },
+  { month: 'Feb', revenue: 1800000 },
+  { month: 'Mar', revenue: 1500000 },
+  { month: 'Apr', revenue: 2200000 },
+  { month: 'May', revenue: 1900000 },
+  { month: 'Jun', revenue: 2800000 },
+  { month: 'Jul', revenue: 2400000 },
+  { month: 'Aug', revenue: 3100000 },
+  { month: 'Sep', revenue: 2700000 },
+  { month: 'Oct', revenue: 3500000 },
+  { month: 'Nov', revenue: 3200000 },
+  { month: 'Dec', revenue: 3800000 },
+]
+
+const listingsData = [
+  { month: 'Jan', residential: 120, commercial: 80 },
+  { month: 'Feb', residential: 150, commercial: 90 },
+  { month: 'Mar', residential: 130, commercial: 100 },
+  { month: 'Apr', residential: 180, commercial: 110 },
+  { month: 'May', residential: 160, commercial: 95 },
+  { month: 'Jun', residential: 200, commercial: 120 },
+  { month: 'Jul', residential: 190, commercial: 105 },
+  { month: 'Aug', residential: 220, commercial: 130 },
+  { month: 'Sep', residential: 210, commercial: 115 },
+  { month: 'Oct', residential: 240, commercial: 140 },
+  { month: 'Nov', residential: 230, commercial: 125 },
+  { month: 'Dec', residential: 250, commercial: 145 },
+]
+
+const recentProperties = [
+  { id: 1, name: 'Luxury Villa in Jubilee Hills', type: 'Residential', price: '₹2.5 Cr', status: 'Active', date: '10 Jun 2025' },
+  { id: 2, name: 'Commercial Space in Hitech City', type: 'Commercial', price: '₹1.8 Cr', status: 'Pending', date: '09 Jun 2025' },
+  { id: 3, name: '3BHK Apartment in Gachibowli', type: 'Residential', price: '₹85 L', status: 'Active', date: '08 Jun 2025' },
+  { id: 4, name: 'Office Complex in Madhapur', type: 'Commercial', price: '₹4.2 Cr', status: 'Sold', date: '07 Jun 2025' },
+  { id: 5, name: 'Plot in Shamshabad', type: 'Land', price: '₹45 L', status: 'Active', date: '06 Jun 2025' },
+]
+
+const recentActivities = [
+  { id: 1, text: 'New property listed by Rahul Sharma', time: '2 minutes ago', color: '#3b82f6' },
+  { id: 2, text: 'Payment of ₹2.5 Cr received for Villa #234', time: '15 minutes ago', color: '#16a34a' },
+  { id: 3, text: 'User Priya Reddy completed KYC verification', time: '1 hour ago', color: '#7c3aed' },
+  { id: 4, text: 'New enquiry on Commercial Space #189', time: '2 hours ago', color: '#f26522' },
+  { id: 5, text: 'Agent Sneha Gupta updated listing #456', time: '3 hours ago', color: '#0891b2' },
+  { id: 6, text: 'Booking confirmed for Apartment #321', time: '5 hours ago', color: '#16a34a' },
 ]
 
 function SidebarIcon({ type }) {
@@ -89,13 +138,29 @@ function SidebarIcon({ type }) {
 
 function Admin({ isLoggedIn, onLogout }) {
   const navigate = useNavigate()
-  const [activeNav, setActiveNav] = useState('users')
+  const [activeNav, setActiveNav] = useState('dashboard')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [userDropdownOpen, setUserDropdownOpen] = useState(false)
+  const [users, setUsers] = useState([])
+  const [usersLoading, setUsersLoading] = useState(false)
 
   const user = JSON.parse(localStorage.getItem('user') || '{}')
+  const token = localStorage.getItem('token')
   const adminName = user.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : 'Admin'
   const initials = adminName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+
+  useEffect(() => {
+    if (!token) return
+    setUsersLoading(true)
+    get('/users/admin/all', { headers: { Authorization: `Bearer ${token}` } })
+      .then(data => setUsers(data))
+      .catch(err => console.error('Failed to fetch users:', err))
+      .finally(() => setUsersLoading(false))
+  }, [token])
+
+  const totalUsers = users.length
+  const activeUsers = users.filter(u => u.status === 'ACTIVE').length
+  const inactiveUsers = users.filter(u => u.status !== 'ACTIVE').length
 
   const handleLogout = () => {
     onLogout()
@@ -217,223 +282,383 @@ function Admin({ isLoggedIn, onLogout }) {
 
         {/* Content */}
         <div className="admin-content">
-          {/* Breadcrumb */}
-          <div className="admin-breadcrumb">
-            <a href="#">Dashboard</a>
-            <span>&gt;</span>
-            <span>Users</span>
-          </div>
 
-          {/* Page Title */}
-          <div className="admin-page-title-bar">
-            <h1 className="admin-page-title">Users</h1>
-            <div className="admin-page-actions">
-              <button className="admin-btn-outline">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                Import Users
-              </button>
-              <button className="admin-btn-primary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
-                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                </svg>
-                Add New User
-              </button>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="admin-stats">
-            <div className="admin-stat-card">
-              <div className="admin-stat-top">
-                <div className="admin-stat-icon blue">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                  </svg>
-                </div>
-                <span className="admin-stat-change up">+12.5%</span>
+          {/* ===== DASHBOARD VIEW ===== */}
+          {activeNav === 'dashboard' && (
+            <>
+              <div className="admin-breadcrumb">
+                <a href="#">Admin</a>
+                <span>&gt;</span>
+                <span>Dashboard</span>
               </div>
-              <div className="admin-stat-value">12,458</div>
-              <div className="admin-stat-label">Total Users</div>
-            </div>
 
-            <div className="admin-stat-card">
-              <div className="admin-stat-top">
-                <div className="admin-stat-icon green">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                  </svg>
+              <div className="admin-page-title-bar">
+                <h1 className="admin-page-title">Dashboard</h1>
+                <div className="admin-page-actions">
+                  <select className="admin-date-range-select">
+                    <option>Last 30 Days</option>
+                    <option>Last 7 Days</option>
+                    <option>Last 90 Days</option>
+                    <option>This Year</option>
+                  </select>
                 </div>
-                <span className="admin-stat-change up">+8.2%</span>
               </div>
-              <div className="admin-stat-value">11,285</div>
-              <div className="admin-stat-label">Active Users</div>
-            </div>
 
-            <div className="admin-stat-card">
-              <div className="admin-stat-top">
-                <div className="admin-stat-icon red">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
-                  </svg>
+              {/* Dashboard Stats */}
+              <div className="admin-stats dash-stats">
+                <div className="admin-stat-card">
+                  <div className="admin-stat-top">
+                    <div className="admin-stat-icon blue">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                      </svg>
+                    </div>
+                    <span className="admin-stat-change up">+12.5%</span>
+                  </div>
+                  <div className="admin-stat-value">2,453</div>
+                  <div className="admin-stat-label">Total Properties</div>
                 </div>
-                <span className="admin-stat-change down">-2.1%</span>
-              </div>
-              <div className="admin-stat-value">873</div>
-              <div className="admin-stat-label">Inactive Users</div>
-            </div>
 
-            <div className="admin-stat-card">
-              <div className="admin-stat-top">
-                <div className="admin-stat-icon purple">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-                  </svg>
+                <div className="admin-stat-card">
+                  <div className="admin-stat-top">
+                    <div className="admin-stat-icon green">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                      </svg>
+                    </div>
+                    <span className="admin-stat-change up">+8.2%</span>
+                  </div>
+                  <div className="admin-stat-value">1,893</div>
+                  <div className="admin-stat-label">Active Listings</div>
                 </div>
-                <span className="admin-stat-change up">+5.7%</span>
-              </div>
-              <div className="admin-stat-value">9,652</div>
-              <div className="admin-stat-label">Verified Users</div>
-            </div>
 
-            <div className="admin-stat-card">
-              <div className="admin-stat-top">
-                <div className="admin-stat-icon orange">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
+                <div className="admin-stat-card">
+                  <div className="admin-stat-top">
+                    <div className="admin-stat-icon purple">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                      </svg>
+                    </div>
+                    <span className="admin-stat-change up">+15.3%</span>
+                  </div>
+                  <div className="admin-stat-value">12,458</div>
+                  <div className="admin-stat-label">Total Users</div>
                 </div>
-                <span className="admin-stat-change up">+18.3%</span>
+
+                <div className="admin-stat-card">
+                  <div className="admin-stat-top">
+                    <div className="admin-stat-icon orange">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                      </svg>
+                    </div>
+                    <span className="admin-stat-change up">+22.4%</span>
+                  </div>
+                  <div className="admin-stat-value">₹24.5M</div>
+                  <div className="admin-stat-label">Revenue</div>
+                </div>
               </div>
-              <div className="admin-stat-value">1,245</div>
-              <div className="admin-stat-label">New This Month</div>
-            </div>
-          </div>
 
-          {/* Filters */}
-          <div className="admin-filters">
-            <div className="admin-filter-group">
-              <label>Search User</label>
-              <input type="text" placeholder="Name, email or phone..." />
-            </div>
-            <div className="admin-filter-group">
-              <label>User Type</label>
-              <select>
-                <option value="">All Types</option>
-                <option value="individual">Individual</option>
-                <option value="agent">Agent</option>
-              </select>
-            </div>
-            <div className="admin-filter-group">
-              <label>Status</label>
-              <select>
-                <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="suspended">Suspended</option>
-              </select>
-            </div>
-            <div className="admin-filter-group">
-              <label>KYC Status</label>
-              <select>
-                <option value="">All KYC</option>
-                <option value="verified">Verified</option>
-                <option value="pending">Pending</option>
-                <option value="rejected">Rejected</option>
-              </select>
-            </div>
-            <div className="admin-filter-group">
-              <label>Date Joined</label>
-              <input type="date" />
-            </div>
-            <div className="admin-filter-actions">
-              <button className="admin-filter-apply">Filter</button>
-              <button className="admin-filter-reset">Reset</button>
-            </div>
-          </div>
+              {/* Charts Row */}
+              <div className="dash-charts-row">
+                <div className="dash-chart-card">
+                  <div className="dash-chart-header">
+                    <h3>Revenue Overview</h3>
+                    <select className="dash-chart-select">
+                      <option>Monthly</option>
+                      <option>Weekly</option>
+                      <option>Daily</option>
+                    </select>
+                  </div>
+                  <div className="dash-chart-body">
+                    <ResponsiveContainer width="100%" height={280}>
+                      <AreaChart data={revenueData}>
+                        <defs>
+                          <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#f26522" stopOpacity={0.15} />
+                            <stop offset="95%" stopColor="#f26522" stopOpacity={0} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                        <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} tickFormatter={v => `₹${(v / 1000000).toFixed(1)}M`} />
+                        <Tooltip formatter={v => [`₹${(v / 100000).toFixed(1)}L`, 'Revenue']} />
+                        <Area type="monotone" dataKey="revenue" stroke="#f26522" strokeWidth={2.5} fill="url(#revenueGrad)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
 
-          {/* Users Table */}
-          <div className="admin-table-section">
-            <div className="admin-table-wrap">
-              <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>User Type</th>
-                    <th>Contact</th>
-                    <th>Status</th>
-                    <th>KYC Status</th>
-                    <th>Joined On</th>
-                    <th>Last Login</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {mockUsers.map((u, idx) => (
-                    <tr key={u.id}>
-                      <td>
-                        <div className="admin-user-cell">
-                          <div className="admin-user-cell-avatar" style={{ background: avatarColors[idx % avatarColors.length] }}>
-                            {u.name.split(' ').map(n => n[0]).join('')}
-                          </div>
-                          <div className="admin-user-cell-info">
-                            <span className="admin-user-cell-name">{u.name}</span>
-                            <span className="admin-user-cell-email">{u.email}</span>
-                          </div>
+                <div className="dash-chart-card">
+                  <div className="dash-chart-header">
+                    <h3>Property Listings</h3>
+                    <select className="dash-chart-select">
+                      <option>Monthly</option>
+                      <option>Weekly</option>
+                      <option>Daily</option>
+                    </select>
+                  </div>
+                  <div className="dash-chart-body">
+                    <ResponsiveContainer width="100%" height={280}>
+                      <BarChart data={listingsData} barGap={4}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                        <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                        <Tooltip />
+                        <Bar dataKey="residential" fill="#f26522" radius={[4, 4, 0, 0]} name="Residential" />
+                        <Bar dataKey="commercial" fill="#3b82f6" radius={[4, 4, 0, 0]} name="Commercial" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Row: Recent Properties + Recent Activities */}
+              <div className="dash-bottom-row">
+                <div className="dash-recent-card">
+                  <div className="dash-recent-header">
+                    <h3>Recent Properties</h3>
+                    <button className="dash-view-all">View All</button>
+                  </div>
+                  <div className="admin-table-wrap">
+                    <table className="admin-table">
+                      <thead>
+                        <tr>
+                          <th>Property</th>
+                          <th>Type</th>
+                          <th>Price</th>
+                          <th>Status</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {recentProperties.map(p => (
+                          <tr key={p.id}>
+                            <td><span className="dash-prop-name">{p.name}</span></td>
+                            <td><span className={`admin-badge ${p.type.toLowerCase()}`}>{p.type}</span></td>
+                            <td className="dash-prop-price">{p.price}</td>
+                            <td><span className={`admin-badge ${p.status.toLowerCase()}`}>{p.status}</span></td>
+                            <td>{p.date}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="dash-recent-card">
+                  <div className="dash-recent-header">
+                    <h3>Recent Activities</h3>
+                    <button className="dash-view-all">View All</button>
+                  </div>
+                  <div className="dash-activities-list">
+                    {recentActivities.map(a => (
+                      <div key={a.id} className="dash-activity-item">
+                        <div className="dash-activity-dot" style={{ background: a.color }}></div>
+                        <div className="dash-activity-content">
+                          <p className="dash-activity-text">{a.text}</p>
+                          <span className="dash-activity-time">{a.time}</span>
                         </div>
-                      </td>
-                      <td>
-                        <span className={`admin-badge ${u.type.toLowerCase()}`}>{u.type}</span>
-                      </td>
-                      <td>{u.contact}</td>
-                      <td>
-                        <span className={`admin-badge ${u.status.toLowerCase()}`}>{u.status}</span>
-                      </td>
-                      <td>
-                        <span className={`admin-badge ${u.kyc.toLowerCase()}`}>{u.kyc}</span>
-                      </td>
-                      <td>{u.joined}</td>
-                      <td>{u.lastLogin}</td>
-                      <td>
-                        <div className="admin-table-cell-actions">
-                          <button className="admin-action-btn" title="View">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-                            </svg>
-                          </button>
-                          <button className="admin-action-btn" title="Edit">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                            </svg>
-                          </button>
-                          <button className="admin-action-btn" title="More">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
-                            </svg>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination */}
-            <div className="admin-pagination">
-              <span className="admin-pagination-info">Showing 1 to 10 of 12,458 entries</span>
-              <div className="admin-pagination-controls">
-                <button className="admin-page-btn" disabled>Previous</button>
-                <button className="admin-page-btn active">1</button>
-                <button className="admin-page-btn">2</button>
-                <button className="admin-page-btn">3</button>
-                <span className="admin-page-ellipsis">...</span>
-                <button className="admin-page-btn">1246</button>
-                <button className="admin-page-btn">Next</button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          )}
+
+          {/* ===== USERS VIEW ===== */}
+          {activeNav === 'users' && (
+            <>
+              <div className="admin-breadcrumb">
+                <a href="#">Dashboard</a>
+                <span>&gt;</span>
+                <span>Users</span>
+              </div>
+
+              <div className="admin-page-title-bar">
+                <h1 className="admin-page-title">Users</h1>
+                <div className="admin-page-actions">
+                  <button className="admin-btn-outline">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Import Users
+                  </button>
+                  <button className="admin-btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+                      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Add New User
+                  </button>
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className="admin-stats admin-stats-3">
+                <div className="admin-stat-card">
+                  <div className="admin-stat-top">
+                    <div className="admin-stat-icon blue">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="admin-stat-value">{totalUsers.toLocaleString()}</div>
+                  <div className="admin-stat-label">Total Users</div>
+                </div>
+
+                <div className="admin-stat-card">
+                  <div className="admin-stat-top">
+                    <div className="admin-stat-icon green">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="admin-stat-value">{activeUsers.toLocaleString()}</div>
+                  <div className="admin-stat-label">Active Users</div>
+                </div>
+
+                <div className="admin-stat-card">
+                  <div className="admin-stat-top">
+                    <div className="admin-stat-icon red">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="admin-stat-value">{inactiveUsers.toLocaleString()}</div>
+                  <div className="admin-stat-label">Inactive Users</div>
+                </div>
+              </div>
+
+              {/* Filters */}
+              <div className="admin-filters">
+                <div className="admin-filter-group">
+                  <label>Search User</label>
+                  <input type="text" placeholder="Name, email or phone..." />
+                </div>
+                <div className="admin-filter-group">
+                  <label>Role</label>
+                  <select>
+                    <option value="">All Roles</option>
+                    <option value="1">User</option>
+                    <option value="2">Admin</option>
+                  </select>
+                </div>
+                <div className="admin-filter-group">
+                  <label>Status</label>
+                  <select>
+                    <option value="">All Status</option>
+                    <option value="ACTIVE">Active</option>
+                    <option value="INACTIVE">Inactive</option>
+                  </select>
+                </div>
+                <div className="admin-filter-group">
+                  <label>Gender</label>
+                  <select>
+                    <option value="">All</option>
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                  </select>
+                </div>
+                <div className="admin-filter-group">
+                  <label>Date Joined</label>
+                  <input type="date" />
+                </div>
+                <div className="admin-filter-actions">
+                  <button className="admin-filter-apply">Filter</button>
+                  <button className="admin-filter-reset">Reset</button>
+                </div>
+              </div>
+
+              {/* Users Table */}
+              <div className="admin-table-section">
+                <div className="admin-table-wrap">
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th>User</th>
+                        <th>Role</th>
+                        <th>Contact</th>
+                        <th>Gender</th>
+                        <th>Status</th>
+                        <th>Area</th>
+                        <th>Joined On</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {usersLoading ? (
+                        <tr><td colSpan="8" style={{ textAlign: 'center', padding: '40px' }}>Loading users...</td></tr>
+                      ) : users.length === 0 ? (
+                        <tr><td colSpan="8" style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>No users found</td></tr>
+                      ) : (
+                        users.map((u, idx) => {
+                          const fullName = `${u.firstName || ''} ${u.lastName || ''}`.trim() || '-'
+                          const userInitials = fullName !== '-' ? fullName.split(' ').map(n => n[0]).join('').toUpperCase() : '?'
+                          return (
+                            <tr key={u.userId}>
+                              <td>
+                                <div className="admin-user-cell">
+                                  <div className="admin-user-cell-avatar" style={{ background: avatarColors[idx % avatarColors.length] }}>
+                                    {userInitials}
+                                  </div>
+                                  <div className="admin-user-cell-info">
+                                    <span className="admin-user-cell-name">{fullName}</span>
+                                    <span className="admin-user-cell-email">{u.email}</span>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <span className={`admin-badge ${u.roleId === 2 ? 'agent' : 'individual'}`}>{getRoleName(u.roleId)}</span>
+                              </td>
+                              <td>{u.mobileNumber || '-'}</td>
+                              <td>{u.gender ? u.gender.charAt(0) + u.gender.slice(1).toLowerCase() : '-'}</td>
+                              <td>
+                                <span className={`admin-badge ${u.status?.toLowerCase()}`}>{u.status ? u.status.charAt(0) + u.status.slice(1).toLowerCase() : '-'}</span>
+                              </td>
+                              <td>{u.area || u.address || '-'}</td>
+                              <td>{formatDate(u.createdAt)}</td>
+                              <td>
+                                <div className="admin-table-cell-actions">
+                                  <button className="admin-action-btn" title="View">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                  </button>
+                                  <button className="admin-action-btn" title="Edit">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                    </svg>
+                                  </button>
+                                  <button className="admin-action-btn" title="More">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                      <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
+                                    </svg>
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          )
+                        })
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Pagination */}
+                <div className="admin-pagination">
+                  <span className="admin-pagination-info">Showing 1 to {users.length} of {users.length} entries</span>
+                  <div className="admin-pagination-controls">
+                    <button className="admin-page-btn active">1</button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
         </div>
       </main>
       </div>

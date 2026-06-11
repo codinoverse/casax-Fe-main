@@ -153,6 +153,7 @@ function Profile({ isLoggedIn, onLogout }) {
       await post('/users/change-password', {
         currentPassword: passwordForm.currentPassword,
         newPassword: passwordForm.newPassword,
+        confirmPassword: passwordForm.confirmPassword,
       }, {
         headers: { Authorization: `Bearer ${token}` },
       })
