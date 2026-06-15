@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { post } from '../services/api'
-import logo from '../assets/Logo.png'
-import houseImg from '../assets/house.png'
+import logo from '../assets/white logo.png'
+import houseImg from '../assets/Forgot password.png'
 import './Auth.css'
 
 function ForgotPassword() {
@@ -102,9 +102,9 @@ function ForgotPassword() {
               Don't worry! Enter your registered email or mobile number to receive a verification code.
             </p>
           </div>
-          <div className="auth-left-image">
+          {/* <div className="auth-left-pann">
             <img src={houseImg} alt="Modern luxury house" />
-          </div>
+          </div> */}
         </div>
 
         {/* Right Panel */}

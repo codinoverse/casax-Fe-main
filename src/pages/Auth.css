@@ -963,7 +963,10 @@
 /* ===== Left Panel ===== */
 .auth-left {
   flex: 0 0 43%;
-  background: linear-gradient(180deg, #e8edf5 0%, #e2e9f2 45%, #dce4ee 100%);
+  background-image: url("../assets/Forgot password.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -1002,7 +1005,7 @@
 
 .auth-left-subtitle {
   font-size: 13px;
-  color: #6b7a8d;
+  color: #ffffff;
   line-height: 1.6;
   margin: 0 auto;
   max-width: 320px;
