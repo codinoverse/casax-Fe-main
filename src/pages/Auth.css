@@ -381,13 +381,25 @@
 }
 
 @keyframes termsOverlayIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes termsModalIn {
-  from { opacity: 0; transform: scale(0.95) translateY(10px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .terms-modal {
@@ -677,12 +689,12 @@
   margin-top: 1px;
 }
 
-.terms-modal-checkbox input:checked ~ .terms-modal-checkmark {
+.terms-modal-checkbox input:checked~.terms-modal-checkmark {
   background: #f47920;
   border-color: #f47920;
 }
 
-.terms-modal-checkbox input:checked ~ .terms-modal-checkmark::after {
+.terms-modal-checkbox input:checked~.terms-modal-checkmark::after {
   content: '\2713';
   color: #fff;
   font-size: 11px;
@@ -974,6 +986,19 @@
   overflow: hidden;
 }
 
+.auth-left-login {
+  flex: 0 0 43%;
+  background-image: url("../assets/login page image1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 32px 32px 0 32px;
+  overflow: hidden;
+}
+
 .auth-left-top {
   position: relative;
   z-index: 1;
@@ -1006,6 +1031,14 @@
 .auth-left-subtitle {
   font-size: 13px;
   color: #ffffff;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 320px;
+}
+
+.auth-left-login-subtitle {
+  font-size: 13px;
+  color: s#000000;
   line-height: 1.6;
   margin: 0 auto;
   max-width: 320px;
@@ -1105,10 +1138,12 @@
 }
 
 .auth-right-login .auth-heading {
-  margin-bottom: 14px;
+  margin-bottom: 30px;
 }
 
-.auth-heading {
+
+
+.auth-heading-main {
   font-size: 24px;
   font-weight: 800;
   color: #0f2137;
@@ -1116,11 +1151,130 @@
   letter-spacing: -0.3px;
 }
 
+
+.dashline {
+  margin: 10px 0px 0px 0px;
+  width: 40px;
+  height: 1px;
+  background-color: orange;
+}
+
 .auth-subheading {
   font-size: 13px;
-  color: #94a0b0;
+  color: #2d3238;
   margin: 0 0 20px 0;
   text-align: center;
+}
+
+.download-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.dash-line {
+  width: 80px;
+  height: 1px;
+  border-radius: 2px;
+  background-color: #f47920;
+}
+
+
+
+/* App specified styles */
+.app-platforms {
+  margin-left: 60px;
+}
+
+.Apps-specified-both {
+  margin-top: 10px;
+  margin-right: 50px;
+  width: 34vh;
+  height: 8vh;
+  border-radius: 18px;
+}
+
+.Android-specified {
+  margin-top: 10px;
+  margin: 5px;
+  background-color: #012257;
+  width: 28vh;
+  height: 4.5vh;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.Android-specified h3 {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+  font-size: 9px;
+  color: orange;
+}
+
+.Android-specified h1 {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 500;
+  text-align: center;
+  font-size: 19px;
+}
+
+.android {
+  display: flex;
+  flex-direction: column;
+}
+
+.playstore-button {
+  margin-top: 3px;
+  height: 30px;
+  width: 28px;
+}
+
+
+
+.ios-specified {
+  margin-top: 10px;
+  margin: 5px;
+  background-color: #012257;
+  width: 28vh;
+  height: 4.5vh;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ios-specified h3 {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+  font-size: 9px;
+  color: orange;
+}
+
+.ios-specified h1 {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 500;
+  text-align: center;
+  font-size: 15px;
+}
+
+
+.appstore-button {
+  margin-top: 3px;
+  height: 30px;
+  width: 28px;
+}
+
+.Apps-specified-both {
+  display: flex;
+  gap: 20;
 }
 
 /* ===== Inline Badges (Right Panel) ===== */
@@ -1130,12 +1284,13 @@
   gap: 16px;
   margin-top: 20px;
   padding: 18px 16px;
-  border: 2px solid #f47920;
+  border: 0.2px solid #e9e8e8;
   border-radius: 14px;
 }
 
 .auth-badge-inline {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 8px;
 }
@@ -1169,8 +1324,15 @@
 .badge-inline-desc {
   display: block;
   font-size: 11px;
-  color: #94a0b0;
+  color: #2d3238;
   line-height: 1.2;
+  text-align: center;
+}
+
+.line-btw-badge {
+  height: 100px;
+  width: 1px;
+  background-color: rgb(235, 230, 230);
 }
 
 .link-orange {
@@ -1181,6 +1343,13 @@
 
 .link-orange:hover {
   text-decoration: underline;
+}
+
+.orange-line {
+  margin-top: 10px;
+  width: 52px;
+  height: 1px;
+  background-color: #f47920;
 }
 
 /* ===== Form ===== */
@@ -1461,12 +1630,12 @@
   margin-top: 1px;
 }
 
-.terms-check input:checked ~ .checkmark {
+.terms-check input:checked~.checkmark {
   background: #22c55e;
   border-color: #22c55e;
 }
 
-.terms-check input:checked ~ .checkmark::after {
+.terms-check input:checked~.checkmark::after {
   content: '\2713';
   color: #fff;
   font-size: 10px;
@@ -1594,8 +1763,8 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
-  color: #94a0b0;
-  font-size: 11px;
+  color: #2d3238;
+  font-size: 14px;
   margin-top: 14px;
   margin-bottom: 8px;
   text-align: center;
@@ -1780,8 +1949,9 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
+  font-weight: 600;
   font-size: 13px;
-  color: #6b7a8d;
+  color: #f47920;
   text-decoration: none;
   margin-bottom: 4px;
   transition: color 0.15s;
@@ -1821,10 +1991,21 @@
   transition: width 0.3s, background 0.3s;
 }
 
-.strength-fill.weak { background: #ef4444; }
-.strength-fill.fair { background: #f59e0b; }
-.strength-fill.good { background: #3b82f6; }
-.strength-fill.strong { background: #22c55e; }
+.strength-fill.weak {
+  background: #ef4444;
+}
+
+.strength-fill.fair {
+  background: #f59e0b;
+}
+
+.strength-fill.good {
+  background: #3b82f6;
+}
+
+.strength-fill.strong {
+  background: #22c55e;
+}
 
 .strength-label {
   font-size: 11px;
@@ -1832,10 +2013,21 @@
   white-space: nowrap;
 }
 
-.strength-label.weak { color: #ef4444; }
-.strength-label.fair { color: #f59e0b; }
-.strength-label.good { color: #3b82f6; }
-.strength-label.strong { color: #22c55e; }
+.strength-label.weak {
+  color: #ef4444;
+}
+
+.strength-label.fair {
+  color: #f59e0b;
+}
+
+.strength-label.good {
+  color: #3b82f6;
+}
+
+.strength-label.strong {
+  color: #22c55e;
+}
 
 /* Field validation messages */
 .field-error {
@@ -2009,7 +2201,7 @@
   }
 
   .auth-right-login .auth-heading {
-    margin-bottom: 12px;
+    margin-bottom: 120px;
   }
 
   .auth-right-login .input-group {
@@ -2249,8 +2441,15 @@
 }
 
 @keyframes forgotToastIn {
-  from { opacity: 0; transform: translateX(30px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .forgot-toast.success {
@@ -2298,8 +2497,13 @@
 }
 
 @keyframes forgotPopupFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .forgot-popup {
@@ -2314,8 +2518,15 @@
 }
 
 @keyframes forgotPopupSlide {
-  from { opacity: 0; transform: scale(0.95) translateY(10px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .forgot-popup-icon {

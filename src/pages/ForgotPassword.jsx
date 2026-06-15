@@ -102,9 +102,7 @@ function ForgotPassword() {
               Don't worry! Enter your registered email or mobile number to receive a verification code.
             </p>
           </div>
-          {/* <div className="auth-left-pann">
-            <img src={houseImg} alt="Modern luxury house" />
-          </div> */}
+          
         </div>
 
         {/* Right Panel */}
@@ -209,7 +207,7 @@ function ForgotPassword() {
               </button>
             </form>
 
-            <Link to="/login" className="otp-back" style={{ marginTop: '24px' }}>
+            <Link to="/login" className="otp-back" style={{ marginTop: '24px'}}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12" />
                 <polyline points="12 19 5 12 12 5" />
