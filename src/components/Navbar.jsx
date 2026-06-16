@@ -27,6 +27,7 @@ function Navbar({ isLoggedIn, onLogout }) {
       <div className="navbar-inner">
         <Link to="/" className="navbar-logo-link">
           <img src={logo} alt="CASAX" className="navbar-logo" />
+          <span className="navbar-tagline">BUY / SELL / RENT</span>
         </Link>
         <div className="navbar-center">
           <div className="nav-links">

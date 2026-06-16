@@ -19,6 +19,7 @@
 .navbar-logo-link {
   flex-shrink: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   text-decoration: none;
 }
@@ -26,6 +27,14 @@
 .navbar-logo {
   height: 50px;
   object-fit: contain;
+}
+
+.navbar-tagline {
+  font-size: 8px;
+  font-weight: 700;
+  color: #f26522;
+  letter-spacing: 2.5px;
+  margin-top: 2px;
 }
 
 /* Center nav links */
