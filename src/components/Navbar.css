@@ -15,17 +15,12 @@
   padding: 0 24px;
 }
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-}
-
+/* Logo + Tagline */
 .navbar-logo-link {
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  text-decoration: none;
 }
 
 .navbar-logo {
@@ -33,124 +28,151 @@
   object-fit: contain;
 }
 
+/* Center nav links */
+.navbar-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 32px;
 }
 
 .nav-link {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: #475569;
   text-decoration: none;
   transition: color 0.2s;
+  padding: 6px 0;
+  position: relative;
 }
 
-.nav-link:hover,
-.nav-link.active {
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: #f26522;
+  border-radius: 2px;
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+
+.nav-link:hover {
   color: #f26522;
 }
 
+.nav-link.active {
+  color: #f26522;
+  font-weight: 600;
+}
+
+.nav-link.active::after {
+  transform: scaleX(1);
+}
+
+/* Right side */
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
+  flex-shrink: 0;
 }
 
-/* Logged-out buttons */
-.nav-saved-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
-  color: #475569;
-  cursor: pointer;
+/* Store badges */
+.nav-store-badges {
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: color 0.2s;
+  gap: 8px;
 }
 
-.nav-saved-btn:hover {
-  color: #f26522;
-}
-
-.nav-login-link {
-  font-size: 14px;
-  font-weight: 600;
-  color: #0f172a;
-  text-decoration: none;
-}
-
-.nav-login-link:hover {
-  color: #f26522;
-}
-
-/* Logged-in icon buttons */
-.nav-icon-btn {
+.nav-store-badge {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
-  border: none;
-  background: transparent;
-  color: #475569;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  font-family: inherit;
-  transition: color 0.2s, background 0.2s;
-  position: relative;
+  padding: 6px 12px;
+  background: #0f172a;
   border-radius: 8px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  border: 1px solid #334155;
 }
 
-.nav-icon-btn:hover {
-  color: #f26522;
-  background: #fef5f0;
+.nav-store-badge:hover {
+  opacity: 0.85;
 }
 
-.nav-icon-label {
-  font-size: 13px;
-  font-weight: 500;
-}
-
-/* Bell button */
-.nav-bell-btn {
-  padding: 8px;
-}
-
-.nav-alert-badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 18px;
+.nav-store-icon {
+  width: 18px;
   height: 18px;
-  border-radius: 9px;
-  background: #ef4444;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.nav-store-icon-apple {
+  filter: brightness(0) invert(1);
+}
+
+.nav-store-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.nav-store-label {
+  font-size: 7px;
+  color: #94a3b8;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.nav-store-name {
+  font-size: 12px;
   color: #fff;
-  font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-top: 1px;
+}
+
+/* Login button */
+.nav-login-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 4px;
-  line-height: 1;
-  border: 2px solid #fff;
-  box-sizing: border-box;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.nav-login-btn:hover {
+  border-color: #f26522;
+  color: #f26522;
+  background: #fff5f0;
+}
+
+.nav-login-btn svg {
+  flex-shrink: 0;
 }
 
 /* Account dropdown */
 .nav-account-wrap {
   position: relative;
-}
-
-.nav-account-btn {
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 8px 12px;
-  background: #fff;
 }
 
 .nav-account-dropdown {
@@ -193,36 +215,42 @@
   padding-top: 12px;
 }
 
-/* Post Property button */
-.nav-post-btn {
-  background: #f26522;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.2s;
-  text-decoration: none;
-}
-
-.nav-post-btn:hover {
-  background: #d9551a;
-}
-
 /* ========== RESPONSIVE ========== */
+@media (max-width: 1200px) {
+  .nav-links {
+    gap: 20px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+  }
+
+  .nav-store-badge {
+    padding: 5px 8px;
+  }
+
+  .nav-store-name {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .nav-store-badges {
+    display: none;
+  }
+
+  .nav-links {
+    gap: 16px;
+  }
+}
+
 @media (max-width: 900px) {
   .navbar-inner {
     padding: 0 18px;
   }
+
   .nav-links {
     display: none;
-  }
-  .nav-post-btn {
-    padding: 8px 16px;
-    font-size: 13px;
   }
 }
 
@@ -230,10 +258,21 @@
   .navbar-inner {
     height: 56px;
   }
+
   .navbar-logo {
-    height: 100px;
+    height: 30px;
   }
-  .nav-icon-label {
+
+  .navbar-tagline {
+    font-size: 6px;
+    letter-spacing: 1.5px;
+  }
+
+  .nav-login-btn span {
     display: none;
+  }
+
+  .nav-login-btn {
+    padding: 8px;
   }
 }
