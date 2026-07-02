@@ -1170,12 +1170,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.download-line h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7a8d;
+  margin: 0;
+  white-space: nowrap;
 }
 
 .dash-line {
-  width: 80px;
+  flex: 1;
+  max-width: 60px;
   height: 1px;
   border-radius: 2px;
   background-color: #f47920;
@@ -1185,43 +1194,53 @@
 
 /* App specified styles */
 .app-platforms {
-  margin-left: 60px;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
 }
 
 .Apps-specified-both {
-  margin-top: 10px;
-  margin-right: 50px;
-  width: 34vh;
-  height: 8vh;
-  border-radius: 18px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
 }
 
 .Android-specified {
-  margin-top: 10px;
-  margin: 5px;
   background-color: #012257;
-  width: 28vh;
-  height: 4.5vh;
-  border-radius: 8px;
+  padding: 8px 18px;
+  border-radius: 10px;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.Android-specified:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(1, 34, 87, 0.3);
 }
 
 .Android-specified h3 {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-weight: 600;
-  font-size: 9px;
-  color: orange;
+  font-size: 8px;
+  color: #f47920;
+  margin: 0;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .Android-specified h1 {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-weight: 500;
-  text-align: center;
-  font-size: 19px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  text-align: left;
+  font-size: 15px;
+  margin: 0;
+  line-height: 1.2;
 }
 
 .android {
@@ -1230,51 +1249,15 @@
 }
 
 .playstore-button {
-  margin-top: 3px;
-  height: 30px;
-  width: 28px;
+  height: 24px;
+  width: 22px;
+  object-fit: contain;
 }
-
-
-
-.ios-specified {
-  margin-top: 10px;
-  margin: 5px;
-  background-color: #012257;
-  width: 28vh;
-  height: 4.5vh;
-  border-radius: 8px;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.ios-specified h3 {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-weight: 600;
-  font-size: 9px;
-  color: orange;
-}
-
-.ios-specified h1 {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-weight: 500;
-  text-align: center;
-  font-size: 15px;
-}
-
 
 .appstore-button {
-  margin-top: 3px;
-  height: 30px;
-  width: 28px;
-}
-
-.Apps-specified-both {
-  display: flex;
-  gap: 20;
+  height: 24px;
+  width: 22px;
+  object-fit: contain;
 }
 
 /* ===== Inline Badges (Right Panel) ===== */
@@ -1330,9 +1313,10 @@
 }
 
 .line-btw-badge {
-  height: 100px;
+  height: 60px;
   width: 1px;
   background-color: rgb(235, 230, 230);
+  align-self: center;
 }
 
 .link-orange {
@@ -2082,23 +2066,25 @@
 @media (max-width: 768px) {
   .auth-page {
     padding: 0;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+    overflow: auto;
     background: #ffffff;
   }
 
   .auth-modal {
     flex-direction: column;
     border-radius: 0;
-    height: 100vh;
-    height: 100dvh;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
     max-height: none;
     max-width: 100%;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: none;
     background: #ffffff;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   /* Mobile back button */
@@ -2110,9 +2096,10 @@
     top: 14px;
     left: 16px;
     z-index: 10;
-    background: none;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
     border: none;
-    color: #0f2137;
+    color: #ffffff;
     font-size: 14px;
     font-weight: 600;
     font-family: inherit;
@@ -2124,41 +2111,56 @@
   }
 
   .auth-back-btn:hover {
-    background: rgba(0, 0, 0, 0.04);
+    background: rgba(255, 255, 255, 0.25);
   }
 
   .auth-modal {
     position: relative;
   }
 
-  /* Left panel — compact centered header */
+  /* Left panel — hero banner with background image on mobile */
   .auth-left {
     flex: none;
     flex-direction: column;
     align-items: center;
-    padding: 0 16px;
-    min-height: auto;
-    background: #ffffff;
-    overflow: visible;
+    padding: 52px 24px 24px 24px;
+    min-height: 200px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 0 0 28px 28px;
+    background-image: url("../assets/Forgot password.png");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .auth-left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 33, 55, 0.82) 0%, rgba(15, 33, 55, 0.7) 60%, rgba(15, 33, 55, 0.85) 100%);
+    z-index: 0;
   }
 
   .auth-left-top {
+    position: relative;
+    z-index: 1;
     width: 100%;
     padding: 0;
     align-items: center;
     text-align: center;
   }
 
-  /* Big centered logo */
+  /* Logo — white on dark overlay */
   .auth-left-logo {
-    width: 160px;
-    margin-bottom: 8px;
+    width: 130px;
+    margin-bottom: 10px;
   }
 
   .auth-left-title {
     font-size: 22px;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     white-space: normal;
+    color: #ffffff;
   }
 
   .auth-left-subtitle {
@@ -2167,6 +2169,7 @@
     max-width: 320px;
     margin: 0 auto;
     padding-bottom: 0;
+    color: rgba(255, 255, 255, 0.8);
   }
 
   /* Hide house image on mobile — show text instead */
@@ -2179,16 +2182,18 @@
     display: none;
   }
 
-  /* Right panel — modal card with shadow */
+  /* Right panel — card overlapping the hero banner */
   .auth-right {
     flex: none;
-    margin: 14px 16px 0 16px;
-    padding: 20px 20px;
+    margin: -16px 16px 24px 16px;
+    padding: 24px 20px;
     overflow: visible;
     align-items: flex-start;
     background: #ffffff;
     border-radius: 18px;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.03);
+    position: relative;
+    z-index: 2;
   }
 
   .auth-right-content {
@@ -2201,7 +2206,7 @@
   }
 
   .auth-right-login .auth-heading {
-    margin-bottom: 120px;
+    margin-bottom: 16px;
   }
 
   .auth-right-login .input-group {
@@ -2383,21 +2388,148 @@
   .otp-timer {
     margin-bottom: 12px;
   }
+
+  /* Login left panel — hero banner with background image on mobile */
+  .auth-left-login {
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 52px 24px 24px 24px;
+    min-height: 200px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 0 0 28px 28px;
+    background-image: url("../assets/login page image1.png");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .auth-left-login::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 33, 55, 0.82) 0%, rgba(15, 33, 55, 0.7) 60%, rgba(15, 33, 55, 0.85) 100%);
+    z-index: 0;
+  }
+
+  .auth-left-login .auth-left-top {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .auth-left-login .auth-left-logo {
+    width: 130px;
+    margin-bottom: 10px;
+    filter: brightness(0) invert(1);
+  }
+
+  .auth-left-login .auth-left-title {
+    color: #ffffff;
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .auth-left-login .text-orange {
+    color: #f47920;
+  }
+
+  .auth-left-login .auth-left-login-subtitle {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0;
+  }
+
+  .auth-left-login .orange-line {
+    background-color: #f47920;
+    margin-top: 12px;
+  }
+
+  /* Make auth-modal scrollable for login page */
+  .auth-modal {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .auth-right-login {
+    padding-bottom: 16px;
+  }
+
+  /* Hide line-btw-badge dividers on mobile */
+  .line-btw-badge {
+    height: 40px;
+  }
+
+  /* Download section — compact on mobile */
+  .download-line {
+    margin-top: 12px;
+    gap: 8px;
+  }
+
+  .download-line h4 {
+    font-size: 11px;
+  }
+
+  .dash-line {
+    max-width: 40px;
+  }
+
+  /* Store badges — responsive */
+  .app-platforms {
+    margin-top: 4px;
+  }
+
+  .Apps-specified-both {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .Android-specified {
+    padding: 7px 14px;
+    border-radius: 8px;
+    gap: 6px;
+  }
+
+  .Android-specified h3 {
+    font-size: 7px;
+  }
+
+  .Android-specified h1 {
+    font-size: 13px;
+  }
+
+  .playstore-button,
+  .appstore-button {
+    height: 20px;
+    width: 18px;
+  }
 }
 
 /* ===== Responsive — Small Mobile ===== */
 @media (max-width: 400px) {
   .auth-left {
-    padding: 12px 12px 0 12px;
+    padding: 44px 16px 20px 16px;
+    min-height: 180px;
   }
 
   .auth-left-logo {
-    width: 140px;
-    margin-bottom: 8px;
+    width: 110px;
+    margin-bottom: 6px;
+  }
+
+  .auth-left-title {
+    font-size: 18px;
+  }
+
+  .auth-left-subtitle {
+    font-size: 11px;
   }
 
   .auth-right {
-    margin: 12px;
+    margin: -12px 12px 20px;
     padding: 18px 16px;
     border-radius: 16px;
   }
@@ -2419,6 +2551,82 @@
 
   .badge-inline-desc {
     font-size: 8px;
+  }
+
+  .auth-btn {
+    height: 42px;
+    font-size: 13px;
+  }
+
+  .social-btn {
+    height: 40px;
+    font-size: 12px;
+  }
+
+  .auth-left-login {
+    padding-top: 44px;
+    padding-bottom: 20px;
+    min-height: 180px;
+  }
+
+  .auth-left-login .auth-left-logo {
+    width: 110px;
+  }
+
+  .auth-left-login .auth-left-title {
+    font-size: 20px;
+  }
+
+  .Apps-specified-both {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .Android-specified {
+    width: 100%;
+    max-width: 200px;
+    justify-content: center;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 340px) {
+  .auth-left-logo {
+    width: 110px;
+  }
+
+  .auth-left-title {
+    font-size: 16px;
+  }
+
+  .auth-right {
+    margin: 8px;
+    padding: 16px 14px;
+  }
+
+  .otp-input {
+    width: 30px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .badge-icon-circle-sm {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+  }
+
+  .download-line {
+    display: none;
+  }
+
+  .app-platforms {
+    display: none;
+  }
+
+  .auth-badges-inline {
+    gap: 0;
   }
 }
 

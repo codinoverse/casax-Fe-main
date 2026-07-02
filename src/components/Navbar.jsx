@@ -7,6 +7,7 @@ import './Navbar.css'
 
 function Navbar({ isLoggedIn, onLogout }) {
   const [showAccountMenu, setShowAccountMenu] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const accountRef = useRef(null)
   const location = useLocation()
 
@@ -20,6 +21,21 @@ function Navbar({ isLoggedIn, onLogout }) {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [location.pathname])
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [mobileMenuOpen])
+
   const isActive = (path) => location.pathname === path
 
   return (
@@ -27,9 +43,26 @@ function Navbar({ isLoggedIn, onLogout }) {
       <div className="navbar-inner">
         <Link to="/" className="navbar-logo-link">
           <img src={logo} alt="CASAX" className="navbar-logo" />
-          <span className="navbar-tagline">BUY / SELL / RENT</span>
         </Link>
-        <div className="navbar-center">
+
+        {/* Hamburger button */}
+        <button
+          className={`navbar-hamburger ${mobileMenuOpen ? 'open' : ''}`}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+        </button>
+
+        {/* Mobile overlay */}
+        {mobileMenuOpen && (
+          <div className="navbar-mobile-overlay" onClick={() => setMobileMenuOpen(false)} />
+        )}
+
+        {/* Desktop center nav + mobile drawer */}
+        <div className={`navbar-center ${mobileMenuOpen ? 'mobile-open' : ''}`}>
           <div className="nav-links">
             <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>Home</Link>
             <Link to="/buy" className={`nav-link ${isActive('/buy') ? 'active' : ''}`}>Buy</Link>
@@ -39,7 +72,47 @@ function Navbar({ isLoggedIn, onLogout }) {
             <a href="#" className="nav-link">About Us</a>
             <a href="#" className="nav-link">Contact</a>
           </div>
+
+          {/* Store badges inside mobile drawer */}
+          <div className="nav-mobile-store-badges">
+            <a href="#" className="nav-store-badge" title="Get it on Google Play">
+              <img src={playstoreImg} alt="Play Store" className="nav-store-icon" />
+              <div className="nav-store-text">
+                <span className="nav-store-label">GET IT ON</span>
+                <span className="nav-store-name">Google Play</span>
+              </div>
+            </a>
+            <a href="#" className="nav-store-badge" title="Download on App Store">
+              <img src={appleImg} alt="App Store" className="nav-store-icon nav-store-icon-apple" />
+              <div className="nav-store-text">
+                <span className="nav-store-label">Download on the</span>
+                <span className="nav-store-name">App Store</span>
+              </div>
+            </a>
+          </div>
+
+          {/* Login/Account inside mobile drawer */}
+          <div className="nav-mobile-auth">
+            {isLoggedIn ? (
+              <>
+                <Link to="/profile" className="nav-mobile-auth-link" onClick={() => setMobileMenuOpen(false)}>
+                  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  My Profile
+                </Link>
+                <button className="nav-mobile-logout-btn" onClick={() => { onLogout(); setMobileMenuOpen(false); }}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link to="/login" className="nav-mobile-login-btn" onClick={() => setMobileMenuOpen(false)}>
+                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Login / Sign Up
+              </Link>
+            )}
+          </div>
         </div>
+
+        {/* Desktop right side */}
         <div className="navbar-right">
           <div className="nav-store-badges">
             <a href="#" className="nav-store-badge" title="Get it on Google Play">

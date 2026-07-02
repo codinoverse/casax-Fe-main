@@ -51,6 +51,138 @@ const featuredProperties = [
     sqft: '1,200',
     badge: 'FOR RENT',
   },
+  {
+    id: 5,
+    image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&h=260&fit=crop',
+    price: '₹72,00,000',
+    title: 'Elegant Country House',
+    location: 'Pune, MH',
+    beds: 4,
+    baths: 3,
+    sqft: '2,800',
+    badge: 'FOR SALE',
+  },
+  {
+    id: 6,
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=260&fit=crop',
+    price: '₹55,000/mo',
+    title: 'Lakeside Retreat',
+    location: 'Chennai, TN',
+    beds: 3,
+    baths: 2,
+    sqft: '2,100',
+    badge: 'FOR RENT',
+  },
+  {
+    id: 7,
+    image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=400&h=260&fit=crop',
+    price: '₹38,00,000',
+    title: 'Contemporary Flat',
+    location: 'Kolkata, WB',
+    beds: 2,
+    baths: 2,
+    sqft: '1,400',
+    badge: 'FOR SALE',
+  },
+  {
+    id: 8,
+    image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=260&fit=crop',
+    price: '₹22,000/mo',
+    title: 'Garden View Home',
+    location: 'Ahmedabad, GJ',
+    beds: 3,
+    baths: 2,
+    sqft: '1,600',
+    badge: 'FOR RENT',
+  },
+  {
+    id: 9,
+    image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&h=260&fit=crop',
+    price: '₹95,00,000',
+    title: 'Premium Penthouse',
+    location: 'Mumbai, MH',
+    beds: 5,
+    baths: 4,
+    sqft: '3,500',
+    badge: 'FOR SALE',
+  },
+  {
+    id: 10,
+    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=260&fit=crop',
+    price: '₹42,000/mo',
+    title: 'Smart Studio Loft',
+    location: 'Bangalore, KA',
+    beds: 1,
+    baths: 1,
+    sqft: '850',
+    badge: 'FOR RENT',
+  },
+  {
+    id: 11,
+    image: 'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=400&h=260&fit=crop',
+    price: '₹52,00,000',
+    title: 'Hillside Bungalow',
+    location: 'Jaipur, RJ',
+    beds: 4,
+    baths: 3,
+    sqft: '2,600',
+    badge: 'FOR SALE',
+  },
+  {
+    id: 12,
+    image: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&h=260&fit=crop',
+    price: '₹30,000/mo',
+    title: 'Riverside Cottage',
+    location: 'Goa, GA',
+    beds: 2,
+    baths: 2,
+    sqft: '1,300',
+    badge: 'FOR RENT',
+  },
+  {
+    id: 13,
+    image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&h=260&fit=crop',
+    price: '₹61,00,000',
+    title: 'Skyline Apartment',
+    location: 'Noida, UP',
+    beds: 3,
+    baths: 2,
+    sqft: '1,900',
+    badge: 'FOR SALE',
+  },
+  {
+    id: 14,
+    image: 'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=400&h=260&fit=crop',
+    price: '₹48,000/mo',
+    title: 'Executive Suite',
+    location: 'Gurugram, HR',
+    beds: 3,
+    baths: 3,
+    sqft: '2,200',
+    badge: 'FOR RENT',
+  },
+  {
+    id: 15,
+    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=260&fit=crop',
+    price: '₹33,00,000',
+    title: 'Classic Row House',
+    location: 'Lucknow, UP',
+    beds: 3,
+    baths: 2,
+    sqft: '1,700',
+    badge: 'FOR SALE',
+  },
+  {
+    id: 16,
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=260&fit=crop',
+    price: '₹26,000/mo',
+    title: 'Sunny Terrace Flat',
+    location: 'Chandigarh, CH',
+    beds: 2,
+    baths: 1,
+    sqft: '1,100',
+    badge: 'FOR RENT',
+  },
 ]
 
 const propertyTypes = [
@@ -117,6 +249,15 @@ function Home({ isLoggedIn, onLogout }) {
 
   const propertyOptions = ['Apartment', 'Villa', 'Commercial', 'Plot']
   const searchRef = useRef(null)
+  const featuredScrollRef = useRef(null)
+  const areaScrollRef = useRef(null)
+
+  const scroll = (ref, direction) => {
+    if (ref.current) {
+      const scrollAmount = 320
+      ref.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' })
+    }
+  }
 
   // Auto-advance carousel
   useEffect(() => {
@@ -240,47 +381,95 @@ function Home({ isLoggedIn, onLogout }) {
               <h2 className="section-title">Featured Properties</h2>
               <a href="#" className="section-view-all">View All Properties &rarr;</a>
             </div>
-            <div className="featured-grid">
-              {featuredProperties.map((property) => (
-                <div className="property-card" key={property.id}>
-                  <div className="property-card-image">
-                    <img src={property.image} alt={property.title} />
-                    <span className={`property-badge ${property.badge === 'FOR RENT' ? 'rent' : 'sale'}`}>
-                      {property.badge}
-                    </span>
-                    <div className="property-card-actions">
-                      <button className="property-action-btn">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-                      </button>
-                      <button className="property-action-btn">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                      </button>
+            <div className="scroll-row">
+              <button className="scroll-arrow scroll-arrow-left" onClick={() => scroll(featuredScrollRef, 'left')}>
+                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <div className="featured-grid" ref={featuredScrollRef}>
+                {featuredProperties.map((property) => (
+                  <div className="property-card" key={property.id}>
+                    <div className="property-card-image">
+                      <img src={property.image} alt={property.title} />
+                      <span className={`property-badge ${property.badge === 'FOR RENT' ? 'rent' : 'sale'}`}>
+                        {property.badge}
+                      </span>
+                      <div className="property-card-actions">
+                        <button className="property-action-btn">
+                          <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                        </button>
+                        <button className="property-action-btn">
+                          <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="property-card-info">
+                      <div className="property-card-price">{property.price}</div>
+                      <h3 className="property-card-title">{property.title}</h3>
+                      <p className="property-card-location">
+                        <svg width="14" height="14" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        {property.location}
+                      </p>
+                      <div className="property-card-details">
+                        <span className="property-card-detail">
+                          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 7v11m0-4h18m0 4V8a1 1 0 00-1-1H8a1 1 0 00-1 1v3"/></svg>
+                          {property.beds} Beds
+                        </span>
+                        <span className="property-card-detail">
+                          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 12h16M4 12v6m16-6v6M6 12V8a2 2 0 012-2h1a2 2 0 012 2v4"/></svg>
+                          {property.baths} Baths
+                        </span>
+                        <span className="property-card-detail">
+                          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                          {property.sqft} sqft
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="property-card-info">
-                    <div className="property-card-price">{property.price}</div>
-                    <h3 className="property-card-title">{property.title}</h3>
-                    <p className="property-card-location">
-                      <svg width="14" height="14" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      {property.location}
-                    </p>
-                    <div className="property-card-details">
-                      <span className="property-card-detail">
-                        <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 7v11m0-4h18m0 4V8a1 1 0 00-1-1H8a1 1 0 00-1 1v3"/></svg>
-                        {property.beds} Beds
-                      </span>
-                      <span className="property-card-detail">
-                        <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 12h16M4 12v6m16-6v6M6 12V8a2 2 0 012-2h1a2 2 0 012 2v4"/></svg>
-                        {property.baths} Baths
-                      </span>
-                      <span className="property-card-detail">
-                        <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-                        {property.sqft} sqft
-                      </span>
+                ))}
+              </div>
+              <button className="scroll-arrow scroll-arrow-right" onClick={() => scroll(featuredScrollRef, 'right')}>
+                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+              </button>
+            </div>
+            <div className="section-header" style={{ marginTop: '32px' }}>
+              <h2 className="section-title">Prime Area Properties</h2>
+              <a href="#" className="section-view-all">View All &rarr;</a>
+            </div>
+            <div className="scroll-row">
+              <button className="scroll-arrow scroll-arrow-left" onClick={() => scroll(areaScrollRef, 'left')}>
+                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <div className="area-grid" ref={areaScrollRef}>
+                {[
+                  { name: 'Gachibowli', count: '2,340', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=260&fit=crop' },
+                  { name: 'Kondapur', count: '1,870', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=260&fit=crop' },
+                  { name: 'Madhapur', count: '3,120', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=260&fit=crop' },
+                  { name: 'Narsingi', count: '1,450', image: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=400&h=260&fit=crop' },
+                  { name: 'Miyapur', count: '1,920', image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&h=260&fit=crop' },
+                  { name: 'Kukatpally', count: '2,780', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=260&fit=crop' },
+                  { name: 'Banjara Hills', count: '3,450', image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=400&h=260&fit=crop' },
+                  { name: 'Jubilee Hills', count: '2,960', image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=260&fit=crop' },
+                  { name: 'Hitech City', count: '4,120', image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&h=260&fit=crop' },
+                  { name: 'Manikonda', count: '1,680', image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=260&fit=crop' },
+                ].map((area) => (
+                  <a href="#" className="area-card" key={area.name}>
+                    <div className="area-card-img-wrap">
+                      <img src={area.image} alt={area.name} className="area-card-img" />
                     </div>
-                  </div>
-                </div>
-              ))}
+                    <div className="area-card-info">
+                      <div className="area-card-row">
+                        <svg width="14" height="14" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <h3 className="area-card-name">{area.name}</h3>
+                        <svg width="16" height="16" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                      </div>
+                      <p className="area-card-count">{area.count} Properties</p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+              <button className="scroll-arrow scroll-arrow-right" onClick={() => scroll(areaScrollRef, 'right')}>
+                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+              </button>
             </div>
           </div>
           <div className="quick-links-sidebar">
@@ -292,9 +481,9 @@ function Home({ isLoggedIn, onLogout }) {
                 </div>
                 <div className="quick-link-text">
                   <h4 className="quick-link-name">Post Property</h4>
-                  <p className="quick-link-desc">List your property and reach thousands of buyers</p>
+                  <p className="quick-link-desc">List your property for sale or rent</p>
                 </div>
-                <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                <svg className="quick-link-arrow" width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
               </Link>
               <Link to="/buy" className="quick-link-card">
                 <div className="quick-link-icon">
@@ -302,9 +491,9 @@ function Home({ isLoggedIn, onLogout }) {
                 </div>
                 <div className="quick-link-text">
                   <h4 className="quick-link-name">Buy Property</h4>
-                  <p className="quick-link-desc">Find your dream property from verified listings</p>
+                  <p className="quick-link-desc">Find your dream property</p>
                 </div>
-                <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                <svg className="quick-link-arrow" width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
               </Link>
               <a href="#" className="quick-link-card">
                 <div className="quick-link-icon">
@@ -312,67 +501,50 @@ function Home({ isLoggedIn, onLogout }) {
                 </div>
                 <div className="quick-link-text">
                   <h4 className="quick-link-name">Rent Property</h4>
-                  <p className="quick-link-desc">Discover rental homes that suit your needs</p>
+                  <p className="quick-link-desc">Discover rental homes</p>
                 </div>
-                <svg width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                <svg className="quick-link-arrow" width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
               </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Your Area Properties + Top Cities */}
-      <section className="area-cities-section">
-        <div className="area-cities-outer">
-          <div className="area-main">
-            <div className="section-header">
-              <h2 className="section-title">Your Area Properties</h2>
-              <a href="#" className="section-view-all">View All &rarr;</a>
-            </div>
-            <div className="area-grid">
-              {[
-                { name: 'Gachibowli', count: '2,340', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=260&fit=crop' },
-                { name: 'Kondapur', count: '1,870', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=260&fit=crop' },
-                { name: 'Madhapur', count: '3,120', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=260&fit=crop' },
-                { name: 'Narsingi', count: '1,450', image: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=400&h=260&fit=crop' },
-              ].map((area) => (
-                <a href="#" className="area-card" key={area.name}>
-                  <div className="area-card-img-wrap">
-                    <img src={area.image} alt={area.name} className="area-card-img" />
-                  </div>
-                  <div className="area-card-info">
-                    <div className="area-card-row">
-                      <svg width="14" height="14" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      <h3 className="area-card-name">{area.name}</h3>
-                      <svg width="16" height="16" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-                    </div>
-                    <p className="area-card-count">{area.count} Properties</p>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-          <div className="topcities-sidebar">
-            <div className="topcities-header">
-              <h3 className="topcities-sidebar-title">Top Cities</h3>
-              <a href="#" className="section-view-all">View All Cities &rarr;</a>
-            </div>
-            <div className="topcities-list">
-              {[
-                { name: 'Bangalore', count: '12,540', image: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=200&h=200&fit=crop' },
-                { name: 'Hyderabad', count: '8,760', image: charminarImg },
-                { name: 'Mumbai', count: '15,320', image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=200&h=200&fit=crop' },
-                { name: 'Delhi', count: '9,460', image: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=200&h=200&fit=crop' },
-              ].map((city) => (
-                <a href="#" className="topcity-item" key={city.name}>
-                  <img src={city.image} alt={city.name} className="topcity-img" />
-                  <div className="topcity-text">
-                    <h4 className="topcity-name">{city.name}</h4>
-                    <p className="topcity-count">{city.count} Properties</p>
-                  </div>
-                  <svg width="16" height="16" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-                </a>
-              ))}
+              <a href="#" className="quick-link-card">
+                <div className="quick-link-icon">
+                  <svg width="20" height="20" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                </div>
+                <div className="quick-link-text">
+                  <h4 className="quick-link-name">Request for Property</h4>
+                  <p className="quick-link-desc">Let us find the perfect property for you</p>
+                </div>
+                <svg className="quick-link-arrow" width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+              <a href="#" className="quick-link-card">
+                <div className="quick-link-icon">
+                  <svg width="20" height="20" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M6 3h12M6 8h12M14 3c0 5.333-2.667 8-8 8m2 0l6 10"/></svg>
+                </div>
+                <div className="quick-link-text">
+                  <h4 className="quick-link-name">Request for Legal Advice</h4>
+                  <p className="quick-link-desc">Get expert legal guidance</p>
+                </div>
+                <svg className="quick-link-arrow" width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+              <a href="#" className="quick-link-card">
+                <div className="quick-link-icon">
+                  <svg width="20" height="20" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M6 3h12M6 8h12M14 3c0 5.333-2.667 8-8 8m2 0l6 10"/></svg>
+                </div>
+                <div className="quick-link-text">
+                  <h4 className="quick-link-name">Advertise Your Property</h4>
+                  <p className="quick-link-desc">List your property and reach more buyers</p>
+                </div>
+                <svg className="quick-link-arrow" width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+              <a href="#" className="quick-link-card">
+                <div className="quick-link-icon">
+                  <svg width="20" height="20" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                </div>
+                <div className="quick-link-text">
+                  <h4 className="quick-link-name">Become a Agent</h4>
+                  <p className="quick-link-desc">Join us and grow your career</p>
+                </div>
+                <svg className="quick-link-arrow" width="18" height="18" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
             </div>
           </div>
         </div>

@@ -932,7 +932,12 @@
   }
 }
 
+/* iPad / tablet */
 @media (max-width: 900px) {
+  .pp-layout {
+    padding: 16px 16px 36px;
+  }
+
   .pp-amenities-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -943,9 +948,31 @@
   .pp-photo-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .pp-stepper {
+    padding: 20px 16px;
+    border-radius: 14px;
+  }
+
+  .pp-form-card {
+    border-radius: 14px;
+  }
+
+  .pp-card-header {
+    padding: 18px 22px;
+  }
+
+  .pp-form-body {
+    padding: 20px 22px 24px;
+  }
 }
 
+/* Mobile */
 @media (max-width: 600px) {
+  .pp-layout {
+    padding: 12px 12px 32px;
+  }
+
   .pp-main-header {
     flex-direction: column;
     gap: 12px;
@@ -953,8 +980,13 @@
   .pp-main-title {
     font-size: 20px;
   }
+  .pp-main-subtitle {
+    font-size: 13px;
+  }
   .pp-stepper {
-    padding: 16px 12px;
+    padding: 16px 10px;
+    border-radius: 12px;
+    margin-bottom: 16px;
   }
   .pp-step-circle {
     width: 30px;
@@ -970,20 +1002,38 @@
     font-size: 10px;
   }
   .pp-card-header {
-    padding: 16px 18px;
+    padding: 14px 16px;
+  }
+  .pp-card-title {
+    font-size: 16px;
+    gap: 8px;
+  }
+  .pp-card-num {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
   }
   .pp-form-body {
-    padding: 18px 18px 22px;
+    padding: 16px 16px 20px;
   }
   .pp-amenities-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .pp-amenity-check {
+    padding: 8px 10px;
+    font-size: 12px;
   }
   .pp-radio-group {
     flex-direction: column;
     gap: 8px;
   }
+  .pp-radio-btn {
+    padding: 10px 16px;
+  }
   .pp-photo-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
   .pp-form-actions {
     flex-direction: column;
@@ -995,5 +1045,62 @@
     width: 100%;
     justify-content: center;
     margin-left: 0;
+    padding: 14px 24px;
+    border-radius: 12px;
+  }
+  .pp-upload-label {
+    padding: 28px 16px;
+    border-radius: 12px;
+  }
+  .pp-upload-text {
+    font-size: 14px;
+  }
+  .pp-collapsed-step {
+    padding: 14px 16px;
+    border-radius: 10px;
+  }
+  .pp-review-row {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .pp-map-placeholder {
+    padding: 28px 16px;
+    border-radius: 12px;
+  }
+  .pp-input,
+  .pp-textarea {
+    padding: 12px 14px;
+    border-radius: 10px;
+  }
+  .pp-dropdown-trigger {
+    padding: 12px 14px;
+    border-radius: 10px;
+  }
+  .pp-save-draft-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .pp-amenities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pp-step-label {
+    font-size: 9px;
+  }
+
+  .pp-step-circle {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .pp-main-title {
+    font-size: 18px;
   }
 }

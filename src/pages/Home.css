@@ -8,7 +8,7 @@
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: 380px;
+  min-height: 300px;
   display: flex;
   align-items: center;
 }
@@ -36,7 +36,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(10, 15, 30, 0.65);
+  background: rgba(10, 15, 30, 0.4);
   z-index: 1;
 }
 
@@ -76,7 +76,7 @@
 .hero-inner {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 36px 32px 36px;
+  padding: 24px 32px 24px;
   position: relative;
   z-index: 2;
   width: 100%;
@@ -165,6 +165,11 @@
   padding: 18px 32px;
   display: flex;
   justify-content: center;
+  max-width: 1300px;
+  margin: -28px auto 0;
+  border-radius: 10px;
+  position: relative;
+  z-index: 3;
 }
 
 .hero-search-inner {
@@ -365,7 +370,7 @@
   margin: 0 auto;
   padding: 0 32px;
   display: grid;
-  grid-template-columns: 1fr 260px;
+  grid-template-columns: 1fr 320px;
   gap: 24px;
 }
 
@@ -373,10 +378,55 @@
   min-width: 0;
 }
 
+/* Scroll Row with Arrows */
+.scroll-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.scroll-arrow {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  color: #0f172a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.scroll-arrow:hover {
+  border-color: #f26522;
+  color: #f26522;
+  box-shadow: 0 4px 12px rgba(242, 101, 34, 0.15);
+}
+
 .featured-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
   gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+  min-width: 0;
+}
+
+.featured-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.featured-grid .property-card {
+  min-width: 240px;
+  max-width: 240px;
+  flex-shrink: 0;
 }
 
 .property-card {
@@ -394,7 +444,7 @@
 
 .property-card-image {
   position: relative;
-  height: 160px;
+  height: 140px;
   overflow: hidden;
 }
 
@@ -501,7 +551,7 @@
   background: #fff;
   border-radius: 14px;
   border: 1px solid #e2e8f0;
-  padding: 20px;
+  padding: 16px;
   height: fit-content;
   position: sticky;
   top: 90px;
@@ -517,16 +567,16 @@
 .quick-links-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .quick-link-card {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px;
+  gap: 10px;
+  padding: 10px 12px;
   border: 1px solid #f1f5f9;
-  border-radius: 12px;
+  border-radius: 10px;
   text-decoration: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   cursor: pointer;
@@ -538,9 +588,9 @@
 }
 
 .quick-link-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   background: #fff5f0;
   display: flex;
   align-items: center;
@@ -590,9 +640,24 @@
 }
 
 .area-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
   gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+  min-width: 0;
+}
+
+.area-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.area-grid .area-card {
+  min-width: 170px;
+  max-width: 170px;
+  flex-shrink: 0;
 }
 
 .area-card {
@@ -1095,13 +1160,16 @@
 }
 
 /* ========== RESPONSIVE ========== */
+
+/* iPad landscape / large tablet */
 @media (max-width: 1100px) {
   .featured-outer {
     grid-template-columns: 1fr;
   }
 
-  .featured-grid {
-    grid-template-columns: repeat(3, 1fr);
+  .featured-grid .property-card {
+    min-width: 230px;
+    max-width: 230px;
   }
 
   .quick-links-sidebar {
@@ -1110,10 +1178,18 @@
 
   .quick-links-list {
     flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .quick-links-list::-webkit-scrollbar {
+    display: none;
   }
 
   .quick-link-card {
     flex: 1;
+    min-width: 200px;
   }
 
   .area-cities-outer {
@@ -1149,18 +1225,20 @@
   }
 }
 
+/* iPad portrait */
 @media (max-width: 768px) {
   /* Hero */
   .hero {
-    min-height: 340px;
+    min-height: 280px;
   }
 
   .hero-inner {
-    padding: 32px 16px 32px;
+    padding: 24px 20px 24px;
   }
 
   .hero-title {
-    font-size: 26px;
+    font-size: 28px;
+    line-height: 1.15;
   }
 
   .hero-subtitle {
@@ -1172,8 +1250,8 @@
   }
 
   .hero-arrow {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
   }
 
   .hero-arrow-left {
@@ -1185,40 +1263,51 @@
   }
 
   .hero-explore-btn {
-    padding: 10px 20px;
-    font-size: 13px;
+    padding: 12px 24px;
+    font-size: 14px;
+    border-radius: 10px;
   }
 
   /* Hero Search Bar */
   .hero-search-bar {
-    padding: 12px 16px;
+    padding: 14px 16px;
+    margin: -24px 16px 0;
+    border-radius: 16px;
   }
 
   .hero-search-inner {
     flex-direction: column;
-    gap: 8px;
-    padding: 10px;
+    gap: 10px;
+    padding: 0;
   }
 
   .hero-search-group {
     width: 100%;
     box-sizing: border-box;
+    border-radius: 10px;
+    padding: 12px 16px;
   }
 
   .hero-search-btn {
     width: 100%;
     justify-content: center;
+    padding: 14px 24px;
+    border-radius: 10px;
   }
 
   /* Featured + Quick Links */
+  .featured-section {
+    padding: 28px 0 36px;
+  }
+
   .featured-outer {
     padding-left: 16px;
     padding-right: 16px;
   }
 
-  .featured-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+  .featured-grid .property-card {
+    min-width: 200px;
+    max-width: 200px;
   }
 
   .quick-links-list {
@@ -1235,13 +1324,22 @@
     padding-right: 16px;
   }
 
-  .area-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+  .area-grid .area-card {
+    min-width: 160px;
+    max-width: 160px;
   }
 
   .topcities-list {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .topcity-item {
+    padding: 10px 8px;
+  }
+
+  .topcity-img {
+    width: 40px;
+    height: 40px;
   }
 
   /* Why Choose */
@@ -1255,7 +1353,7 @@
 
   .why-section-title {
     font-size: 22px;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
   }
 
   .why-grid {
@@ -1264,12 +1362,14 @@
   }
 
   .why-card {
-    padding: 0 12px;
+    padding: 16px;
     border-right: none;
+    background: #f8fafc;
+    border-radius: 14px;
   }
 
   .why-card:nth-child(odd) {
-    border-right: 1px solid #e2e8f0;
+    border-right: none;
   }
 
   .why-card:nth-child(even) {
@@ -1288,7 +1388,7 @@
 
   /* CTA */
   .cta-section {
-    padding: 40px 0 0;
+    padding: 32px 0 0;
   }
 
   .cta-banner {
@@ -1298,7 +1398,8 @@
   .cta-inner {
     flex-direction: column;
     text-align: center;
-    padding: 28px 20px;
+    padding: 28px 24px;
+    border-radius: 16px;
   }
 
   .cta-center {
@@ -1322,6 +1423,7 @@
   .cta-btn {
     width: 100%;
     padding: 14px 24px;
+    border-radius: 12px;
   }
 
   /* Newsletter */
@@ -1341,20 +1443,26 @@
   }
 
   .newsletter-title {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .newsletter-form {
     flex-direction: column;
     width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
   }
 
   .newsletter-input {
     width: 100%;
+    padding: 14px 18px;
+    border-radius: 12px;
   }
 
   .newsletter-btn {
     width: 100%;
+    padding: 14px 24px;
+    border-radius: 12px;
   }
 
   /* Footer */
@@ -1387,10 +1495,10 @@
   }
 
   .footer-brand-text {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.6;
     margin-bottom: 14px;
-    max-width: 320px;
+    max-width: 340px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -1399,35 +1507,61 @@
     justify-content: center;
   }
 
+  .social-link {
+    width: 38px;
+    height: 38px;
+  }
+
   .footer-links-col {
     text-align: left;
   }
 
   .footer-col-title {
-    font-size: 13px;
-    margin-bottom: 10px;
+    font-size: 14px;
+    margin-bottom: 12px;
   }
 
   .footer-link {
-    font-size: 12px;
-    margin-bottom: 8px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    padding: 2px 0;
   }
 
   .footer-contact-item {
     justify-content: flex-start;
-    font-size: 12px;
-    margin-bottom: 8px;
+    font-size: 13px;
+    margin-bottom: 10px;
   }
 
   .footer-bottom {
-    padding: 14px 0;
-    font-size: 11px;
+    padding: 16px 0;
+    font-size: 12px;
   }
 }
 
+/* Small mobile */
 @media (max-width: 480px) {
+  .hero {
+    min-height: 260px;
+  }
+
+  .hero-inner {
+    padding: 20px 16px;
+  }
+
   .hero-title {
     font-size: 24px;
+  }
+
+  .hero-subtitle {
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  .hero-search-bar {
+    margin: -20px 12px 0;
+    padding: 12px;
+    border-radius: 14px;
   }
 
   .hero-search-tabs {
@@ -1439,21 +1573,48 @@
     font-size: 12px;
   }
 
+  .featured-grid .property-card {
+    min-width: 200px;
+    max-width: 200px;
+  }
+
+  .property-card-image {
+    height: 130px;
+  }
+
+  .property-card-info {
+    padding: 12px 14px;
+  }
+
+  .property-card-price {
+    font-size: 16px;
+  }
+
+  .area-grid .area-card {
+    min-width: 150px;
+    max-width: 150px;
+  }
+
+  .area-card-img-wrap {
+    height: 110px;
+  }
+
   .why-grid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 16px;
   }
 
   .why-card {
     border-right: none !important;
+    padding: 20px;
   }
 
-  .explore-card-image {
-    height: 140px;
+  .why-title {
+    font-size: 15px;
   }
 
-  .property-card-image {
-    height: 160px;
+  .why-desc {
+    font-size: 13px;
   }
 
   .section-header {
@@ -1462,15 +1623,84 @@
     gap: 8px;
   }
 
+  .section-title {
+    font-size: 20px;
+  }
+
   .cta-features {
     align-items: flex-start;
   }
 
   .cta-inner {
     text-align: left;
+    padding: 24px 18px;
   }
 
   .cta-right {
     align-items: stretch;
+  }
+
+  .topcities-list {
+    gap: 8px;
+  }
+
+  .topcity-item {
+    padding: 8px;
+  }
+
+  .topcity-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+  }
+
+  .topcity-name {
+    font-size: 12px;
+  }
+
+  .topcity-count {
+    font-size: 10px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .footer-links-col {
+    text-align: center;
+  }
+
+  .footer-contact-item {
+    justify-content: center;
+  }
+
+  .newsletter-form {
+    max-width: none;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: 22px;
+  }
+
+  .hero-explore-btn {
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .featured-grid .property-card {
+    min-width: 200px;
+    max-width: 200px;
+  }
+
+  .hero-search-group {
+    padding: 10px 12px;
   }
 }

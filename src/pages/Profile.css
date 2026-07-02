@@ -884,6 +884,7 @@
   }
 }
 
+/* iPad / tablet */
 @media (max-width: 900px) {
   .profile-container {
     flex-direction: column;
@@ -893,10 +894,24 @@
 
   .profile-sidebar {
     width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .profile-sidebar-card {
+    flex: 1;
+    min-width: 260px;
   }
 
   .profile-tabs {
     overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .profile-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .profile-tab {
@@ -908,9 +923,29 @@
   .profile-breadcrumb-inner {
     padding: 0 18px;
   }
+
+  .profile-card {
+    border-radius: 14px;
+  }
 }
 
+/* Mobile */
 @media (max-width: 600px) {
+  .profile-container {
+    padding: 16px 14px;
+    gap: 16px;
+  }
+
+  .profile-sidebar {
+    flex-direction: column;
+  }
+
+  .profile-sidebar-card {
+    min-width: auto;
+    padding: 20px;
+    border-radius: 14px;
+  }
+
   .profile-form-grid {
     grid-template-columns: 1fr;
   }
@@ -921,10 +956,85 @@
 
   .profile-card {
     padding: 18px;
+    border-radius: 14px;
   }
 
   .profile-card-header {
     flex-direction: column;
     gap: 12px;
+  }
+
+  .profile-card-title {
+    font-size: 18px;
+  }
+
+  .profile-breadcrumb-inner {
+    padding: 0 14px;
+    font-size: 13px;
+  }
+
+  .profile-breadcrumb-bar {
+    padding: 12px 0;
+  }
+
+  .profile-sidebar-avatar-circle {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-sidebar-name {
+    font-size: 16px;
+  }
+
+  .profile-form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .profile-update-btn,
+  .profile-cancel-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .profile-input {
+    padding: 12px 14px;
+    border-radius: 10px;
+  }
+
+  .profile-property-card {
+    border-radius: 12px;
+  }
+
+  .profile-property-actions {
+    flex-wrap: wrap;
+  }
+
+  .profile-table th,
+  .profile-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .profile-container {
+    padding: 12px 10px;
+  }
+
+  .profile-card {
+    padding: 14px;
+  }
+
+  .profile-tab {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .profile-sidebar-avatar-circle {
+    width: 70px;
+    height: 70px;
   }
 }
