@@ -816,6 +816,7 @@
   }
 }
 
+/* iPad portrait / tablet */
 @media (max-width: 900px) {
   .sp-property-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -828,11 +829,25 @@
   .sp-sidebar {
     width: 100%;
     position: static;
+    border-radius: 12px;
+  }
+
+  /* Make filter groups flow horizontally on tablet */
+  .sp-filter-body .sp-pill-group {
+    flex-wrap: wrap;
+  }
+
+  .sp-breadcrumb-section {
+    padding: 22px 0;
   }
 }
 
 @media (max-width: 768px) {
   /* Breadcrumb */
+  .sp-breadcrumb-section {
+    padding: 20px 0;
+  }
+
   .sp-breadcrumb-inner {
     flex-direction: column;
     align-items: flex-start;
@@ -851,8 +866,9 @@
 
   .sp-search-bar {
     flex-direction: column;
-    padding: 12px;
-    gap: 8px;
+    padding: 14px;
+    gap: 10px;
+    border-radius: 14px;
   }
 
   .sp-search-divider {
@@ -861,7 +877,7 @@
 
   .sp-search-field {
     width: 100%;
-    padding: 10px 14px;
+    padding: 12px 14px;
     background: #f8fafc;
     border: 1.5px solid #e8ecf1;
     border-radius: 10px;
@@ -876,9 +892,15 @@
   .sp-search-btn {
     width: 100%;
     justify-content: center;
+    padding: 14px 24px;
+    border-radius: 10px;
   }
 
   /* Main */
+  .sp-main {
+    padding: 20px 0 36px;
+  }
+
   .sp-main-inner {
     padding: 0 16px;
   }
@@ -894,8 +916,35 @@
     gap: 16px;
   }
 
+  .sp-card {
+    border-radius: 14px;
+  }
+
   .sp-card-img {
     height: 200px;
+  }
+
+  .sp-card-body {
+    padding: 14px 16px 16px;
+  }
+
+  .sp-card-price {
+    font-size: 18px;
+  }
+
+  .sp-card-meta {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* Sidebar on mobile - collapsible style */
+  .sp-sidebar {
+    padding: 16px;
+  }
+
+  .sp-filter-group {
+    padding-bottom: 14px;
+    margin-bottom: 14px;
   }
 }
 
@@ -910,8 +959,49 @@
 
   .sp-pg-num,
   .sp-pg-arrow {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
+    font-size: 12px;
+  }
+
+  .sp-card-img {
+    height: 180px;
+  }
+
+  .sp-sort {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .sp-content-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sp-breadcrumb-section {
+    padding: 16px 0;
+  }
+
+  .sp-page-title {
+    font-size: 18px;
+  }
+
+  .sp-card-meta-item {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .sp-card-price {
+    font-size: 16px;
+  }
+
+  .sp-card-title {
+    font-size: 12px;
+  }
+
+  .sp-pill {
+    padding: 6px 12px;
     font-size: 12px;
   }
 }

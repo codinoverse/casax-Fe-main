@@ -2,8 +2,11 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginUser } from '../services/authService'
 import logo from '../assets/Logo.png'
-import houseImg from '../assets/house.png'
+import houseImg from '../assets/loginimage.png'
 import './Auth.css'
+import playstore from '../assets/playstore.png';
+import appstore from '../assets/apple-logo.png';
+
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState('')
@@ -44,26 +47,29 @@ function Login({ onLogin }) {
           Back
         </button>
         {/* Left Panel */}
-        <div className="auth-left">
+        <div className="auth-left-login">
           <div className="auth-left-top">
             <img src={logo} alt="CasaX" className="auth-left-logo" />
             <h1 className="auth-left-title">
               Welcome <span className="text-orange">Back!</span>
             </h1>
-            <p className="auth-left-subtitle">
+            <p className="auth-left-login-subtitle">
               Login to manage your properties, connect with buyers and more.
             </p>
+            <div className='orange-line'></div>
           </div>
-          <div className="auth-left-image">
+          {/* <div className="auth-left-image">
             <img src={houseImg} alt="Modern luxury house" />
-          </div>
+          </div> */}
         </div>
 
         {/* Right Panel */}
         <div className="auth-right">
           <div className="auth-right-content auth-right-login">
-            <h2 className="auth-heading">Login to your account</h2>
-
+            <div className='auth-heading'>
+              <h2 className="auth-heading-main">Login to your account</h2>
+              <div className="dashline"></div>
+            </div>
             <form onSubmit={handleSubmit} className="auth-form">
               <div className="input-group">
                 <label className="input-label">Mobile Number / Email Address </label>
@@ -129,6 +135,9 @@ function Login({ onLogin }) {
                   <span className="badge-inline-desc">100% Trusted</span>
                 </div>
               </div>
+              <div>
+                <div className='line-btw-badge'></div>
+              </div>
               <div className="auth-badge-inline">
                 <div className="badge-icon-circle-sm">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -143,6 +152,7 @@ function Login({ onLogin }) {
                   <span className="badge-inline-desc">Experienced</span>
                 </div>
               </div>
+              <div className='line-btw-badge'></div>
               <div className="auth-badge-inline">
                 <div className="badge-icon-circle-sm">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -150,8 +160,41 @@ function Login({ onLogin }) {
                   </svg>
                 </div>
                 <div>
-                  <span className="badge-inline-title">Fast Deals</span>
+                  <span className="badge-inline-title">Instant Deals</span>
                   <span className="badge-inline-desc">Quick & Easy</span>
+                </div>
+              </div>
+            </div>
+
+            <div className='download-line'>
+              <div className='dash-line'></div>
+              <div>
+                <h4>Download the CASAX App</h4>
+              </div>
+              <div className='dash-line'></div>
+            </div>
+
+            <div className='app-platforms'>
+              <div className="Apps-specified-both">
+                <div className='Android-specified'>
+                  <div>
+                    <img className='playstore-button' src={playstore} alt="playstore-button" />
+                  </div>
+                  <div>
+                    <h3>GET IT ON</h3>
+                    <h1>Google Play</h1>
+                  </div>
+                </div>
+
+
+                <div className='Android-specified'>
+                  <div>
+                    <img className='appstore-button' src={appstore} alt="appstore-button" />
+                  </div>
+                  <div>
+                    <h3>GET IT ON</h3>
+                    <h1>App Store</h1>
+                  </div>
                 </div>
               </div>
             </div>

@@ -381,13 +381,25 @@
 }
 
 @keyframes termsOverlayIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes termsModalIn {
-  from { opacity: 0; transform: scale(0.95) translateY(10px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .terms-modal {
@@ -677,12 +689,12 @@
   margin-top: 1px;
 }
 
-.terms-modal-checkbox input:checked ~ .terms-modal-checkmark {
+.terms-modal-checkbox input:checked~.terms-modal-checkmark {
   background: #f47920;
   border-color: #f47920;
 }
 
-.terms-modal-checkbox input:checked ~ .terms-modal-checkmark::after {
+.terms-modal-checkbox input:checked~.terms-modal-checkmark::after {
   content: '\2713';
   color: #fff;
   font-size: 11px;
@@ -974,6 +986,19 @@
   overflow: hidden;
 }
 
+.auth-left-login {
+  flex: 0 0 43%;
+  background-image: url("../assets/login page image1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 32px 32px 0 32px;
+  overflow: hidden;
+}
+
 .auth-left-top {
   position: relative;
   z-index: 1;
@@ -1006,6 +1031,14 @@
 .auth-left-subtitle {
   font-size: 13px;
   color: #ffffff;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 320px;
+}
+
+.auth-left-login-subtitle {
+  font-size: 13px;
+  color: s#000000;
   line-height: 1.6;
   margin: 0 auto;
   max-width: 320px;
@@ -1105,10 +1138,12 @@
 }
 
 .auth-right-login .auth-heading {
-  margin-bottom: 14px;
+  margin-bottom: 30px;
 }
 
-.auth-heading {
+
+
+.auth-heading-main {
   font-size: 24px;
   font-weight: 800;
   color: #0f2137;
@@ -1116,11 +1151,113 @@
   letter-spacing: -0.3px;
 }
 
+
+.dashline {
+  margin: 10px 0px 0px 0px;
+  width: 40px;
+  height: 1px;
+  background-color: orange;
+}
+
 .auth-subheading {
   font-size: 13px;
-  color: #94a0b0;
+  color: #2d3238;
   margin: 0 0 20px 0;
   text-align: center;
+}
+
+.download-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.download-line h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7a8d;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.dash-line {
+  flex: 1;
+  max-width: 60px;
+  height: 1px;
+  border-radius: 2px;
+  background-color: #f47920;
+}
+
+
+
+/* App specified styles */
+.app-platforms {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.Apps-specified-both {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.Android-specified {
+  background-color: #012257;
+  padding: 8px 18px;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.Android-specified:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(1, 34, 87, 0.3);
+}
+
+.Android-specified h3 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 8px;
+  color: #f47920;
+  margin: 0;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.Android-specified h1 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  text-align: left;
+  font-size: 15px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.android {
+  display: flex;
+  flex-direction: column;
+}
+
+.playstore-button {
+  height: 24px;
+  width: 22px;
+  object-fit: contain;
+}
+
+.appstore-button {
+  height: 24px;
+  width: 22px;
+  object-fit: contain;
 }
 
 /* ===== Inline Badges (Right Panel) ===== */
@@ -1130,12 +1267,13 @@
   gap: 16px;
   margin-top: 20px;
   padding: 18px 16px;
-  border: 2px solid #f47920;
+  border: 0.2px solid #e9e8e8;
   border-radius: 14px;
 }
 
 .auth-badge-inline {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 8px;
 }
@@ -1169,8 +1307,16 @@
 .badge-inline-desc {
   display: block;
   font-size: 11px;
-  color: #94a0b0;
+  color: #2d3238;
   line-height: 1.2;
+  text-align: center;
+}
+
+.line-btw-badge {
+  height: 60px;
+  width: 1px;
+  background-color: rgb(235, 230, 230);
+  align-self: center;
 }
 
 .link-orange {
@@ -1181,6 +1327,13 @@
 
 .link-orange:hover {
   text-decoration: underline;
+}
+
+.orange-line {
+  margin-top: 10px;
+  width: 52px;
+  height: 1px;
+  background-color: #f47920;
 }
 
 /* ===== Form ===== */
@@ -1461,12 +1614,12 @@
   margin-top: 1px;
 }
 
-.terms-check input:checked ~ .checkmark {
+.terms-check input:checked~.checkmark {
   background: #22c55e;
   border-color: #22c55e;
 }
 
-.terms-check input:checked ~ .checkmark::after {
+.terms-check input:checked~.checkmark::after {
   content: '\2713';
   color: #fff;
   font-size: 10px;
@@ -1594,8 +1747,8 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
-  color: #94a0b0;
-  font-size: 11px;
+  color: #2d3238;
+  font-size: 14px;
   margin-top: 14px;
   margin-bottom: 8px;
   text-align: center;
@@ -1780,8 +1933,9 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
+  font-weight: 600;
   font-size: 13px;
-  color: #6b7a8d;
+  color: #f47920;
   text-decoration: none;
   margin-bottom: 4px;
   transition: color 0.15s;
@@ -1821,10 +1975,21 @@
   transition: width 0.3s, background 0.3s;
 }
 
-.strength-fill.weak { background: #ef4444; }
-.strength-fill.fair { background: #f59e0b; }
-.strength-fill.good { background: #3b82f6; }
-.strength-fill.strong { background: #22c55e; }
+.strength-fill.weak {
+  background: #ef4444;
+}
+
+.strength-fill.fair {
+  background: #f59e0b;
+}
+
+.strength-fill.good {
+  background: #3b82f6;
+}
+
+.strength-fill.strong {
+  background: #22c55e;
+}
 
 .strength-label {
   font-size: 11px;
@@ -1832,10 +1997,21 @@
   white-space: nowrap;
 }
 
-.strength-label.weak { color: #ef4444; }
-.strength-label.fair { color: #f59e0b; }
-.strength-label.good { color: #3b82f6; }
-.strength-label.strong { color: #22c55e; }
+.strength-label.weak {
+  color: #ef4444;
+}
+
+.strength-label.fair {
+  color: #f59e0b;
+}
+
+.strength-label.good {
+  color: #3b82f6;
+}
+
+.strength-label.strong {
+  color: #22c55e;
+}
 
 /* Field validation messages */
 .field-error {
@@ -1890,23 +2066,25 @@
 @media (max-width: 768px) {
   .auth-page {
     padding: 0;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+    overflow: auto;
     background: #ffffff;
   }
 
   .auth-modal {
     flex-direction: column;
     border-radius: 0;
-    height: 100vh;
-    height: 100dvh;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
     max-height: none;
     max-width: 100%;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: none;
     background: #ffffff;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   /* Mobile back button */
@@ -1918,9 +2096,10 @@
     top: 14px;
     left: 16px;
     z-index: 10;
-    background: none;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
     border: none;
-    color: #0f2137;
+    color: #ffffff;
     font-size: 14px;
     font-weight: 600;
     font-family: inherit;
@@ -1932,41 +2111,56 @@
   }
 
   .auth-back-btn:hover {
-    background: rgba(0, 0, 0, 0.04);
+    background: rgba(255, 255, 255, 0.25);
   }
 
   .auth-modal {
     position: relative;
   }
 
-  /* Left panel — compact centered header */
+  /* Left panel — hero banner with background image on mobile */
   .auth-left {
     flex: none;
     flex-direction: column;
     align-items: center;
-    padding: 0 16px;
-    min-height: auto;
-    background: #ffffff;
-    overflow: visible;
+    padding: 52px 24px 24px 24px;
+    min-height: 200px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 0 0 28px 28px;
+    background-image: url("../assets/Forgot password.png");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .auth-left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 33, 55, 0.82) 0%, rgba(15, 33, 55, 0.7) 60%, rgba(15, 33, 55, 0.85) 100%);
+    z-index: 0;
   }
 
   .auth-left-top {
+    position: relative;
+    z-index: 1;
     width: 100%;
     padding: 0;
     align-items: center;
     text-align: center;
   }
 
-  /* Big centered logo */
+  /* Logo — white on dark overlay */
   .auth-left-logo {
-    width: 160px;
-    margin-bottom: 8px;
+    width: 130px;
+    margin-bottom: 10px;
   }
 
   .auth-left-title {
     font-size: 22px;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     white-space: normal;
+    color: #ffffff;
   }
 
   .auth-left-subtitle {
@@ -1975,6 +2169,7 @@
     max-width: 320px;
     margin: 0 auto;
     padding-bottom: 0;
+    color: rgba(255, 255, 255, 0.8);
   }
 
   /* Hide house image on mobile — show text instead */
@@ -1987,16 +2182,18 @@
     display: none;
   }
 
-  /* Right panel — modal card with shadow */
+  /* Right panel — card overlapping the hero banner */
   .auth-right {
     flex: none;
-    margin: 14px 16px 0 16px;
-    padding: 20px 20px;
+    margin: -16px 16px 24px 16px;
+    padding: 24px 20px;
     overflow: visible;
     align-items: flex-start;
     background: #ffffff;
     border-radius: 18px;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.03);
+    position: relative;
+    z-index: 2;
   }
 
   .auth-right-content {
@@ -2009,7 +2206,7 @@
   }
 
   .auth-right-login .auth-heading {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
 
   .auth-right-login .input-group {
@@ -2191,21 +2388,148 @@
   .otp-timer {
     margin-bottom: 12px;
   }
+
+  /* Login left panel — hero banner with background image on mobile */
+  .auth-left-login {
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 52px 24px 24px 24px;
+    min-height: 200px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 0 0 28px 28px;
+    background-image: url("../assets/login page image1.png");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .auth-left-login::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 33, 55, 0.82) 0%, rgba(15, 33, 55, 0.7) 60%, rgba(15, 33, 55, 0.85) 100%);
+    z-index: 0;
+  }
+
+  .auth-left-login .auth-left-top {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .auth-left-login .auth-left-logo {
+    width: 130px;
+    margin-bottom: 10px;
+    filter: brightness(0) invert(1);
+  }
+
+  .auth-left-login .auth-left-title {
+    color: #ffffff;
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .auth-left-login .text-orange {
+    color: #f47920;
+  }
+
+  .auth-left-login .auth-left-login-subtitle {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0;
+  }
+
+  .auth-left-login .orange-line {
+    background-color: #f47920;
+    margin-top: 12px;
+  }
+
+  /* Make auth-modal scrollable for login page */
+  .auth-modal {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .auth-right-login {
+    padding-bottom: 16px;
+  }
+
+  /* Hide line-btw-badge dividers on mobile */
+  .line-btw-badge {
+    height: 40px;
+  }
+
+  /* Download section — compact on mobile */
+  .download-line {
+    margin-top: 12px;
+    gap: 8px;
+  }
+
+  .download-line h4 {
+    font-size: 11px;
+  }
+
+  .dash-line {
+    max-width: 40px;
+  }
+
+  /* Store badges — responsive */
+  .app-platforms {
+    margin-top: 4px;
+  }
+
+  .Apps-specified-both {
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .Android-specified {
+    padding: 7px 14px;
+    border-radius: 8px;
+    gap: 6px;
+  }
+
+  .Android-specified h3 {
+    font-size: 7px;
+  }
+
+  .Android-specified h1 {
+    font-size: 13px;
+  }
+
+  .playstore-button,
+  .appstore-button {
+    height: 20px;
+    width: 18px;
+  }
 }
 
 /* ===== Responsive — Small Mobile ===== */
 @media (max-width: 400px) {
   .auth-left {
-    padding: 12px 12px 0 12px;
+    padding: 44px 16px 20px 16px;
+    min-height: 180px;
   }
 
   .auth-left-logo {
-    width: 140px;
-    margin-bottom: 8px;
+    width: 110px;
+    margin-bottom: 6px;
+  }
+
+  .auth-left-title {
+    font-size: 18px;
+  }
+
+  .auth-left-subtitle {
+    font-size: 11px;
   }
 
   .auth-right {
-    margin: 12px;
+    margin: -12px 12px 20px;
     padding: 18px 16px;
     border-radius: 16px;
   }
@@ -2228,6 +2552,82 @@
   .badge-inline-desc {
     font-size: 8px;
   }
+
+  .auth-btn {
+    height: 42px;
+    font-size: 13px;
+  }
+
+  .social-btn {
+    height: 40px;
+    font-size: 12px;
+  }
+
+  .auth-left-login {
+    padding-top: 44px;
+    padding-bottom: 20px;
+    min-height: 180px;
+  }
+
+  .auth-left-login .auth-left-logo {
+    width: 110px;
+  }
+
+  .auth-left-login .auth-left-title {
+    font-size: 20px;
+  }
+
+  .Apps-specified-both {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .Android-specified {
+    width: 100%;
+    max-width: 200px;
+    justify-content: center;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 340px) {
+  .auth-left-logo {
+    width: 110px;
+  }
+
+  .auth-left-title {
+    font-size: 16px;
+  }
+
+  .auth-right {
+    margin: 8px;
+    padding: 16px 14px;
+  }
+
+  .otp-input {
+    width: 30px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .badge-icon-circle-sm {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+  }
+
+  .download-line {
+    display: none;
+  }
+
+  .app-platforms {
+    display: none;
+  }
+
+  .auth-badges-inline {
+    gap: 0;
+  }
 }
 
 /* ===== Forgot Password Toast ===== */
@@ -2249,8 +2649,15 @@
 }
 
 @keyframes forgotToastIn {
-  from { opacity: 0; transform: translateX(30px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .forgot-toast.success {
@@ -2298,8 +2705,13 @@
 }
 
 @keyframes forgotPopupFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .forgot-popup {
@@ -2314,8 +2726,15 @@
 }
 
 @keyframes forgotPopupSlide {
-  from { opacity: 0; transform: scale(0.95) translateY(10px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .forgot-popup-icon {
