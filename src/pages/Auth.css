@@ -25,18 +25,19 @@
 
 /* ===== Full Page Signup ===== */
 .signup-page {
-  min-height: 100vh;
+  height: 100vh;
   background: #f0f2f5;
   font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .signup-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 32px;
+  padding: 4px 32px;
   background: #ffffff;
   border-bottom: 1px solid #e8ecf1;
   flex-shrink: 0;
@@ -62,7 +63,7 @@
 }
 
 .signup-topbar-logo {
-  height: 80px;
+  height: 50px;
   object-fit: contain;
   mix-blend-mode: multiply;
 }
@@ -78,34 +79,109 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 16px 24px;
+  padding: 10px 24px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .signup-page-header {
-  text-align: center;
-  margin-bottom: 14px;
+  text-align: left;
+  margin-bottom: 6px;
+  width: 100%;
+  max-width: 1060px;
+  flex-shrink: 0;
 }
 
 .signup-page-title {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 800;
   color: #0f2137;
-  margin: 0 0 6px 0;
+  margin: 0 0 3px 0;
   letter-spacing: -0.5px;
 }
 
 .signup-page-subtitle {
-  font-size: 14px;
+  font-size: 13px;
   color: #6b7a8d;
   margin: 0;
+}
+
+/* ===== Signup Stepper ===== */
+.signup-stepper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  grid-column: 1 / -1;
+  margin-bottom: 10px;
+  padding: 0 0 14px 0;
+  border-bottom: 1px solid #e8ecf1;
+  flex-shrink: 0;
+}
+
+.signup-stepper-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.stepper-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  background: #e8ecf1;
+  color: #6b7a8d;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.signup-stepper-step.active .stepper-circle {
+  background: #f47920;
+  color: #ffffff;
+}
+
+.signup-stepper-step.completed .stepper-circle {
+  background: #f47920;
+  color: #ffffff;
+}
+
+.stepper-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #a0aec0;
+}
+
+.signup-stepper-step.active .stepper-label {
+  color: #0f2137;
+}
+
+.signup-stepper-step.completed .stepper-label {
+  color: #0f2137;
+}
+
+.stepper-line {
+  flex: 1;
+  height: 2px;
+  background: #e8ecf1;
+  margin: 0 12px;
+  min-width: 20px;
+}
+
+.stepper-line.completed {
+  background: #f47920;
 }
 
 .signup-card {
   width: 100%;
   max-width: 960px;
   background: #ffffff;
-  border-radius: 20px;
-  padding: 32px;
+  border-radius: 16px;
+  padding: 24px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.03);
 }
 
@@ -114,16 +190,19 @@
   display: flex;
   padding: 0;
   overflow: hidden;
+  flex: 1;
+  min-height: 0;
 }
 
 .signup-card-with-image .signup-grid-form {
   flex: 1;
-  padding: 36px 48px;
+  padding: 20px 36px;
+  overflow-y: auto;
 }
 
 /* Side Image Panel */
 .signup-side-panel {
-  flex: 0 0 420px;
+  flex: 0 0 340px;
   background: linear-gradient(180deg, #e8edf5 0%, #dce4ee 50%, #d5dde8 100%);
   display: flex;
   flex-direction: column;
@@ -132,42 +211,42 @@
 }
 
 .signup-side-content {
-  padding: 36px 28px 24px 28px;
+  padding: 24px 24px 16px 24px;
   position: relative;
   z-index: 1;
 }
 
 .signup-side-title {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 800;
   color: #0f2137;
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
   line-height: 1.2;
 }
 
 .signup-side-subtitle {
-  font-size: 12.5px;
+  font-size: 12px;
   color: #6b7a8d;
-  margin: 0 0 20px 0;
+  margin: 0 0 14px 0;
   line-height: 1.5;
 }
 
 .signup-side-badges {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .signup-side-badge {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 600;
   color: #0f2137;
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(4px);
-  padding: 8px 14px;
+  padding: 6px 12px;
   border-radius: 10px;
 }
 
@@ -188,7 +267,7 @@
 .signup-grid-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0 48px;
+  gap: 0 32px;
 }
 
 .signup-col {
@@ -201,9 +280,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 20px;
+  padding-top: 12px;
   border-top: 1px solid #f0f2f5;
-  margin-top: 8px;
+  margin-top: 4px;
   gap: 16px;
 }
 
@@ -237,8 +316,8 @@
 
 /* Form Section Dividers */
 .form-section {
-  margin-bottom: 16px;
-  padding-bottom: 16px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #f0f2f5;
 }
 
@@ -252,19 +331,53 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: #f47920;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* ===== Signup Form Compact Overrides ===== */
+.signup-grid-form .input-group {
+  margin-bottom: 8px;
+}
+
+.signup-grid-form .input-label {
+  font-size: 11.5px;
+  margin-bottom: 3px;
+}
+
+.signup-grid-form .input-wrapper input,
+.signup-grid-form .input-wrapper select {
+  height: 36px;
+  font-size: 12.5px;
+  border-radius: 8px;
+}
+
+.signup-grid-form .form-row {
+  gap: 10px;
+}
+
+.signup-grid-form .password-req-section {
+  margin-bottom: 8px;
+}
+
+.signup-grid-form .password-req-label {
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.signup-grid-form .password-requirements {
+  gap: 3px 12px;
 }
 
 /* ===== Signup Responsive — Tablet ===== */
 @media (max-width: 1024px) {
   .signup-card {
     max-width: 100%;
-    padding: 24px;
+    padding: 20px;
   }
 
   .signup-card-with-image {
@@ -272,55 +385,43 @@
   }
 
   .signup-card-with-image .signup-grid-form {
-    padding: 24px;
+    padding: 16px 20px;
   }
 
   .signup-side-panel {
-    flex: 0 0 260px;
+    flex: 0 0 220px;
   }
 
   .signup-grid-form {
-    gap: 0 24px;
+    gap: 0 20px;
   }
 
   .signup-container {
-    padding: 20px 20px;
+    padding: 8px 16px;
+  }
+
+  .signup-topbar {
+    padding: 2px 20px;
+  }
+
+  .signup-topbar-logo {
+    height: 44px;
   }
 }
 
-/* ===== Signup Responsive — Mobile ===== */
-@media (max-width: 768px) {
+/* ===== Signup Responsive — Small Tablet (iPad Mini / iPad Air) ===== */
+@media (max-width: 880px) {
   .signup-side-panel {
     display: none;
   }
 
-  .signup-card-with-image {
-    flex-direction: column;
-  }
-
   .signup-card-with-image .signup-grid-form {
-    padding: 20px 16px;
+    padding: 20px 28px;
   }
 
-  .signup-topbar {
-    padding: 10px 16px;
-  }
-
-  .signup-topbar-right {
-    font-size: 12px;
-  }
-
-  .signup-topbar-logo {
-    height: 32px;
-  }
-
-  .signup-container {
-    padding: 16px 16px;
-    justify-content: flex-start;
-  }
-
-  .signup-page-header {
-    margin-bottom: 16px;
+  .signup-grid-form {
+    grid-template-columns: 1fr 1fr;
+    gap: 0 24px;
   }
 
   .signup-page-title {
@@ -331,20 +432,257 @@
     font-size: 12px;
   }
 
+  .signup-container {
+    padding: 10px 16px;
+  }
+}
+
+/* ===== Signup Responsive — Short Screens ===== */
+@media (max-height: 800px) {
+  .signup-topbar {
+    padding: 2px 32px;
+  }
+
+  .signup-topbar-logo {
+    height: 40px;
+  }
+
+  .signup-container {
+    padding: 6px 24px;
+  }
+
+  .signup-page-header {
+    margin-bottom: 4px;
+  }
+
+  .signup-page-title {
+    font-size: 22px;
+  }
+
+  .signup-stepper {
+    margin-bottom: 6px;
+  }
+
+  .stepper-circle {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .stepper-label {
+    font-size: 12px;
+  }
+
+  .signup-card-with-image .signup-grid-form {
+    padding: 14px 28px;
+  }
+
+  .signup-side-content {
+    padding: 16px 20px 12px 20px;
+  }
+
+  .signup-side-title {
+    font-size: 20px;
+  }
+
+  .signup-side-subtitle {
+    font-size: 11px;
+    margin-bottom: 10px;
+  }
+
+  .signup-side-badges {
+    gap: 4px;
+  }
+
+  .signup-side-badge {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .signup-grid-form .input-wrapper input,
+  .signup-grid-form .input-wrapper select {
+    height: 34px;
+  }
+
+  .signup-grid-form .input-group {
+    margin-bottom: 6px;
+  }
+
+  .form-section {
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+  }
+
+  .form-section-title {
+    margin-bottom: 6px;
+    font-size: 10px;
+  }
+
+  .signup-form-footer {
+    padding-top: 8px;
+    margin-top: 2px;
+  }
+}
+
+/* ===== Signup Responsive — Mobile ===== */
+@media (max-width: 768px) {
+  .signup-page {
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+
+  .signup-container {
+    overflow: visible;
+  }
+
+  .signup-card-with-image {
+    flex: none;
+  }
+
+  .signup-side-panel {
+    display: none;
+  }
+
+  .signup-card-with-image {
+    flex-direction: column;
+  }
+
+  .signup-card-with-image .signup-grid-form {
+    padding: 20px 20px;
+    overflow-y: visible;
+  }
+
+  .signup-topbar {
+    padding: 6px 16px;
+  }
+
+  .signup-topbar-right {
+    font-size: 12px;
+  }
+
+  .signup-topbar-logo {
+    height: 36px;
+  }
+
+  .signup-container {
+    padding: 12px 16px;
+    justify-content: flex-start;
+  }
+
+  .signup-page-header {
+    margin-bottom: 10px;
+  }
+
+  .signup-page-title {
+    font-size: 22px;
+  }
+
+  .signup-page-subtitle {
+    font-size: 12px;
+  }
+
+  .signup-stepper {
+    margin-bottom: 10px;
+  }
+
+  .stepper-label {
+    font-size: 11px;
+  }
+
+  .stepper-circle {
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+
+  .stepper-line {
+    margin: 0 6px;
+    min-width: 14px;
+  }
+
   .signup-card {
     padding: 20px 16px;
     border-radius: 16px;
   }
 
   .signup-grid-form {
-    grid-template-columns: 1fr;
-    gap: 0;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 20px;
   }
 
   .signup-form-footer {
     flex-direction: column;
     align-items: stretch;
-    gap: 14px;
+    gap: 12px;
+  }
+
+  .signup-form-actions {
+    flex-direction: row;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  .signup-submit-btn {
+    width: auto;
+    padding: 0 24px;
+  }
+
+  .signup-grid-form .form-row {
+    flex-direction: row;
+    gap: 10px;
+  }
+}
+
+/* ===== Signup Responsive — Small Mobile (Single Column) ===== */
+@media (max-width: 576px) {
+  .signup-grid-form {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .signup-card-with-image .signup-grid-form {
+    padding: 16px 16px;
+  }
+
+  .signup-container {
+    padding: 12px 12px;
+  }
+
+  .signup-topbar {
+    padding: 8px 12px;
+  }
+
+  .signup-topbar-logo {
+    height: 32px;
+  }
+
+  .signup-stepper {
+    justify-content: center;
+  }
+
+  .signup-stepper-step {
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .stepper-label {
+    font-size: 9px;
+    text-align: center;
+  }
+
+  .stepper-circle {
+    width: 26px;
+    height: 26px;
+    font-size: 10px;
+  }
+
+  .stepper-line {
+    margin: 0 4px;
+    min-width: 12px;
+    align-self: flex-start;
+    margin-top: 12px;
   }
 
   .signup-form-actions {
@@ -2510,6 +2848,22 @@
 
 /* ===== Responsive — Small Mobile ===== */
 @media (max-width: 400px) {
+  .stepper-circle {
+    width: 22px;
+    height: 22px;
+    font-size: 9px;
+  }
+
+  .stepper-label {
+    font-size: 8px;
+  }
+
+  .stepper-line {
+    min-width: 8px;
+    margin: 0 2px;
+    margin-top: 10px;
+  }
+
   .auth-left {
     padding: 44px 16px 20px 16px;
     min-height: 180px;
