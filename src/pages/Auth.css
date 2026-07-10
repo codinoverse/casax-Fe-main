@@ -1544,7 +1544,7 @@
 }
 
 .Android-specified {
-  background-color: #012257;
+  background-color: #000000;
   padding: 8px 18px;
   border-radius: 10px;
   color: white;
@@ -1565,7 +1565,7 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 600;
   font-size: 8px;
-  color: #f47920;
+  color: #d3691ed7;
   margin: 0;
   line-height: 1.2;
   text-transform: uppercase;
@@ -2981,6 +2981,215 @@
 
   .auth-badges-inline {
     gap: 0;
+  }
+}
+
+/* ===== Small Laptop Heights (e.g. 1024x600) ===== */
+@media (max-height: 700px) and (min-width: 769px) {
+  .auth-page {
+    padding: 12px;
+  }
+
+  .auth-modal {
+    max-height: none;
+    height: 96vh;
+  }
+
+  .auth-left,
+  .auth-left-login {
+    flex: 0 0 38%;
+    padding: 20px 24px 0 24px;
+  }
+
+  .auth-left-logo {
+    width: 180px;
+    margin-bottom: 12px;
+  }
+
+  .auth-left-title {
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+
+  .auth-left-subtitle,
+  .auth-left-login-subtitle {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .auth-left-top {
+    padding-bottom: 8px;
+  }
+
+  .auth-right {
+    padding: 16px 28px;
+    align-items: center;
+  }
+
+  .auth-right-login .auth-heading {
+    margin-bottom: 12px;
+  }
+
+  .auth-heading-main {
+    font-size: 20px;
+  }
+
+  .auth-subheading {
+    font-size: 11.5px;
+    margin-bottom: 10px;
+  }
+
+  .dashline {
+    margin-top: 6px;
+  }
+
+  .input-group {
+    margin-bottom: 8px;
+  }
+
+  .auth-right-login .input-group {
+    margin-bottom: 6px;
+  }
+
+  .input-label {
+    font-size: 11.5px;
+    margin-bottom: 3px;
+  }
+
+  .input-wrapper input,
+  .input-wrapper select {
+    height: 36px;
+    font-size: 12.5px;
+    border-radius: 8px;
+  }
+
+  .forgot-password {
+    margin-bottom: 8px;
+    margin-top: -4px;
+  }
+
+  .forgot-password a {
+    font-size: 11.5px;
+  }
+
+  .terms-check {
+    margin-bottom: 8px;
+  }
+
+  .terms-text {
+    font-size: 11px;
+  }
+
+  .auth-btn {
+    height: 38px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+
+  .auth-divider {
+    margin: 8px 0;
+  }
+
+  .auth-divider span {
+    font-size: 11px;
+  }
+
+  .social-btn {
+    height: 36px;
+    font-size: 11.5px;
+    border-radius: 8px;
+  }
+
+  .auth-secure-note {
+    margin-top: 8px;
+    margin-bottom: 4px;
+    font-size: 11px;
+  }
+
+  .auth-badges-inline {
+    margin-top: 10px;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .badge-icon-circle-sm {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+  }
+
+  .badge-icon-circle-sm svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .badge-inline-title {
+    font-size: 10.5px;
+  }
+
+  .badge-inline-desc {
+    font-size: 9.5px;
+  }
+
+  .line-btw-badge {
+    height: 40px;
+  }
+
+  .download-line {
+    margin-top: 8px;
+    gap: 8px;
+  }
+
+  .download-line h4 {
+    font-size: 10px;
+  }
+
+  .app-platforms {
+    margin-top: 4px;
+  }
+
+  .Android-specified {
+    padding: 6px 14px;
+    border-radius: 8px;
+  }
+
+  .Android-specified h3 {
+    font-size: 7px;
+  }
+
+  .Android-specified h1 {
+    font-size: 13px;
+  }
+
+  .auth-badges-card {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 10px 8px;
+  }
+
+  .password-requirements {
+    gap: 3px;
+  }
+
+  .password-req-section {
+    margin-bottom: 8px;
+  }
+
+  .otp-icon-circle {
+    width: 48px;
+    height: 48px;
+  }
+
+  .otp-desc {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .otp-input {
+    width: 38px;
+    height: 40px;
+    font-size: 18px;
   }
 }
 

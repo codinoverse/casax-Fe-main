@@ -633,21 +633,7 @@ function PostProperty({ isLoggedIn, onLogout }) {
           </div>
         </main>
 
-        {/* Right Sidebar - Tips */}
-        <aside className="pp-tips">
-          <h3 className="pp-tips-title">Tips for Better Listing</h3>
-          <div className="pp-tips-list">
-            {tips.map((tip) => (
-              <div key={tip.title} className="pp-tip-card">
-                <div className="pp-tip-icon">{getTipIcon(tip.icon)}</div>
-                <div className="pp-tip-text">
-                  <h4 className="pp-tip-title">{tip.title}</h4>
-                  <p className="pp-tip-desc">{tip.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </aside>
+        
       </div>
     </div>
   )
