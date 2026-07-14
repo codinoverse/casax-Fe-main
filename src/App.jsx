@@ -10,6 +10,9 @@ import SearchProperties from './pages/SearchProperties'
 import PostProperty from './pages/PostProperty'
 import Profile from './pages/Profile'
 import Admin from './pages/Admin'
+import MyProperties from './pages/MyProperties'
+import PropertyDetails from './pages/PropertyDetails'
+import MyFavourites from './pages/MyFavourites'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'))
@@ -35,6 +38,9 @@ function App() {
         <Route path="/buy" element={<SearchProperties isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
         <Route path="/post-property" element={<PostProperty isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
         <Route path="/profile" element={<Profile isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
+        <Route path="/my-properties" element={<MyProperties isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
+        <Route path="/my-favourites" element={<MyFavourites isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
+        <Route path="/property/:id" element={<PropertyDetails isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
         <Route path="/admin" element={<Admin isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
       </Routes>
     </Router>

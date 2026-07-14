@@ -1,0 +1,520 @@
+/* ===== Property Details Page ===== */
+.pd-page {
+  min-height: 100vh;
+  background: #f7f8fa;
+  font-family: 'Inter', sans-serif;
+}
+
+.pd-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+}
+
+/* Loading & Error */
+.pd-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 20px;
+  color: #64748b;
+  font-size: 15px;
+}
+
+.pd-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #f26522;
+  border-radius: 50%;
+  animation: pd-spin 0.7s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes pd-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pd-error-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 20px;
+  color: #dc2626;
+  font-size: 15px;
+  gap: 12px;
+}
+
+.pd-retry-btn {
+  background: #f26522;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.pd-retry-btn:hover {
+  background: #d9551a;
+}
+
+/* Breadcrumb */
+.pd-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+
+.pd-breadcrumb-link {
+  color: #f26522;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.pd-breadcrumb-link:hover {
+  text-decoration: underline;
+}
+
+.pd-breadcrumb-current {
+  color: #64748b;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 300px;
+}
+
+/* ===== Top Section ===== */
+.pd-top {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+/* Gallery */
+.pd-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pd-gallery-main {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f1f5f9;
+  height: 400px;
+}
+
+.pd-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pd-status-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 8px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.pd-status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.pd-status-approved {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.pd-status-rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.pd-gallery-thumbs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.pd-thumb {
+  flex-shrink: 0;
+  width: 72px;
+  height: 54px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  background: #f1f5f9;
+  transition: border-color 0.2s;
+}
+
+.pd-thumb.active {
+  border-color: #f26522;
+}
+
+.pd-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Key Info Card */
+.pd-key-info {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pd-key-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pd-property-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.pd-property-location {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 13.5px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.pd-property-location svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pd-price-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.pd-price {
+  font-size: 26px;
+  font-weight: 800;
+  color: #f26522;
+}
+
+.pd-sale-type {
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Quick Stats */
+.pd-quick-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pd-quick-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.pd-quick-stat-val {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.pd-quick-stat-label {
+  font-size: 11.5px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Tags */
+.pd-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pd-tag {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 6px;
+}
+
+.pd-tag-type {
+  background: #fff7f0;
+  color: #f26522;
+}
+
+.pd-tag-sale {
+  background: #f0f9ff;
+  color: #0369a1;
+}
+
+.pd-tag-verified {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.pd-tag-loan {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.pd-tag-rera {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Owner Card */
+.pd-owner-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #faf7f5;
+  border-radius: 10px;
+  border: 1px solid #f1ece7;
+}
+
+.pd-owner-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #fff7f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pd-owner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pd-owner-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.pd-owner-phone {
+  font-size: 12.5px;
+  color: #64748b;
+}
+
+/* Dates */
+.pd-dates {
+  display: flex;
+  gap: 24px;
+}
+
+.pd-date-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pd-date-label {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.pd-date-value {
+  font-size: 13px;
+  color: #475569;
+  font-weight: 600;
+}
+
+/* ===== Detail Sections ===== */
+.pd-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pd-section {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+  padding: 24px;
+}
+
+.pd-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 18px;
+}
+
+/* Description */
+.pd-description {
+  font-size: 14.5px;
+  color: #475569;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Info Grid */
+.pd-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.pd-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.pd-info-label {
+  font-size: 11.5px;
+  color: #94a3b8;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.pd-info-value {
+  font-size: 14px;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.pd-info-highlight {
+  color: #f26522;
+  font-size: 16px;
+}
+
+/* Amenities */
+.pd-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pd-amenity-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #065f46;
+  background: #ecfdf5;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+/* Documents */
+.pd-docs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pd-doc-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #f26522;
+  background: #fff7f0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.pd-doc-link:hover {
+  background: #fee2cc;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .pd-top {
+    grid-template-columns: 1fr;
+  }
+
+  .pd-gallery-main {
+    height: 280px;
+  }
+
+  .pd-container {
+    padding: 20px 16px 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pd-gallery-main {
+    height: 220px;
+  }
+
+  .pd-property-name {
+    font-size: 18px;
+  }
+
+  .pd-price {
+    font-size: 22px;
+  }
+
+  .pd-info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pd-quick-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pd-dates {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
