@@ -147,6 +147,30 @@ function SignUp() {
             <img src={houseImg} alt="Modern luxury house" className="signup-side-image" />
           </div>
           <form onSubmit={handleSubmit} className="signup-grid-form">
+            {/* Stepper */}
+            <div className="signup-stepper">
+              <div className="signup-stepper-step completed">
+                <div className="stepper-circle">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                </div>
+                <span className="stepper-label">Personal Info</span>
+              </div>
+              <div className="stepper-line completed"></div>
+              <div className="signup-stepper-step active">
+                <div className="stepper-circle">2</div>
+                <span className="stepper-label">Contact Details</span>
+              </div>
+              <div className="stepper-line"></div>
+              <div className="signup-stepper-step">
+                <div className="stepper-circle">3</div>
+                <span className="stepper-label">Address</span>
+              </div>
+              <div className="stepper-line"></div>
+              <div className="signup-stepper-step">
+                <div className="stepper-circle">4</div>
+                <span className="stepper-label">Security</span>
+              </div>
+            </div>
             {/* Left Column */}
             <div className="signup-col">
               {/* Personal Information */}

@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { get, post } from '../services/api'
 import Navbar from '../components/Navbar'
 import './PostProperty.css'
 
@@ -10,7 +12,7 @@ const steps = [
   { id: 5, label: 'Review & Publish' },
 ]
 
-const amenitiesList = [
+const defaultAmenitiesList = [
   { value: 'parking', label: 'Parking' },
   { value: 'lift', label: 'Lift' },
   { value: 'powerBackup', label: 'Power Backup' },
@@ -87,13 +89,17 @@ function getTipIcon(name) {
 }
 
 function PostProperty({ isLoggedIn, onLogout }) {
+  const navigate = useNavigate()
   const [currentStep, setCurrentStep] = useState(1)
+  const [submitting, setSubmitting] = useState(false)
+  const [popup, setPopup] = useState({ show: false, message: '', type: '' })
 
   // Step 1: Basic Details
   const [propertyTitle, setPropertyTitle] = useState('')
   const [selectedPropertyType, setSelectedPropertyType] = useState('')
   const [showPropertyTypeDD, setShowPropertyTypeDD] = useState(false)
-  const [propertyFor, setPropertyFor] = useState('sale')
+  const [propertyFor, setPropertyFor] = useState('')
+  const [showSaleTypeDD, setShowSaleTypeDD] = useState(false)
   const [price, setPrice] = useState('')
   const [priceNegotiable, setPriceNegotiable] = useState(false)
   const [bedrooms, setBedrooms] = useState('')
@@ -113,6 +119,17 @@ function PostProperty({ isLoggedIn, onLogout }) {
   const [contactTime, setContactTime] = useState('')
   const [showContactTimeDD, setShowContactTimeDD] = useState(false)
 
+  // Owner Details
+  const [ownerName, setOwnerName] = useState('')
+  const [ownerMobileNumber, setOwnerMobileNumber] = useState('')
+  const [ownerAlternateNumber, setOwnerAlternateNumber] = useState('')
+
+  // Seller & Property Classification
+  const [sellerType, setSellerType] = useState('')
+  const [showSellerTypeDD, setShowSellerTypeDD] = useState(false)
+  const [carParking, setCarParking] = useState('')
+  const [pujaRoom, setPujaRoom] = useState('')
+
   // Step 2: Location Details
   const [address, setAddress] = useState('')
   const [city, setCity] = useState('')
@@ -125,13 +142,31 @@ function PostProperty({ isLoggedIn, onLogout }) {
   const [locality, setLocality] = useState('')
   const [landmark, setLandmark] = useState('')
   const [locationFeatures, setLocationFeatures] = useState([])
+  const [ventureName, setVentureName] = useState('')
 
   // Step 3: Property Details
   const [totalArea, setTotalArea] = useState('')
   const [carpetArea, setCarpetArea] = useState('')
   const [facing, setFacing] = useState('')
+  const [showFacingDD, setShowFacingDD] = useState(false)
   const [floorNumber, setFloorNumber] = useState('')
   const [totalFloors, setTotalFloors] = useState('')
+  const [roadWidth, setRoadWidth] = useState('')
+  const [dimensionWidth, setDimensionWidth] = useState('')
+  const [dimensionLength, setDimensionLength] = useState('')
+  const [permissionType, setPermissionType] = useState('')
+  const [showPermissionTypeDD, setShowPermissionTypeDD] = useState(false)
+  const [colonyType, setColonyType] = useState('')
+  const [showColonyTypeDD, setShowColonyTypeDD] = useState(false)
+  const [registrationType, setRegistrationType] = useState('')
+  const [showRegistrationTypeDD, setShowRegistrationTypeDD] = useState(false)
+  const [constructionStatus, setConstructionStatus] = useState('')
+  const [showConstructionStatusDD, setShowConstructionStatusDD] = useState(false)
+  const [loanAvailable, setLoanAvailable] = useState(false)
+  const [reraCompliant, setReraCompliant] = useState(false)
+
+  // Lookups from backend
+  const [lookups, setLookups] = useState(null)
 
   // Step 4: Photos & Media
   const [photos, setPhotos] = useState([])
@@ -141,6 +176,7 @@ function PostProperty({ isLoggedIn, onLogout }) {
   const [maintenanceCharges, setMaintenanceCharges] = useState('')
 
   const propertyTypeRef = useRef(null)
+  const saleTypeRef = useRef(null)
   const bedroomsRef = useRef(null)
   const bathroomsRef = useRef(null)
   const balconiesRef = useRef(null)
@@ -148,13 +184,20 @@ function PostProperty({ isLoggedIn, onLogout }) {
   const furnishingRef = useRef(null)
   const availabilityRef = useRef(null)
   const contactTimeRef = useRef(null)
+  const sellerTypeRef = useRef(null)
   const cityRef = useRef(null)
   const stateRef = useRef(null)
   const countryRef = useRef(null)
+  const facingRef = useRef(null)
+  const permissionTypeRef = useRef(null)
+  const colonyTypeRef = useRef(null)
+  const registrationTypeRef = useRef(null)
+  const constructionStatusRef = useRef(null)
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (propertyTypeRef.current && !propertyTypeRef.current.contains(e.target)) setShowPropertyTypeDD(false)
+      if (saleTypeRef.current && !saleTypeRef.current.contains(e.target)) setShowSaleTypeDD(false)
       if (bedroomsRef.current && !bedroomsRef.current.contains(e.target)) setShowBedroomsDD(false)
       if (bathroomsRef.current && !bathroomsRef.current.contains(e.target)) setShowBathroomsDD(false)
       if (balconiesRef.current && !balconiesRef.current.contains(e.target)) setShowBalconiesDD(false)
@@ -162,13 +205,34 @@ function PostProperty({ isLoggedIn, onLogout }) {
       if (furnishingRef.current && !furnishingRef.current.contains(e.target)) setShowFurnishingDD(false)
       if (availabilityRef.current && !availabilityRef.current.contains(e.target)) setShowAvailabilityDD(false)
       if (contactTimeRef.current && !contactTimeRef.current.contains(e.target)) setShowContactTimeDD(false)
+      if (sellerTypeRef.current && !sellerTypeRef.current.contains(e.target)) setShowSellerTypeDD(false)
       if (cityRef.current && !cityRef.current.contains(e.target)) setShowCityDD(false)
       if (stateRef.current && !stateRef.current.contains(e.target)) setShowStateDD(false)
       if (countryRef.current && !countryRef.current.contains(e.target)) setShowCountryDD(false)
+      if (facingRef.current && !facingRef.current.contains(e.target)) setShowFacingDD(false)
+      if (permissionTypeRef.current && !permissionTypeRef.current.contains(e.target)) setShowPermissionTypeDD(false)
+      if (colonyTypeRef.current && !colonyTypeRef.current.contains(e.target)) setShowColonyTypeDD(false)
+      if (registrationTypeRef.current && !registrationTypeRef.current.contains(e.target)) setShowRegistrationTypeDD(false)
+      if (constructionStatusRef.current && !constructionStatusRef.current.contains(e.target)) setShowConstructionStatusDD(false)
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  // Fetch lookups from backend
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) return
+    get('/lookups', { headers: { Authorization: `Bearer ${token}` } })
+      .then((data) => setLookups(data))
+      .catch(() => { /* use fallback options */ })
+  }, [])
+
+  // Helper to format lookup codes to display labels
+  const formatLookupLabel = (code) => {
+    if (!code) return code
+    return code.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+  }
 
   const nextStep = () => setCurrentStep((s) => Math.min(5, s + 1))
   const prevStep = () => setCurrentStep((s) => Math.max(1, s - 1))
@@ -198,12 +262,44 @@ function PostProperty({ isLoggedIn, onLogout }) {
     4: 'Next: Review & Publish',
   }
 
-  const propertyTypeOptions = ['Apartment', 'Villa / House', 'Commercial', 'Plot / Land']
+  // Dynamic options from lookups API (with fallbacks)
+  const propertyTypeOptions = lookups?.propertyTypes
+    ? lookups.propertyTypes.map((l) => formatLookupLabel(l.code))
+    : ['Flats', 'Villas', 'Open Plots', 'Commercial', 'Agriculture Land', 'Independent House']
+  const furnishingOptions = lookups?.furnishingStatuses
+    ? lookups.furnishingStatuses.map((l) => formatLookupLabel(l.code))
+    : ['Fully Furnished', 'Semi Furnished', 'Unfurnished']
+  const sellerTypeOptions = lookups?.sellerTypes
+    ? lookups.sellerTypes.map((l) => formatLookupLabel(l.code))
+    : ['Owner', 'Agent', 'Builder']
+  const facingOptions = lookups?.facings
+    ? lookups.facings.map((l) => formatLookupLabel(l.code))
+    : ['North', 'South', 'East', 'West', 'North East', 'North West', 'South East', 'South West']
+  const permissionTypeOptions = lookups?.permissionTypes
+    ? lookups.permissionTypes.map((l) => formatLookupLabel(l.code))
+    : ['HMDA', 'Municipal', 'Grampanchayat', 'DTCP']
+  const colonyTypeOptions = lookups?.colonyTypes
+    ? lookups.colonyTypes.map((l) => formatLookupLabel(l.code))
+    : ['Gated Community', 'Open Plot', 'Township']
+  const registrationTypeOptions = lookups?.registrationTypes
+    ? lookups.registrationTypes.map((l) => formatLookupLabel(l.code))
+    : ['Registered', 'Unregistered', 'In Progress']
+  const constructionStatusOptions = lookups?.constructionStatuses
+    ? lookups.constructionStatuses.map((l) => formatLookupLabel(l.code))
+    : ['Ready', 'Complete', 'Incomplete']
+  const saleTypeOptions = lookups?.saleTypes
+    ? lookups.saleTypes.map((l) => formatLookupLabel(l.code))
+    : ['New', 'Resale']
+
+  // Dynamic amenities from lookups API (with fallback)
+  const amenitiesList = lookups?.amenities
+    ? lookups.amenities.map((l) => ({ value: l.code, label: formatLookupLabel(l.code) }))
+    : defaultAmenitiesList
+
   const bedroomOptions = ['1', '2', '3', '4', '5+']
   const bathroomOptions = ['1', '2', '3', '4+']
   const balconyOptions = ['0', '1', '2', '3+']
   const ageOptions = ['Under Construction', '0-1 Year', '1-3 Years', '3-5 Years', '5-10 Years', '10+ Years']
-  const furnishingOptions = ['Furnished', 'Semi-Furnished', 'Unfurnished']
   const availabilityOptions = ['Ready to Move', 'Within 1 Month', 'Within 3 Months', 'Within 6 Months', 'After 6 Months']
   const contactTimeOptions = ['Any Time', 'Morning (9AM - 12PM)', 'Afternoon (12PM - 4PM)', 'Evening (4PM - 8PM)']
 
@@ -216,6 +312,104 @@ function PostProperty({ isLoggedIn, onLogout }) {
     { value: 'nearHighway', label: 'Near Highway' },
     { value: 'metroNearby', label: 'Metro Nearby' },
   ]
+
+  const showPopup = (message, type) => {
+    setPopup({ show: true, message, type })
+    setTimeout(() => setPopup({ show: false, message: '', type: '' }), 4000)
+  }
+
+  // Convert display label back to backend code using lookups
+  const labelToCode = (label, lookupKey) => {
+    if (!label) return label
+    if (lookups && lookups[lookupKey]) {
+      const match = lookups[lookupKey].find(
+        (l) => formatLookupLabel(l.code) === label || l.code === label
+      )
+      if (match) return match.code
+    }
+    // Fallback: convert label to UPPER_SNAKE_CASE
+    return label.toUpperCase().replace(/\s+/g, '_')
+  }
+
+  const mapPropertyAge = (val) => {
+    const map = { 'Under Construction': 0, '0-1 Year': 1, '1-3 Years': 2, '3-5 Years': 4, '5-10 Years': 7, '10+ Years': 10 }
+    return map[val] ?? 0
+  }
+
+  const handleSubmit = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      showPopup('Please login to post a property', 'error')
+      return
+    }
+
+    if (!propertyTitle || !selectedPropertyType || !price || !ownerName || !ownerMobileNumber) {
+      showPopup('Please fill in all required fields (Property Title, Type, Price, Owner Name, Mobile Number)', 'error')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      const selectedAmenities = amenitiesList
+        .filter((am) => amenities.includes(am.value))
+        .map((am) => am.value)
+        .join(', ')
+
+      const payload = {
+        propertyName: propertyTitle,
+        ownerName,
+        ownerMobileNumber,
+        ownerAlternateNumber: ownerAlternateNumber || undefined,
+        propertyImageUrls: photos.length > 0 ? photos.map((p) => p.preview) : [],
+        documentsUrls: [],
+        propertyTypes: labelToCode(selectedPropertyType, 'propertyTypes'),
+        permissionType: permissionType ? labelToCode(permissionType, 'permissionTypes') : undefined,
+        sellerType: sellerType ? labelToCode(sellerType, 'sellerTypes') : 'OWNER',
+        colonyType: colonyType ? labelToCode(colonyType, 'colonyTypes') : undefined,
+        registrationType: registrationType ? labelToCode(registrationType, 'registrationTypes') : undefined,
+        totalAreaInSqFeet: totalArea ? Number(totalArea) : undefined,
+        builtUpAreaInSqFeet: carpetArea ? Number(carpetArea) : undefined,
+        roadWidth: roadWidth ? Number(roadWidth) : undefined,
+        dimensionWidth: dimensionWidth ? Number(dimensionWidth) : undefined,
+        dimensionLength: dimensionLength ? Number(dimensionLength) : undefined,
+        areaName: locality || undefined,
+        pinCode: pincode || undefined,
+        address: address || undefined,
+        price: Number(price),
+        facing: facing ? labelToCode(facing, 'facings') : undefined,
+        furnishingStatus: furnishing ? labelToCode(furnishing, 'furnishingStatuses') : undefined,
+        floorNo: floorNumber ? Number(floorNumber) : undefined,
+        totalNoOfFloors: totalFloors ? Number(totalFloors) : undefined,
+        bedrooms: bedrooms ? Number(bedrooms.replace('+', '')) : undefined,
+        bathrooms: bathrooms ? Number(bathrooms.replace('+', '')) : undefined,
+        pujaRoom: pujaRoom ? Number(pujaRoom) : undefined,
+        carParking: carParking ? Number(carParking) : undefined,
+        amenities: selectedAmenities || undefined,
+        propertyAge: propertyAge ? mapPropertyAge(propertyAge) : undefined,
+        ventureName: ventureName || undefined,
+        maintenanceAmount: maintenanceCharges ? Number(maintenanceCharges) : undefined,
+        loanAvailable,
+        propertyDetails: description || undefined,
+        saleType: propertyFor ? labelToCode(propertyFor, 'saleTypes') : undefined,
+        constructionStatus: constructionStatus ? labelToCode(constructionStatus, 'constructionStatuses') : undefined,
+        reraCompliant,
+      }
+
+      // Remove undefined values
+      Object.keys(payload).forEach((key) => payload[key] === undefined && delete payload[key])
+
+      await post('/properties', payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+
+      showPopup('Property posted successfully!', 'success')
+      setTimeout(() => navigate('/'), 2000)
+    } catch (err) {
+      showPopup(err.message || 'Failed to post property', 'error')
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   const renderDropdown = (ref, label, value, show, setShow, options, setValue) => (
     <div className="pp-dropdown-wrap" ref={ref}>
@@ -239,6 +433,13 @@ function PostProperty({ isLoggedIn, onLogout }) {
   return (
     <div className="pp-page">
       <Navbar isLoggedIn={isLoggedIn} onLogout={onLogout} />
+
+      {popup.show && (
+        <div className={`pp-popup ${popup.type}`}>
+          <span>{popup.message}</span>
+          <button className="pp-popup-close" onClick={() => setPopup({ show: false, message: '', type: '' })}>&times;</button>
+        </div>
+      )}
 
       {/* Main 3-column layout */}
       <div className="pp-layout">
@@ -319,26 +520,12 @@ function PostProperty({ isLoggedIn, onLogout }) {
 
                 <div className="pp-field-row">
                   {renderDropdown(propertyTypeRef, 'Property Type', selectedPropertyType, showPropertyTypeDD, setShowPropertyTypeDD, propertyTypeOptions, setSelectedPropertyType)}
-                  <div className="pp-field-group">
-                    <label className="pp-label">Listing Type</label>
-                    <div className="pp-radio-group">
-                      <label className={`pp-radio-btn ${propertyFor === 'sale' ? 'active' : ''}`}>
-                        <input type="radio" name="listingType" value="sale" checked={propertyFor === 'sale'} onChange={() => setPropertyFor('sale')} />
-                        <span className="pp-radio-dot"></span>
-                        For Sale
-                      </label>
-                      <label className={`pp-radio-btn ${propertyFor === 'rent' ? 'active' : ''}`}>
-                        <input type="radio" name="listingType" value="rent" checked={propertyFor === 'rent'} onChange={() => setPropertyFor('rent')} />
-                        <span className="pp-radio-dot"></span>
-                        For Rent
-                      </label>
-                    </div>
-                  </div>
+                  {renderDropdown(saleTypeRef, 'Sale Type', propertyFor, showSaleTypeDD, setShowSaleTypeDD, saleTypeOptions, setPropertyFor)}
                 </div>
 
                 <div className="pp-field-row">
                   <div className="pp-field-group">
-                    <label className="pp-label">{propertyFor === 'rent' ? 'Monthly Rent' : 'Price'}</label>
+                    <label className="pp-label">Price</label>
                     <div className="pp-input-icon-wrap">
                       <span className="pp-input-prefix">₹</span>
                       <input type="text" className="pp-input pp-input-with-prefix" placeholder="Enter price" value={price} onChange={(e) => setPrice(e.target.value)} />
@@ -374,26 +561,37 @@ function PostProperty({ isLoggedIn, onLogout }) {
                   <textarea className="pp-textarea" placeholder="Describe your property - key features, nearby facilities, and why it's a great choice..." rows="5" maxLength={2000} value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
                 </div>
 
-                {/* Additional Details */}
+                {/* Owner Details */}
                 <div className="pp-field-group pp-field-full">
-                  <label className="pp-label">Additional Details</label>
-                  <div className="pp-amenities-grid">
-                    {amenitiesList.map((am) => (
-                      <label key={am.value} className={`pp-amenity-check ${amenities.includes(am.value) ? 'checked' : ''}`}>
-                        <input type="checkbox" checked={amenities.includes(am.value)} onChange={() => toggleAmenity(am.value)} />
-                        <span className="pp-amenity-box">
-                          <svg width="12" height="12" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                        </span>
-                        {am.label}
-                      </label>
-                    ))}
+                  <label className="pp-label" style={{ fontSize: '15px', fontWeight: 600, marginBottom: '8px' }}>Owner Details</label>
+                </div>
+                <div className="pp-field-row pp-field-row-3">
+                  <div className="pp-field-group">
+                    <label className="pp-label">Owner Name *</label>
+                    <input type="text" className="pp-input" placeholder="e.g. Ramesh Kumar" value={ownerName} onChange={(e) => setOwnerName(e.target.value)} />
+                  </div>
+                  <div className="pp-field-group">
+                    <label className="pp-label">Mobile Number *</label>
+                    <input type="text" className="pp-input" placeholder="e.g. 9876543210" value={ownerMobileNumber} onChange={(e) => setOwnerMobileNumber(e.target.value)} maxLength={10} />
+                  </div>
+                  <div className="pp-field-group">
+                    <label className="pp-label">Alternate Number</label>
+                    <input type="text" className="pp-input" placeholder="e.g. 9876543211" value={ownerAlternateNumber} onChange={(e) => setOwnerAlternateNumber(e.target.value)} maxLength={10} />
                   </div>
                 </div>
 
-                <div className="pp-field-row">
-                  {renderDropdown(availabilityRef, 'Availability', availability, showAvailabilityDD, setShowAvailabilityDD, availabilityOptions, setAvailability)}
-                  {renderDropdown(contactTimeRef, 'Preferred Contact Time', contactTime, showContactTimeDD, setShowContactTimeDD, contactTimeOptions, setContactTime)}
+                <div className="pp-field-row pp-field-row-3">
+                  {renderDropdown(sellerTypeRef, 'Seller Type', sellerType, showSellerTypeDD, setShowSellerTypeDD, sellerTypeOptions, setSellerType)}
+                  <div className="pp-field-group">
+                    <label className="pp-label">Car Parking</label>
+                    <input type="text" className="pp-input" placeholder="e.g. 2" value={carParking} onChange={(e) => setCarParking(e.target.value)} />
+                  </div>
+                  <div className="pp-field-group">
+                    <label className="pp-label">Puja Room</label>
+                    <input type="text" className="pp-input" placeholder="e.g. 1" value={pujaRoom} onChange={(e) => setPujaRoom(e.target.value)} />
+                  </div>
                 </div>
+
               </div>
             </div>
           )}
@@ -447,21 +645,11 @@ function PostProperty({ isLoggedIn, onLogout }) {
                   </div>
                 </div>
 
-                {/* Additional Location Details */}
                 <div className="pp-field-group pp-field-full">
-                  <label className="pp-label">Additional Location Details</label>
-                  <div className="pp-amenities-grid">
-                    {locationFeaturesList.map((feat) => (
-                      <label key={feat.value} className={`pp-amenity-check ${locationFeatures.includes(feat.value) ? 'checked' : ''}`}>
-                        <input type="checkbox" checked={locationFeatures.includes(feat.value)} onChange={() => toggleLocationFeature(feat.value)} />
-                        <span className="pp-amenity-box">
-                          <svg width="12" height="12" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                        </span>
-                        {feat.label}
-                      </label>
-                    ))}
-                  </div>
+                  <label className="pp-label">Venture / Project Name</label>
+                  <input type="text" className="pp-input" placeholder="e.g. Green Valley Phase 1" value={ventureName} onChange={(e) => setVentureName(e.target.value)} />
                 </div>
+
               </div>
             </div>
           )}
@@ -480,15 +668,12 @@ function PostProperty({ isLoggedIn, onLogout }) {
                     <input type="text" className="pp-input" placeholder="e.g. 1500" value={totalArea} onChange={(e) => setTotalArea(e.target.value)} />
                   </div>
                   <div className="pp-field-group">
-                    <label className="pp-label">Carpet Area (sq.ft)</label>
+                    <label className="pp-label">Built-up Area (sq.ft)</label>
                     <input type="text" className="pp-input" placeholder="e.g. 1200" value={carpetArea} onChange={(e) => setCarpetArea(e.target.value)} />
                   </div>
                 </div>
                 <div className="pp-field-row pp-field-row-3">
-                  <div className="pp-field-group">
-                    <label className="pp-label">Facing</label>
-                    <input type="text" className="pp-input" placeholder="e.g. North" value={facing} onChange={(e) => setFacing(e.target.value)} />
-                  </div>
+                  {renderDropdown(facingRef, 'Facing', facing, showFacingDD, setShowFacingDD, facingOptions, setFacing)}
                   <div className="pp-field-group">
                     <label className="pp-label">Floor Number</label>
                     <input type="text" className="pp-input" placeholder="e.g. 5" value={floorNumber} onChange={(e) => setFloorNumber(e.target.value)} />
@@ -498,24 +683,78 @@ function PostProperty({ isLoggedIn, onLogout }) {
                     <input type="text" className="pp-input" placeholder="e.g. 12" value={totalFloors} onChange={(e) => setTotalFloors(e.target.value)} />
                   </div>
                 </div>
-                {propertyFor === 'rent' && (
-                  <div className="pp-field-row">
-                    <div className="pp-field-group">
-                      <label className="pp-label">Security Deposit</label>
-                      <div className="pp-input-icon-wrap">
-                        <span className="pp-input-prefix">₹</span>
-                        <input type="text" className="pp-input pp-input-with-prefix" placeholder="e.g. 1,00,000" value={securityDeposit} onChange={(e) => setSecurityDeposit(e.target.value)} />
-                      </div>
-                    </div>
-                    <div className="pp-field-group">
-                      <label className="pp-label">Maintenance (monthly)</label>
-                      <div className="pp-input-icon-wrap">
-                        <span className="pp-input-prefix">₹</span>
-                        <input type="text" className="pp-input pp-input-with-prefix" placeholder="e.g. 5,000" value={maintenanceCharges} onChange={(e) => setMaintenanceCharges(e.target.value)} />
-                      </div>
+
+                <div className="pp-field-row pp-field-row-3">
+                  <div className="pp-field-group">
+                    <label className="pp-label">Road Width (ft)</label>
+                    <input type="text" className="pp-input" placeholder="e.g. 40" value={roadWidth} onChange={(e) => setRoadWidth(e.target.value)} />
+                  </div>
+                  <div className="pp-field-group">
+                    <label className="pp-label">Dimension Width (ft)</label>
+                    <input type="text" className="pp-input" placeholder="e.g. 30" value={dimensionWidth} onChange={(e) => setDimensionWidth(e.target.value)} />
+                  </div>
+                  <div className="pp-field-group">
+                    <label className="pp-label">Dimension Length (ft)</label>
+                    <input type="text" className="pp-input" placeholder="e.g. 60" value={dimensionLength} onChange={(e) => setDimensionLength(e.target.value)} />
+                  </div>
+                </div>
+
+                <div className="pp-field-row">
+                  {renderDropdown(permissionTypeRef, 'Permission Type', permissionType, showPermissionTypeDD, setShowPermissionTypeDD, permissionTypeOptions, setPermissionType)}
+                  {renderDropdown(colonyTypeRef, 'Colony Type', colonyType, showColonyTypeDD, setShowColonyTypeDD, colonyTypeOptions, setColonyType)}
+                </div>
+
+                <div className="pp-field-row">
+                  {renderDropdown(registrationTypeRef, 'Registration Type', registrationType, showRegistrationTypeDD, setShowRegistrationTypeDD, registrationTypeOptions, setRegistrationType)}
+                  {renderDropdown(constructionStatusRef, 'Construction Status', constructionStatus, showConstructionStatusDD, setShowConstructionStatusDD, constructionStatusOptions, setConstructionStatus)}
+                </div>
+
+                <div className="pp-field-row">
+                  <div className="pp-field-group">
+                    <label className="pp-label">Maintenance Amount (monthly)</label>
+                    <div className="pp-input-icon-wrap">
+                      <span className="pp-input-prefix">₹</span>
+                      <input type="text" className="pp-input pp-input-with-prefix" placeholder="e.g. 5,000" value={maintenanceCharges} onChange={(e) => setMaintenanceCharges(e.target.value)} />
                     </div>
                   </div>
-                )}
+                </div>
+
+                {/* Amenities */}
+                <div className="pp-field-group pp-field-full">
+                  <label className="pp-label">Amenities</label>
+                  <div className="pp-amenities-grid">
+                    {amenitiesList.map((am) => (
+                      <label key={am.value} className={`pp-amenity-check ${amenities.includes(am.value) ? 'checked' : ''}`}>
+                        <input type="checkbox" checked={amenities.includes(am.value)} onChange={() => toggleAmenity(am.value)} />
+                        <span className="pp-amenity-box">
+                          <svg width="12" height="12" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                        </span>
+                        {am.label}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pp-field-row">
+                  <div className="pp-field-group pp-field-toggle-wrap">
+                    <label className="pp-label">Loan Available</label>
+                    <div className="pp-toggle-switch-wrap">
+                      <button className={`pp-toggle-switch ${loanAvailable ? 'on' : ''}`} onClick={() => setLoanAvailable(!loanAvailable)}>
+                        <span className="pp-toggle-knob"></span>
+                      </button>
+                      <span className="pp-toggle-label">{loanAvailable ? 'Yes' : 'No'}</span>
+                    </div>
+                  </div>
+                  <div className="pp-field-group pp-field-toggle-wrap">
+                    <label className="pp-label">RERA Compliant</label>
+                    <div className="pp-toggle-switch-wrap">
+                      <button className={`pp-toggle-switch ${reraCompliant ? 'on' : ''}`} onClick={() => setReraCompliant(!reraCompliant)}>
+                        <span className="pp-toggle-knob"></span>
+                      </button>
+                      <span className="pp-toggle-label">{reraCompliant ? 'Yes' : 'No'}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -570,20 +809,40 @@ function PostProperty({ isLoggedIn, onLogout }) {
                     <span className="pp-review-value">{selectedPropertyType || '—'}</span>
                   </div>
                   <div className="pp-review-row">
-                    <span className="pp-review-label">Listing Type</span>
-                    <span className="pp-review-value">{propertyFor === 'sale' ? 'For Sale' : 'For Rent'}</span>
+                    <span className="pp-review-label">Sale Type</span>
+                    <span className="pp-review-value">{propertyFor || '—'}</span>
                   </div>
                   <div className="pp-review-row">
                     <span className="pp-review-label">Price</span>
                     <span className="pp-review-value">{price ? `₹${price}` : '—'}{priceNegotiable ? ' (Negotiable)' : ''}</span>
                   </div>
                   <div className="pp-review-row">
+                    <span className="pp-review-label">Owner</span>
+                    <span className="pp-review-value">{ownerName || '—'} ({ownerMobileNumber || '—'})</span>
+                  </div>
+                  <div className="pp-review-row">
                     <span className="pp-review-label">Bedrooms / Bathrooms</span>
                     <span className="pp-review-value">{bedrooms || '—'} / {bathrooms || '—'}</span>
                   </div>
                   <div className="pp-review-row">
+                    <span className="pp-review-label">Area</span>
+                    <span className="pp-review-value">{totalArea ? `${totalArea} sq.ft` : '—'} (Built-up: {carpetArea ? `${carpetArea} sq.ft` : '—'})</span>
+                  </div>
+                  <div className="pp-review-row">
+                    <span className="pp-review-label">Facing</span>
+                    <span className="pp-review-value">{facing || '—'}</span>
+                  </div>
+                  <div className="pp-review-row">
                     <span className="pp-review-label">Location</span>
-                    <span className="pp-review-value">{[address, city, state].filter(Boolean).join(', ') || '—'}</span>
+                    <span className="pp-review-value">{[address, locality, city, state].filter(Boolean).join(', ') || '—'}</span>
+                  </div>
+                  <div className="pp-review-row">
+                    <span className="pp-review-label">Construction Status</span>
+                    <span className="pp-review-value">{constructionStatus || '—'}</span>
+                  </div>
+                  <div className="pp-review-row">
+                    <span className="pp-review-label">Loan Available / RERA</span>
+                    <span className="pp-review-value">{loanAvailable ? 'Yes' : 'No'} / {reraCompliant ? 'Yes' : 'No'}</span>
                   </div>
                   <div className="pp-review-row">
                     <span className="pp-review-label">Photos</span>
@@ -625,29 +884,21 @@ function PostProperty({ isLoggedIn, onLogout }) {
                 <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
             ) : (
-              <button className="pp-btn-submit">
-                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                Publish Property
+              <button className="pp-btn-submit" onClick={handleSubmit} disabled={submitting}>
+                {submitting ? (
+                  <>Publishing...</>
+                ) : (
+                  <>
+                    <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    Publish Property
+                  </>
+                )}
               </button>
             )}
           </div>
         </main>
 
-        {/* Right Sidebar - Tips */}
-        <aside className="pp-tips">
-          <h3 className="pp-tips-title">Tips for Better Listing</h3>
-          <div className="pp-tips-list">
-            {tips.map((tip) => (
-              <div key={tip.title} className="pp-tip-card">
-                <div className="pp-tip-icon">{getTipIcon(tip.icon)}</div>
-                <div className="pp-tip-text">
-                  <h4 className="pp-tip-title">{tip.title}</h4>
-                  <p className="pp-tip-desc">{tip.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </aside>
+        
       </div>
     </div>
   )

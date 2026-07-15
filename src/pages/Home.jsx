@@ -1,189 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { get, post } from '../services/api'
 import Navbar from '../components/Navbar'
 import BottomSection from '../components/BottomSection'
 import './Home.css'
 import charminarImg from '../assets/charminar-the-arc-de-triomphe-of-the-east.jpg'
 import cxVerifiedBadge from '../assets/cx-verified.png'
 
-const featuredProperties = [
-  {
-    id: 1,
-    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=260&fit=crop',
-    price: '₹45,00,000',
-    title: 'Modern Family Home',
-    location: 'Mumbai, MH',
-    beds: 4,
-    baths: 3,
-    sqft: '2,500',
-    badge: 'FOR SALE',
-  },
-  {
-    id: 2,
-    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=260&fit=crop',
-    price: '₹28,000/mo',
-    title: 'Cozy Suburban House',
-    location: 'Bangalore, KA',
-    beds: 3,
-    baths: 2,
-    sqft: '1,800',
-    badge: 'FOR RENT',
-  },
-  {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=260&fit=crop',
-    price: '₹68,00,000',
-    title: 'Luxury Villa Estate',
-    location: 'Delhi, DL',
-    beds: 5,
-    baths: 4,
-    sqft: '3,200',
-    badge: 'FOR SALE',
-  },
-  {
-    id: 4,
-    image: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=400&h=260&fit=crop',
-    price: '₹35,000/mo',
-    title: 'Downtown Apartment',
-    location: 'Hyderabad, TS',
-    beds: 2,
-    baths: 2,
-    sqft: '1,200',
-    badge: 'FOR RENT',
-  },
-  {
-    id: 5,
-    image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&h=260&fit=crop',
-    price: '₹72,00,000',
-    title: 'Elegant Country House',
-    location: 'Pune, MH',
-    beds: 4,
-    baths: 3,
-    sqft: '2,800',
-    badge: 'FOR SALE',
-  },
-  {
-    id: 6,
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=260&fit=crop',
-    price: '₹55,000/mo',
-    title: 'Lakeside Retreat',
-    location: 'Chennai, TN',
-    beds: 3,
-    baths: 2,
-    sqft: '2,100',
-    badge: 'FOR RENT',
-  },
-  {
-    id: 7,
-    image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=400&h=260&fit=crop',
-    price: '₹38,00,000',
-    title: 'Contemporary Flat',
-    location: 'Kolkata, WB',
-    beds: 2,
-    baths: 2,
-    sqft: '1,400',
-    badge: 'FOR SALE',
-  },
-  {
-    id: 8,
-    image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&h=260&fit=crop',
-    price: '₹22,000/mo',
-    title: 'Garden View Home',
-    location: 'Ahmedabad, GJ',
-    beds: 3,
-    baths: 2,
-    sqft: '1,600',
-    badge: 'FOR RENT',
-  },
-  {
-    id: 9,
-    image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400&h=260&fit=crop',
-    price: '₹95,00,000',
-    title: 'Premium Penthouse',
-    location: 'Mumbai, MH',
-    beds: 5,
-    baths: 4,
-    sqft: '3,500',
-    badge: 'FOR SALE',
-  },
-  {
-    id: 10,
-    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=260&fit=crop',
-    price: '₹42,000/mo',
-    title: 'Smart Studio Loft',
-    location: 'Bangalore, KA',
-    beds: 1,
-    baths: 1,
-    sqft: '850',
-    badge: 'FOR RENT',
-  },
-  {
-    id: 11,
-    image: 'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=400&h=260&fit=crop',
-    price: '₹52,00,000',
-    title: 'Hillside Bungalow',
-    location: 'Jaipur, RJ',
-    beds: 4,
-    baths: 3,
-    sqft: '2,600',
-    badge: 'FOR SALE',
-  },
-  {
-    id: 12,
-    image: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&h=260&fit=crop',
-    price: '₹30,000/mo',
-    title: 'Riverside Cottage',
-    location: 'Goa, GA',
-    beds: 2,
-    baths: 2,
-    sqft: '1,300',
-    badge: 'FOR RENT',
-  },
-  {
-    id: 13,
-    image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&h=260&fit=crop',
-    price: '₹61,00,000',
-    title: 'Skyline Apartment',
-    location: 'Noida, UP',
-    beds: 3,
-    baths: 2,
-    sqft: '1,900',
-    badge: 'FOR SALE',
-  },
-  {
-    id: 14,
-    image: 'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=400&h=260&fit=crop',
-    price: '₹48,000/mo',
-    title: 'Executive Suite',
-    location: 'Gurugram, HR',
-    beds: 3,
-    baths: 3,
-    sqft: '2,200',
-    badge: 'FOR RENT',
-  },
-  {
-    id: 15,
-    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=260&fit=crop',
-    price: '₹33,00,000',
-    title: 'Classic Row House',
-    location: 'Lucknow, UP',
-    beds: 3,
-    baths: 2,
-    sqft: '1,700',
-    badge: 'FOR SALE',
-  },
-  {
-    id: 16,
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=260&fit=crop',
-    price: '₹26,000/mo',
-    title: 'Sunny Terrace Flat',
-    location: 'Chandigarh, CH',
-    beds: 2,
-    baths: 1,
-    sqft: '1,100',
-    badge: 'FOR RENT',
-  },
-]
+const formatPrice = (price) => {
+  if (!price) return '—'
+  if (price >= 10000000) return `₹${(price / 10000000).toFixed(2)} Cr`
+  if (price >= 100000) return `₹${(price / 100000).toFixed(2)} L`
+  return `₹${price.toLocaleString('en-IN')}`
+}
 
 const propertyTypes = [
   {
@@ -374,10 +203,14 @@ const highGrowthProjects = [
 ]
 
 function Home({ isLoggedIn, onLogout }) {
+  const navigate = useNavigate()
   const [searchTab, setSearchTab] = useState('buy')
   const [showPropertyDropdown, setShowPropertyDropdown] = useState(false)
   const [selectedProperty, setSelectedProperty] = useState('')
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [featuredProperties, setFeaturedProperties] = useState([])
+  const [featuredLoading, setFeaturedLoading] = useState(true)
+  const [favourites, setFavourites] = useState(new Set())
 
   const propertyOptions = ['Apartment', 'Villa', 'Commercial', 'Plot']
   const searchRef = useRef(null)
@@ -414,6 +247,78 @@ function Home({ isLoggedIn, onLogout }) {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  // Fetch featured properties from API
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const data = await get('/properties?page=1&pageSize=10')
+        setFeaturedProperties(Array.isArray(data.properties) ? data.properties : [])
+      } catch {
+        setFeaturedProperties([])
+      } finally {
+        setFeaturedLoading(false)
+      }
+    }
+    fetchFeatured()
+  }, [])
+
+  // Fetch user's favourites
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) return
+    const fetchFavourites = async () => {
+      try {
+        const data = await get('/favourites', {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        const favIds = new Set(Array.isArray(data) ? data.map((f) => f.propertyId) : [])
+        setFavourites(favIds)
+      } catch { /* ignore */ }
+    }
+    fetchFavourites()
+  }, [isLoggedIn])
+
+  const toggleFavourite = async (e, propertyId) => {
+    e.stopPropagation()
+    const token = localStorage.getItem('token')
+    if (!token) {
+      navigate('/login')
+      return
+    }
+    const isAdding = !favourites.has(propertyId)
+    setFavourites((prev) => {
+      const next = new Set(prev)
+      isAdding ? next.add(propertyId) : next.delete(propertyId)
+      return next
+    })
+    try {
+      await post('/favourites', { propertyId, add: isAdding }, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      window.dispatchEvent(new CustomEvent('favourites-changed'))
+    } catch {
+      setFavourites((prev) => {
+        const next = new Set(prev)
+        isAdding ? next.delete(propertyId) : next.add(propertyId)
+        return next
+      })
+    }
+  }
+
+  const placeholderImg = 'data:image/svg+xml,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260" viewBox="0 0 400 260">' +
+    '<defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#f8fafc"/><stop offset="100%" style="stop-color:#e2e8f0"/></linearGradient></defs>' +
+    '<rect width="400" height="260" fill="url(#bg)"/>' +
+    '<g transform="translate(200,110)">' +
+    '<rect x="-32" y="-28" width="64" height="52" rx="6" fill="none" stroke="#cbd5e1" stroke-width="2"/>' +
+    '<path d="M-20-8 L-8-20 L12-4 L20-10 L28 0 L28 20 L-28 20 L-28 8 Z" fill="#e2e8f0"/>' +
+    '<circle cx="-16" cy="-12" r="6" fill="#f26522" opacity="0.5"/>' +
+    '<path d="M-6 28 L-2 22 L2 26 L8 18 L14 28 Z" fill="#cbd5e1" opacity="0.5"/>' +
+    '</g>' +
+    '<text x="200" y="170" text-anchor="middle" fill="#94a3b8" font-family="Inter,sans-serif" font-size="12" font-weight="500">No Image Available</text>' +
+    '</svg>'
+  )
 
   return (
     <div className="home-page">
@@ -513,53 +418,78 @@ function Home({ isLoggedIn, onLogout }) {
           <div className="featured-main">
             <div className="section-header">
               <h2 className="section-title">Featured Properties</h2>
-              <a href="#" className="section-view-all">View All Properties &rarr;</a>
+              <Link to="/buy" className="section-view-all">View All Properties &rarr;</Link>
             </div>
             <div className="scroll-row">
               <button className="scroll-arrow scroll-arrow-left" onClick={() => scroll(featuredScrollRef, 'left')}>
                 <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
               </button>
               <div className="featured-grid" ref={featuredScrollRef}>
-                {featuredProperties.map((property) => (
-                  <div className="property-card" key={property.id}>
-                    <div className="property-card-image">
-                      <img src={property.image} alt={property.title} />
-                      <span className={`property-badge ${property.badge === 'FOR RENT' ? 'rent' : 'sale'}`}>
-                        {property.badge}
-                      </span>
-                      <div className="property-card-actions">
-                        <button className="property-action-btn">
-                          <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-                        </button>
-                        <button className="property-action-btn">
-                          <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                        </button>
-                      </div>
-                    </div>
-                    <div className="property-card-info">
-                      <div className="property-card-price">{property.price}</div>
-                      <h3 className="property-card-title">{property.title}</h3>
-                      <p className="property-card-location">
-                        <svg width="14" height="14" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        {property.location}
-                      </p>
-                      <div className="property-card-details">
-                        <span className="property-card-detail">
-                          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 7v11m0-4h18m0 4V8a1 1 0 00-1-1H8a1 1 0 00-1 1v3"/></svg>
-                          {property.beds} Beds
-                        </span>
-                        <span className="property-card-detail">
-                          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 12h16M4 12v6m16-6v6M6 12V8a2 2 0 012-2h1a2 2 0 012 2v4"/></svg>
-                          {property.baths} Baths
-                        </span>
-                        <span className="property-card-detail">
-                          <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-                          {property.sqft} sqft
-                        </span>
-                      </div>
-                    </div>
+                {featuredLoading ? (
+                  <div className="featured-loading">
+                    <div className="featured-spinner"></div>
+                    <p>Loading properties...</p>
                   </div>
-                ))}
+                ) : featuredProperties.length === 0 ? (
+                  <div className="featured-loading">
+                    <p>No properties available at the moment.</p>
+                  </div>
+                ) : (
+                  featuredProperties.map((property) => {
+                    const imgUrl = property.propertyImageUrls && property.propertyImageUrls.length > 0
+                      ? property.propertyImageUrls[0]
+                      : placeholderImg
+                    const badge = property.saleType === 'RENT' ? 'FOR RENT' : 'FOR SALE'
+                    const location = [property.areaName, property.address].filter(Boolean).join(', ') || property.location || '—'
+
+                    return (
+                      <div className="property-card" key={property.propertyId} onClick={() => navigate(`/property/${property.propertyId}`)} style={{ cursor: 'pointer' }}>
+                        <div className="property-card-image">
+                          <img src={imgUrl} alt={property.propertyName} onError={(e) => { e.target.onerror = null; e.target.src = placeholderImg }} />
+                          <span className={`property-badge ${badge === 'FOR RENT' ? 'rent' : 'sale'}`}>
+                            {badge}
+                          </span>
+                          <div className="property-card-actions">
+                            <button className={`property-action-btn ${favourites.has(property.propertyId) ? 'favourited' : ''}`} onClick={(e) => toggleFavourite(e, property.propertyId)}>
+                              <svg width="16" height="16" fill={favourites.has(property.propertyId) ? '#ef4444' : 'none'} stroke={favourites.has(property.propertyId) ? '#ef4444' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                            </button>
+                            <button className="property-action-btn" onClick={(e) => e.stopPropagation()}>
+                              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                            </button>
+                          </div>
+                        </div>
+                        <div className="property-card-info">
+                          <div className="property-card-price">{formatPrice(property.price)}</div>
+                          <h3 className="property-card-title">{property.propertyName}</h3>
+                          <p className="property-card-location">
+                            <svg width="14" height="14" fill="none" stroke="#f26522" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            {location}
+                          </p>
+                          <div className="property-card-details">
+                            {property.bedrooms != null && (
+                              <span className="property-card-detail">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 7v11m0-4h18m0 4V8a1 1 0 00-1-1H8a1 1 0 00-1 1v3"/></svg>
+                                {property.bedrooms} Beds
+                              </span>
+                            )}
+                            {property.bathrooms != null && (
+                              <span className="property-card-detail">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 12h16M4 12v6m16-6v6M6 12V8a2 2 0 012-2h1a2 2 0 012 2v4"/></svg>
+                                {property.bathrooms} Baths
+                              </span>
+                            )}
+                            {property.totalAreaInSqFeet != null && (
+                              <span className="property-card-detail">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                                {property.totalAreaInSqFeet} sqft
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })
+                )}
               </div>
               <button className="scroll-arrow scroll-arrow-right" onClick={() => scroll(featuredScrollRef, 'right')}>
                 <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
