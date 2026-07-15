@@ -1,19 +1,25 @@
 /* ===== Post Property Page ===== */
 .pp-page {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: #f7f8fa;
   font-family: 'Inter', sans-serif;
+  overflow: hidden;
 }
 
 /* ===== 3-Column Layout ===== */
 .pp-layout {
   max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
-  padding: 28px 28px 48px;
+  padding: 16px 24px 20px;
   display: grid;
   grid-template-columns: 250px 1fr 280px;
-  gap: 24px;
-  align-items: start;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
 }
 
 /* ===== Left Sidebar ===== */
@@ -22,8 +28,8 @@
   border-radius: 14px;
   box-shadow: 0 1px 8px rgba(0,0,0,0.05);
   padding: 6px 0;
-  position: sticky;
-  top: 96px;
+  height: 100%;
+  overflow-y: auto;
 }
 .pp-sidebar-section {
   padding: 16px 20px 8px;
@@ -112,23 +118,47 @@
 /* ===== Main Content ===== */
 .pp-main {
   min-width: 0;
-}
-.pp-main-header {
+  height: 100%;
+  min-height: 0;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 24px;
+  flex-direction: column;
+}
+
+/* ===== Top Bar: Heading + Stepper + Actions ===== */
+.pp-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  padding: 14px 20px;
+  margin-bottom: 14px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.pp-top-bar-heading {
+  flex-shrink: 0;
 }
 .pp-main-title {
-  font-size: 24px;
+  font-size: 19px;
   font-weight: 700;
   color: #0f172a;
-  margin: 0 0 4px;
+  margin: 0 0 2px;
+  white-space: nowrap;
 }
 .pp-main-subtitle {
-  font-size: 14px;
+  font-size: 12px;
   color: #64748b;
   margin: 0;
+  white-space: nowrap;
+}
+.pp-top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 .pp-save-draft-btn {
   display: flex;
@@ -136,9 +166,9 @@
   gap: 6px;
   background: #fff;
   border: 1.5px solid #e2e8f0;
-  padding: 9px 18px;
-  border-radius: 10px;
-  font-size: 13.5px;
+  padding: 8px 14px;
+  border-radius: 9px;
+  font-size: 12.5px;
   font-weight: 600;
   color: #475569;
   cursor: pointer;
@@ -152,17 +182,13 @@
   background: #fff7f0;
 }
 
-/* ===== Stepper ===== */
+/* ===== Stepper (inline, beside heading) ===== */
 .pp-stepper {
   display: flex;
   align-items: flex-start;
-  justify-content: center;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
-  padding: 24px 20px;
-  margin-bottom: 24px;
-  position: relative;
+  gap: 2px;
+  flex: 1;
+  min-width: 260px;
 }
 .pp-step {
   display: flex;
@@ -171,14 +197,18 @@
   position: relative;
   flex: 1;
   min-width: 0;
+  cursor: default;
+}
+.pp-step.completed {
+  cursor: pointer;
 }
 .pp-step-circle {
-  width: 36px;
-  height: 36px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: #f1f5f9;
   color: #94a3b8;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -192,7 +222,7 @@
   background: #f26522;
   color: #fff;
   border-color: #f26522;
-  box-shadow: 0 0 0 4px rgba(242, 101, 34, 0.15);
+  box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.15);
 }
 .pp-step.completed .pp-step-circle {
   background: #22c55e;
@@ -200,10 +230,10 @@
   border-color: #22c55e;
 }
 .pp-step-label {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 500;
   color: #94a3b8;
-  margin-top: 8px;
+  margin-top: 5px;
   text-align: center;
   white-space: nowrap;
   transition: color 0.25s;
@@ -217,9 +247,9 @@
 }
 .pp-step-line {
   position: absolute;
-  top: 18px;
-  right: calc(50% + 20px);
-  width: calc(100% - 40px);
+  top: 13px;
+  right: calc(50% + 15px);
+  width: calc(100% - 30px);
   height: 2px;
   background: #e2e8f0;
   z-index: 1;
@@ -236,32 +266,36 @@
   background: #fff;
   border-radius: 14px;
   box-shadow: 0 1px 8px rgba(0,0,0,0.05);
-  overflow: visible;
-  margin-bottom: 16px;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 .pp-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 28px;
+  padding: 14px 24px;
   border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
 }
 .pp-card-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: #0f172a;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 .pp-card-num {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: #f26522;
   color: #fff;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -283,12 +317,15 @@
 
 /* ===== Form Body ===== */
 .pp-form-body {
-  padding: 24px 28px 28px;
+  padding: 16px 24px 18px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 /* ----- Field Groups ----- */
 .pp-field-group {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   position: relative;
 }
 .pp-field-full {
@@ -296,10 +333,10 @@
 }
 .pp-label {
   display: block;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   color: #334155;
-  margin-bottom: 7px;
+  margin-bottom: 5px;
 }
 .pp-label-row {
   display: flex;
@@ -317,10 +354,10 @@
 }
 .pp-input {
   width: 100%;
-  padding: 11px 14px;
+  padding: 9px 14px;
   border: 1.5px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 14px;
+  border-radius: 9px;
+  font-size: 13.5px;
   font-family: 'Inter', sans-serif;
   color: #0f172a;
   background: #fff;
@@ -338,15 +375,15 @@
 }
 .pp-textarea {
   width: 100%;
-  padding: 11px 14px;
+  padding: 9px 14px;
   border: 1.5px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 14px;
+  border-radius: 9px;
+  font-size: 13.5px;
   font-family: 'Inter', sans-serif;
   color: #0f172a;
   background: #fff;
   resize: vertical;
-  min-height: 100px;
+  min-height: 60px;
   transition: border-color 0.18s, box-shadow 0.18s;
   outline: none;
   box-sizing: border-box;
@@ -364,7 +401,7 @@
 .pp-field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 14px;
 }
 .pp-field-row-3 {
   grid-template-columns: 1fr 1fr 1fr;
@@ -373,15 +410,15 @@
 /* ===== Custom Dropdown ===== */
 .pp-dropdown-wrap {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 .pp-dropdown-trigger {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 11px 14px;
+  padding: 9px 14px;
   border: 1.5px solid #e2e8f0;
-  border-radius: 10px;
+  border-radius: 9px;
   background: #fff;
   cursor: pointer;
   transition: border-color 0.18s, box-shadow 0.18s;
@@ -609,8 +646,8 @@
   background: #f8fafc;
   border: 2px dashed #e2e8f0;
   border-radius: 14px;
-  padding: 36px 20px;
-  margin-bottom: 24px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -660,7 +697,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 40px 20px;
+  padding: 24px 20px;
   border: 2px dashed #cbd5e1;
   border-radius: 14px;
   cursor: pointer;
@@ -743,85 +780,22 @@
   color: #0f172a;
 }
 
-/* ===== Collapsed Steps ===== */
-.pp-collapsed-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-.pp-collapsed-step {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
-  padding: 16px 24px;
-  cursor: pointer;
-  transition: all 0.18s;
-}
-.pp-collapsed-step:hover {
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  background: #fefefe;
-}
-.pp-collapsed-step.completed {
-  border-left: 3px solid #22c55e;
-}
-.pp-collapsed-step.completed:hover {
-  background: #f0fdf4;
-}
-.pp-collapsed-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.pp-collapsed-num {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #f1f5f9;
-  color: #94a3b8;
-  font-size: 13px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.pp-collapsed-num.completed {
-  background: #22c55e;
-  color: #fff;
-}
-.pp-collapsed-label {
-  font-size: 14.5px;
-  font-weight: 600;
-  color: #94a3b8;
-}
-.pp-collapsed-step.completed .pp-collapsed-label {
-  color: #334155;
-}
-
-/* ===== Navigation Buttons ===== */
-.pp-form-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-}
+/* ===== Top Bar Navigation Buttons ===== */
 .pp-btn-prev {
   display: flex;
   align-items: center;
   gap: 6px;
   background: #fff;
   border: 1.5px solid #e2e8f0;
-  padding: 11px 24px;
-  border-radius: 10px;
-  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 9px;
+  font-size: 12.5px;
   font-weight: 600;
   color: #475569;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   transition: all 0.18s;
+  white-space: nowrap;
 }
 .pp-btn-prev:hover {
   border-color: #cbd5e1;
@@ -831,18 +805,18 @@
 .pp-btn-next {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: #f26522;
   border: none;
-  padding: 12px 28px;
-  border-radius: 10px;
-  font-size: 14.5px;
+  padding: 8px 18px;
+  border-radius: 9px;
+  font-size: 12.5px;
   font-weight: 600;
   color: #fff;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
-  margin-left: auto;
   transition: background 0.18s;
+  white-space: nowrap;
 }
 .pp-btn-next:hover {
   background: #d9551a;
@@ -850,21 +824,25 @@
 .pp-btn-submit {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: #22c55e;
   border: none;
-  padding: 12px 28px;
-  border-radius: 10px;
-  font-size: 14.5px;
+  padding: 8px 18px;
+  border-radius: 9px;
+  font-size: 12.5px;
   font-weight: 600;
   color: #fff;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
-  margin-left: auto;
   transition: background 0.18s;
+  white-space: nowrap;
 }
 .pp-btn-submit:hover {
   background: #16a34a;
+}
+.pp-btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* ===== Right Sidebar - Tips ===== */
@@ -873,8 +851,8 @@
   border-radius: 14px;
   box-shadow: 0 1px 8px rgba(0,0,0,0.05);
   padding: 24px 20px;
-  position: sticky;
-  top: 96px;
+  height: 100%;
+  overflow-y: auto;
 }
 .pp-tips-title {
   font-size: 16px;
@@ -919,16 +897,34 @@
 }
 
 /* ===== Responsive ===== */
+/* Below 1200px the sidebar/tips columns are hidden, so the page reverts
+   to normal scrollable document flow instead of the fixed-viewport layout. */
 @media (max-width: 1200px) {
+  .pp-page {
+    height: auto;
+    overflow: visible;
+  }
   .pp-layout {
     grid-template-columns: 1fr;
     padding: 20px 18px 40px;
+    flex: none;
+    min-height: 0;
   }
   .pp-sidebar {
     display: none;
   }
   .pp-tips {
     display: none;
+  }
+  .pp-main {
+    height: auto;
+  }
+  .pp-form-card {
+    flex: none;
+  }
+  .pp-form-body {
+    overflow-y: visible;
+    flex: none;
   }
 }
 
@@ -949,9 +945,8 @@
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .pp-stepper {
-    padding: 20px 16px;
-    border-radius: 14px;
+  .pp-top-bar {
+    padding: 16px 18px;
   }
 
   .pp-form-card {
@@ -959,11 +954,11 @@
   }
 
   .pp-card-header {
-    padding: 18px 22px;
+    padding: 16px 20px;
   }
 
   .pp-form-body {
-    padding: 20px 22px 24px;
+    padding: 18px 20px 22px;
   }
 }
 
@@ -973,33 +968,40 @@
     padding: 12px 12px 32px;
   }
 
-  .pp-main-header {
+  .pp-top-bar {
     flex-direction: column;
-    gap: 12px;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .pp-top-bar-actions {
+    width: 100%;
+    margin-left: 0;
+    flex-wrap: wrap;
   }
   .pp-main-title {
     font-size: 20px;
+    white-space: normal;
   }
   .pp-main-subtitle {
     font-size: 13px;
+    white-space: normal;
   }
   .pp-stepper {
-    padding: 16px 10px;
-    border-radius: 12px;
-    margin-bottom: 16px;
+    width: 100%;
+    min-width: 0;
   }
   .pp-step-circle {
-    width: 30px;
-    height: 30px;
-    font-size: 12px;
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
   }
   .pp-step-line {
-    top: 15px;
-    right: calc(50% + 17px);
-    width: calc(100% - 34px);
+    top: 13px;
+    right: calc(50% + 15px);
+    width: calc(100% - 30px);
   }
   .pp-step-label {
-    font-size: 10px;
+    font-size: 9px;
   }
   .pp-card-header {
     padding: 14px 16px;
@@ -1035,18 +1037,13 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
-  .pp-form-actions {
-    flex-direction: column;
-    gap: 10px;
-  }
   .pp-btn-next,
   .pp-btn-submit,
   .pp-btn-prev {
-    width: 100%;
+    flex: 1;
     justify-content: center;
-    margin-left: 0;
-    padding: 14px 24px;
-    border-radius: 12px;
+    padding: 12px 16px;
+    border-radius: 10px;
   }
   .pp-upload-label {
     padding: 28px 16px;
@@ -1054,10 +1051,6 @@
   }
   .pp-upload-text {
     font-size: 14px;
-  }
-  .pp-collapsed-step {
-    padding: 14px 16px;
-    border-radius: 10px;
   }
   .pp-review-row {
     padding: 12px 16px;
@@ -1079,7 +1072,7 @@
     border-radius: 10px;
   }
   .pp-save-draft-btn {
-    width: 100%;
+    flex: 1;
     justify-content: center;
   }
 }
@@ -1091,13 +1084,13 @@
   }
 
   .pp-step-label {
-    font-size: 9px;
+    display: none;
   }
 
   .pp-step-circle {
-    width: 26px;
-    height: 26px;
-    font-size: 11px;
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
   }
 
   .pp-main-title {

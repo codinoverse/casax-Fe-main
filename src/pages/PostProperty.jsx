@@ -255,13 +255,6 @@ function PostProperty({ isLoggedIn, onLogout }) {
     setPhotos((prev) => prev.filter((_, i) => i !== index))
   }
 
-  const stepLabels = {
-    1: 'Next: Location',
-    2: 'Next: Property Details',
-    3: 'Next: Media',
-    4: 'Next: Review & Publish',
-  }
-
   // Dynamic options from lookups API (with fallbacks)
   const propertyTypeOptions = lookups?.propertyTypes
     ? lookups.propertyTypes.map((l) => formatLookupLabel(l.code))
@@ -472,33 +465,62 @@ function PostProperty({ isLoggedIn, onLogout }) {
 
         {/* Center Content */}
         <main className="pp-main">
-          {/* Header */}
-          <div className="pp-main-header">
-            <div>
+          {/* Top Bar: Heading + Stepper + Actions */}
+          <div className="pp-top-bar">
+            <div className="pp-top-bar-heading">
               <h1 className="pp-main-title">Post a New Property</h1>
               <p className="pp-main-subtitle">Fill in the details below to list your property</p>
             </div>
-            <button className="pp-save-draft-btn">
-              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-              Save as Draft
-            </button>
-          </div>
 
-          {/* Stepper */}
-          <div className="pp-stepper">
-            {steps.map((step, idx) => (
-              <div key={step.id} className={`pp-step ${currentStep === step.id ? 'active' : ''} ${currentStep > step.id ? 'completed' : ''}`}>
-                {idx > 0 && <div className="pp-step-line"></div>}
-                <div className="pp-step-circle">
-                  {currentStep > step.id ? (
-                    <svg width="14" height="14" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                  ) : (
-                    step.id
-                  )}
+            <div className="pp-stepper">
+              {steps.map((step, idx) => (
+                <div
+                  key={step.id}
+                  className={`pp-step ${currentStep === step.id ? 'active' : ''} ${currentStep > step.id ? 'completed' : ''}`}
+                  onClick={() => step.id < currentStep && setCurrentStep(step.id)}
+                >
+                  {idx > 0 && <div className="pp-step-line"></div>}
+                  <div className="pp-step-circle">
+                    {currentStep > step.id ? (
+                      <svg width="12" height="12" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                    ) : (
+                      step.id
+                    )}
+                  </div>
+                  <span className="pp-step-label">{step.label}</span>
                 </div>
-                <span className="pp-step-label">{step.label}</span>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <div className="pp-top-bar-actions">
+              <button className="pp-save-draft-btn">
+                <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+                Save as Draft
+              </button>
+              {currentStep > 1 && (
+                <button className="pp-btn-prev" onClick={prevStep}>
+                  <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                  Previous
+                </button>
+              )}
+              {currentStep < 5 ? (
+                <button className="pp-btn-next" onClick={nextStep}>
+                  Next
+                  <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              ) : (
+                <button className="pp-btn-submit" onClick={handleSubmit} disabled={submitting}>
+                  {submitting ? (
+                    <>Publishing...</>
+                  ) : (
+                    <>
+                      <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                      Publish Property
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Step 1: Basic Details */}
@@ -558,7 +580,7 @@ function PostProperty({ isLoggedIn, onLogout }) {
                     <label className="pp-label">Property Description</label>
                     <span className="pp-char-count">{description.length}/2000</span>
                   </div>
-                  <textarea className="pp-textarea" placeholder="Describe your property - key features, nearby facilities, and why it's a great choice..." rows="5" maxLength={2000} value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                  <textarea className="pp-textarea" placeholder="Describe your property - key features, nearby facilities, and why it's a great choice..." rows="3" maxLength={2000} value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
                 </div>
 
                 {/* Owner Details */}
@@ -853,52 +875,7 @@ function PostProperty({ isLoggedIn, onLogout }) {
             </div>
           )}
 
-          {/* Collapsed steps (past + future) */}
-          <div className="pp-collapsed-steps">
-            {steps.filter((s) => s.id !== currentStep).map((step) => (
-              <div key={step.id} className={`pp-collapsed-step ${step.id < currentStep ? 'completed' : ''}`} onClick={() => setCurrentStep(step.id)}>
-                <div className="pp-collapsed-left">
-                  <span className={`pp-collapsed-num ${step.id < currentStep ? 'completed' : ''}`}>
-                    {step.id < currentStep ? (
-                      <svg width="14" height="14" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                    ) : step.id}
-                  </span>
-                  <span className="pp-collapsed-label">{step.label}</span>
-                </div>
-                <svg width="14" height="14" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-            ))}
-          </div>
-
-          {/* Navigation */}
-          <div className="pp-form-actions">
-            {currentStep > 1 && (
-              <button className="pp-btn-prev" onClick={prevStep}>
-                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-                Previous
-              </button>
-            )}
-            {currentStep < 5 ? (
-              <button className="pp-btn-next" onClick={nextStep}>
-                {stepLabels[currentStep]}
-                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-              </button>
-            ) : (
-              <button className="pp-btn-submit" onClick={handleSubmit} disabled={submitting}>
-                {submitting ? (
-                  <>Publishing...</>
-                ) : (
-                  <>
-                    <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                    Publish Property
-                  </>
-                )}
-              </button>
-            )}
-          </div>
         </main>
-
-        
       </div>
     </div>
   )
